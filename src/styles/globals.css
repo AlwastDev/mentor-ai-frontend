@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./reset.css";
+
+@layer base {
+	:root {
+		
+	}
+
+	html,
+	body,
+	#__next {
+		min-height: 100%;
+		width: 100%;
+		overflow-x: hidden;
+	}
+
+	#__next {
+		overflow-y: hidden;
+	}
+
+	body {
+		background: #ffffff;
+	}
+}
