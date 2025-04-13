@@ -5,6 +5,7 @@ import parser from "ua-parser-js";
 
 import { DeviceTypeProvider } from "@/providers/DeviceTypeProvider";
 import { ModalRoot } from "@/shared/layouts/Modal/ModalRoot";
+import { TRPCProvider } from "@/providers/TRPCProvider";
 
 import "../styles/globals.css";
 
@@ -39,10 +40,12 @@ export default async function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<DeviceTypeProvider deviceType={deviceType}>
-					<ModalRoot />
-					<main>{children}</main>
-				</DeviceTypeProvider>
+				<TRPCProvider>
+					<DeviceTypeProvider deviceType={deviceType}>
+						<ModalRoot />
+						<main>{children}</main>
+					</DeviceTypeProvider>
+				</TRPCProvider>
 			</body>
 		</html>
 	);
