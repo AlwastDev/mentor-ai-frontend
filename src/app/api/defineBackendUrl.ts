@@ -15,5 +15,5 @@ export const defineBackendUrl = async () => {
 	// const backendUrl = service.Instances?.[0]?.Attributes?.AWS_INSTANCE_IPV4;
 	// const dev = env.NODE_ENV === "development";
 	// return dev ? "http://localhost:4444" : `http://${backendUrl}:4444`;
-	return "http://localhost:3000";
+	return "http://localhost:7001";
 };

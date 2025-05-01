@@ -1,21 +1,18 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Geist, Geist_Mono } from "next/font/google";
+import { getServerSession } from "next-auth";
+import { Inter } from "next/font/google";
 import parser from "ua-parser-js";
 
-import { DeviceTypeProvider } from "@/providers/DeviceTypeProvider";
 import { ModalRoot } from "@/shared/layouts/Modal/ModalRoot";
-import { TRPCProvider } from "@/providers/TRPCProvider";
+import { authOptions } from "@/server/auth";
+import Providers from "./providers";
 
 import "../styles/globals.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const inter = Inter({
+	variable: "--font-inter",
+	weight: ["400", "500", "600", "700"],
 	subsets: ["latin"],
 });
 
@@ -29,23 +26,21 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await getServerSession(authOptions);
 	const headersList = await headers();
-
-	const userAgent = headersList.get("user-agent") || "";
-
-	const deviceType = parser(userAgent).device.type || "desktop";
+  const userAgent = headersList.get("user-agent") || "";
+  const deviceType = parser(userAgent).device.type || "desktop";
+	
 
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${inter.variable} antialiased`}
 			>
-				<TRPCProvider>
-					<DeviceTypeProvider deviceType={deviceType}>
-						<ModalRoot />
-						<main>{children}</main>
-					</DeviceTypeProvider>
-				</TRPCProvider>
+				<Providers session={session} deviceType={deviceType}>
+					<ModalRoot />
+					<main>{children}</main>
+				</Providers>
 			</body>
 		</html>
 	);

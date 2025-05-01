@@ -6,12 +6,16 @@
 
 @layer base {
 	:root {
-		
+		--font-inter: "Inter", sans-serif;
 	}
 
 	html,
 	body,
 	#__next {
+		font-family: var(--font-inter);
+		font-size: 16px;
+		font-weight: 400;
+		
 		min-height: 100%;
 		width: 100%;
 		overflow-x: hidden;

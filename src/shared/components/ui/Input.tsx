@@ -19,7 +19,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 					autoComplete="off"
 					className={cn(
 						"focus:outline-none focus:ring-0 focus-visible:outline-none",
-						"appearance-none w-full bg-transparent",
+						"appearance-none w-full py-[12px] px-[20px]",
+						"rounded-2xl border-2 border-[#E5E5E5] bg-[#F7F7F7]",
+						"placeholder:text-[#AFAFAF] placeholder:text-base placeholder:font-medium",
 						className
 					)}
 					{...rest}

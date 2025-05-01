@@ -1,8 +1,15 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+import type {
+	NextApiRequest,
+	CreateNextContextOptions,
+	NextApiResponse,
+} from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { getServerSession, type Session } from "next-auth";
 
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { UserRole } from "@/shared/utils/enums";
+import { authOptions } from "../auth";
 
 /**
  * 1. CONTEXT
@@ -13,9 +20,11 @@ import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
  */
 
 interface CreateContextOptions {
-	// session: Session | null;
-	req: Request;
+	session: Session | null;
+	req: NextApiRequest;
+	res: NextApiResponse;
 }
+
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
  * it from here.
@@ -28,8 +37,9 @@ interface CreateContextOptions {
  */
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 	return {
-		// session: opts.session,
+		session: opts.session,
 		req: opts.req,
+		res: opts.res,
 	};
 };
 
@@ -39,16 +49,16 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
-	const { req } = opts;
-	// const session = await getServerAuthSession();
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+	const { req, res } = opts;
+	const session = await getServerSession(req, res, authOptions);
 
 	return createInnerTRPCContext({
-		// session,
+		session,
 		req,
+		res,
 	});
 };
-
 
 /**
  * 2. INITIALIZATION
@@ -58,7 +68,9 @@ export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
  * errors on the backend.
  */
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+
+const t = initTRPC.context<Context>().create({
 	transformer: superjson,
 	errorFormatter({ shape, error }) {
 		return {
@@ -71,7 +83,6 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 		};
 	},
 });
-
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
@@ -86,4 +97,63 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  * @see https://trpc.io/docs/router
  */
 export const createTRPCRouter = t.router;
+
+/**
+ * Public (unauthenticated) procedure
+ *
+ * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
+ * guarantee that a user querying is authorized, but you can still access user session data if they
+ * are logged in.
+ */
 export const publicProcedure = t.procedure;
+
+/** Reusable middleware that enforces users are logged in before running the procedure. */
+const isAuthed = t.middleware(({ ctx, next }) => {
+	if (!ctx.session?.user) {
+		throw new TRPCError({ code: "UNAUTHORIZED" });
+	}
+	return next({
+		ctx: {
+			// infers the `session` as non-nullable
+			session: { ...ctx.session, user: ctx.session.user },
+		},
+	});
+});
+
+/**
+ * Protected (authenticated) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
+ * the session is valid and guarantees `ctx.session.user` is not null.
+ *
+ * @see https://trpc.io/docs/procedures
+ */
+export const protectedProcedure = t.procedure.use(isAuthed);
+
+function createRoleMiddleware(allowedRoles: UserRole[]) {
+	return t.middleware(({ ctx, next }) => {
+		const userRole = ctx.session?.user?.role;
+		if (!allowedRoles.includes(userRole!)) {
+			throw new TRPCError({ code: "FORBIDDEN" });
+		}
+
+		if (!ctx.session?.user) {
+			throw new TRPCError({ code: "UNAUTHORIZED" });
+		}
+
+		return next({
+			ctx: {
+				// infers the `session` as non-nullable
+				session: { ...ctx.session, user: ctx.session.user },
+			},
+		});
+	});
+}
+
+export const isStudent = createRoleMiddleware([UserRole.STUDENT]);
+
+export const studentProcedure = protectedProcedure.use(isStudent);
+
+export const isAdmin = createRoleMiddleware([UserRole.ADMIN]);
+
+export const adminProcedure = protectedProcedure.use(isAdmin);
