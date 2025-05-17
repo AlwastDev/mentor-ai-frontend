@@ -10,7 +10,10 @@ export class ApiService implements IApiService {
 		method,
 		body,
 		query,
-	}: SendRequestOptions<TBody, TQuery>): Promise<TResponse | null> {
+		accessToken,
+	}: SendRequestOptions<TBody, TQuery> & {
+		accessToken?: string;
+	}): Promise<TResponse> {
 		const backendUrl = await defineBackendUrl();
 
 		const filteredQuery = this.getFilteredQueryParams(query);
@@ -18,26 +21,39 @@ export class ApiService implements IApiService {
 
 		const requestUrl = `${backendUrl}/${url}${queryString}`;
 
+		const headers: HeadersInit = {
+			"Content-Type": "application/json",
+		};
+
+		if (accessToken) {
+			headers.Authorization = `Bearer ${accessToken}`;
+		}
+
 		const response = await fetch(requestUrl, {
 			method,
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers,
 			body: body ? JSON.stringify(body) : undefined,
 		});
 
-		// if (!response.ok) {
-		//   throw new Error(`Request failed with status ${response.status}`);
-		// }
+		const text = await response.text();
 
-		const json = await response.json();
-
-		if (json === null) {
-			return null;
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}: ${text}`);
 		}
 
-		if (json.error) {
-			throw new Error(json.message || "Unknown error");
+		if (!text) {
+			throw new Error("Empty response body");
+		}
+
+		let json: unknown;
+		try {
+			json = JSON.parse(text);
+		} catch (err) {
+			throw new Error("Invalid JSON response");
+		}
+
+		if ((json as any)?.error) {
+			throw new Error((json as any).message || "Unknown error");
 		}
 
 		return json as TResponse;
@@ -48,7 +64,7 @@ export class ApiService implements IApiService {
 			return {};
 		}
 		return Object.fromEntries(
-			Object.entries(query).filter(([, value]) => value !== undefined)
+			Object.entries(query).filter(([, value]) => value !== undefined),
 		) as Record<string, string>;
 	}
 

@@ -8,13 +8,13 @@ export default function useWindowSize(debounceMs = 500) {
 	const isServer = typeof window === "undefined";
 
 	const { deviceType } = useDeviceType();
-	
+
 	const [isDefaultSize, setIsDefaultSize] = useState(true);
-	
+
 	const [windowSize, setWindowSize] = useState({
-    height: deviceType !== "desktop" ? 800 : 1080,
+		height: deviceType !== "desktop" ? 800 : 1080,
 		width: deviceType !== "desktop" ? 360 : 1920,
-  });
+	});
 
 	useEffect(() => {
 		let timeoutId: ReturnType<typeof setTimeout>;

@@ -17,12 +17,7 @@ export const Icon = memo((props: IconProps) => {
 
 	const IconComponent: FunctionComponent<SVGProps<SVGElement>> = icons[icon];
 
-	return (
-		<IconComponent
-			className={cn(className, onClick && "cursor-pointer")}
-			onClick={onClick}
-		/>
-	);
+	return <IconComponent className={cn(className, onClick && "cursor-pointer")} onClick={onClick} />;
 });
 
 Icon.displayName = "Icon";

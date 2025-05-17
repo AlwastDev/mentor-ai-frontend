@@ -1,7 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import type {
 	NextApiRequest,
-	CreateNextContextOptions,
 	NextApiResponse,
 } from "@trpc/server/adapters/next";
 import superjson from "superjson";
@@ -10,6 +9,7 @@ import { getServerSession, type Session } from "next-auth";
 
 import { UserRole } from "@/shared/utils/enums";
 import { authOptions } from "../auth";
+import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
 /**
  * 1. CONTEXT
@@ -49,15 +49,14 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-	const { req, res } = opts;
-	const session = await getServerSession(req, res, authOptions);
 
-	return createInnerTRPCContext({
+export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
+	const session = await getServerSession(authOptions);
+
+	return {
 		session,
-		req,
-		res,
-	});
+		req: opts.req,
+	};
 };
 
 /**

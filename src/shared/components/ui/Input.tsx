@@ -9,26 +9,24 @@ export type InputProps = {
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	(props, ref) => {
-		const { className, ...rest } = props;
-
+	({ className, ...rest }, ref) => {
 		return (
-			<>
-				<input
-					ref={ref}
-					autoComplete="off"
-					className={cn(
-						"focus:outline-none focus:ring-0 focus-visible:outline-none",
-						"appearance-none w-full py-[12px] px-[20px]",
-						"rounded-2xl border-2 border-[#E5E5E5] bg-[#F7F7F7]",
-						"placeholder:text-[#AFAFAF] placeholder:text-base placeholder:font-medium",
-						className
-					)}
-					{...rest}
-				/>
-			</>
+			<input
+				ref={ref}
+				autoComplete="off"
+				className={cn(
+					"focus:outline-none focus:ring-0 focus-visible:outline-none",
+					"appearance-none w-full py-[12px] px-[20px]",
+					"rounded-2xl border-2",
+					"placeholder:text-[#AFAFAF] placeholder:text-base placeholder:font-medium",
+					"bg-[#F7F7F7]",
+					rest["aria-invalid"] === "true" ? "border-red-500" : "border-[#E5E5E5]",
+					className,
+				)}
+				{...rest}
+			/>
 		);
-	}
+	},
 );
 
 Input.displayName = "Input";
@@ -41,24 +39,30 @@ export const ControlledInput = (props: ControlledInputProps) => {
 	const { name, value: externalValue, defaultValue, disabled, ...rest } = props;
 
 	const { control, setValue } = useFormContext();
-	const { field } = useController({
+
+	const {
+		field,
+		fieldState: { error },
+	} = useController({
 		name,
 		control,
 		defaultValue: defaultValue ?? "",
 	});
 
-	const { ...restField } = field;
-
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			if (externalValue) {
+		if (externalValue !== undefined) {
+			const timer = setTimeout(() => {
 				setValue(name, externalValue, { shouldValidate: true });
-			}
-		}, 0);
+			}, 0);
 
-		return () => clearTimeout(timer);
+			return () => clearTimeout(timer);
+		}
 	}, [setValue, externalValue, name]);
 
-	return <Input {...restField} {...rest} disabled={disabled} />;
+	return (
+		<div className="space-y-1">
+			<Input {...field} {...rest} disabled={disabled} aria-invalid={!!error} />
+			{error && <p className="text-sm text-red-600 font-medium">{error.message}</p>}
+		</div>
+	);
 };
-

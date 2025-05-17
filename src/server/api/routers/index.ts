@@ -1,1 +1,1 @@
-export { tokenRouter } from "./token.router";
+export { testRouter } from "./test.router";

@@ -8,7 +8,7 @@ export const useAuth = () => {
 	const { status, data: session } = useSession();
 
 	const logout = useCallback(async () => {
-		void signOut({ redirect: true, callbackUrl: ROUTES.Home });
+		void signOut({ redirect: true, callbackUrl: ROUTES.SignIn });
 	}, []);
 
 	const userId = session?.user.id ?? "";

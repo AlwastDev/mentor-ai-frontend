@@ -36,15 +36,12 @@ const ModalLayout = (props: ModalLayoutProps) => {
 				closeModal();
 			}
 		},
-		[closeModal, closeable]
+		[closeModal, closeable],
 	);
 
-	const handleModalClick = useCallback(
-		(e: React.MouseEvent<HTMLDivElement>) => {
-			e.stopPropagation();
-		},
-		[]
-	);
+	const handleModalClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
+	}, []);
 
 	useEffect(() => {
 		setTimeout(() => setIsVisible(true), 10);
@@ -52,8 +49,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
 
 	useEffect(() => {
 		if (isVisible) {
-			const scrollBarWidth =
-				window.innerWidth - document.documentElement.clientWidth;
+			const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 
 			document.documentElement.style.overflow = "hidden";
 			document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
@@ -74,7 +70,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
 				className={cn(
 					"fixed inset-0 z-50 flex bg-[rgba(0,0,0,0.60)]",
 					"transition-opacity duration-300 ease-in-out",
-					{ "opacity-100": isVisible, "opacity-0": !isVisible }
+					{ "opacity-100": isVisible, "opacity-0": !isVisible },
 				)}
 				onClick={handleCloseModal}
 			>
@@ -93,27 +89,18 @@ const ModalLayout = (props: ModalLayoutProps) => {
 							{
 								"scale-100 opacity-100": isVisible,
 								"scale-95 opacity-0": !isVisible,
-							}
+							},
 						)}
 						onClick={handleModalClick}
 					>
 						<div className={cn("flex px-5 pt-5 justify-between")}>
 							<h2
-								className={cn(
-									"font-semibold text-white text-base leading-normal",
-									titleClassName
-								)}
+								className={cn("font-semibold text-white text-base leading-normal", titleClassName)}
 							>
 								{title}
 							</h2>
 
-							{closeable && (
-								<Icon
-									icon="cross"
-									className={cn("size-6")}
-									onClick={closeModal}
-								/>
-							)}
+							{closeable && <Icon icon="cross" className={cn("size-6")} onClick={closeModal} />}
 						</div>
 						{children}
 					</div>
@@ -128,7 +115,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
 			className={cn(
 				"fixed inset-0 z-50 flex items-center justify-center",
 				"transition-opacity duration-300 ease-in-out",
-				{ "opacity-100": isVisible, "opacity-0": !isVisible }
+				{ "opacity-100": isVisible, "opacity-0": !isVisible },
 			)}
 			onClick={handleCloseModal}
 		>
@@ -145,23 +132,16 @@ const ModalLayout = (props: ModalLayoutProps) => {
 					{
 						"scale-100 opacity-100": isVisible,
 						"scale-95 opacity-0": !isVisible,
-					}
+					},
 				)}
 				onClick={handleModalClick}
 			>
 				<div className={cn("flex px-5 pt-5 justify-between")}>
-					<h2
-						className={cn(
-							"font-semibold text-white text-base leading-normal",
-							titleClassName
-						)}
-					>
+					<h2 className={cn("font-semibold text-white text-base leading-normal", titleClassName)}>
 						{title}
 					</h2>
 
-					{closeable && (
-						<Icon icon="cross" className={cn("size-6")} onClick={closeModal} />
-					)}
+					{closeable && <Icon icon="cross" className={cn("size-6")} onClick={closeModal} />}
 				</div>
 
 				{children}

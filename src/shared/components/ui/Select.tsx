@@ -56,7 +56,7 @@ const withSelect = <T,>() =>
 						className={cn(
 							"flex items-center gap-x-[10px] rounded-xl min-w-fit",
 							"py-[7px] pr-[7px] pl-[15px]",
-              "border border-white-7 bg-[#242424]",
+							"border border-white-7 bg-[#242424]",
 							"text-base text-white text-center font-semibold leading-6",
 							className,
 						)}
@@ -89,10 +89,8 @@ const withSelect = <T,>() =>
 									className={cn(
 										"w-5 h-[15px] shrink-0 text-dusty-gray",
 										{
-											"rotate-180 transition delay-150 ease-in-out":
-												open && !disabled,
-											"rotate-0 transition delay-150 ease-in-out":
-												!open && !disabled,
+											"rotate-180 transition delay-150 ease-in-out": open && !disabled,
+											"rotate-0 transition delay-150 ease-in-out": !open && !disabled,
 										},
 										classNameArrowIcon,
 									)}
@@ -166,14 +164,7 @@ type ControlledSelectProps<T> = Omit<SelectProps<T>, "value"> & {
 };
 
 export const ControlledSelect = <T,>(props: ControlledSelectProps<T>) => {
-	const {
-		name,
-		onChange,
-		defaultValue,
-		value: externalValue,
-		disabled,
-		...rest
-	} = props;
+	const { name, onChange, defaultValue, value: externalValue, disabled, ...rest } = props;
 
 	const { control, setValue } = useFormContext();
 	const { field } = useController({

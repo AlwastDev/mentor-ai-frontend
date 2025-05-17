@@ -54,7 +54,6 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 	}
 }
 
-
 export const authOptions: NextAuthOptions = {
 	session: { strategy: "jwt" },
 	secret: env.NEXTAUTH_SECRET,
@@ -121,7 +120,7 @@ export const authOptions: NextAuthOptions = {
 					accessTokenExpires: Date.now() + env.ACCESS_TOKEN_EXPIRES_MIN * 60 * 1000,
 				};
 			}
-	
+
 			if (Date.now() < (token as JWT).accessTokenExpires) {
 				return token as JWT;
 			}
@@ -140,7 +139,10 @@ export const authOptions: NextAuthOptions = {
 			if (!profile?.email) throw new Error("No email in Google profile");
 
 			const backend = await defineBackendUrl();
-			const signature = computeHmac(`${profile.email}:${SignUpMethod.GOOGLE}`, env.SERVICE_SIGNIN_SECRET);
+			const signature = computeHmac(
+				`${profile.email}:${SignUpMethod.GOOGLE}`,
+				env.SERVICE_SIGNIN_SECRET,
+			);
 
 			const r = await fetch(`${backend}/auth/sign-in-by-service`, {
 				method: "POST",

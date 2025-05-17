@@ -15,6 +15,6 @@ export interface SendRequestOptions<TBody, TQuery> {
 
 export interface IApiService {
 	sendRequest<TResponse, TBody = unknown, TQuery = unknown>(
-		params: SendRequestOptions<TBody, TQuery>
-	): Promise<TResponse | null>;
+		params: SendRequestOptions<TBody, TQuery> & { accessToken?: string },
+	): Promise<TResponse>;
 }
