@@ -8,16 +8,69 @@ import type {
 	GetByIdResponse,
 	GetPublishedResponse,
 } from "../responses/TestService.responses";
+import type { CreateTestSchema, EditTestSchema } from "../schemas/TestService.schemas";
 
 @injectable()
 export class TestService implements ITestService {
 	constructor(@inject(SYMBOLS.IApiService) private apiService: IApiService) {}
 
-	async getAllTests(accessToken: string): Promise<GetAllTestsResponse[]> {
+	async createTest(input: CreateTestSchema, accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: "test/add",
+			method: HttpMethod.POST,
+			accessToken,
+			body: {
+				...input,
+			},
+		});
+	}
+
+	async editTest(input: EditTestSchema, accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: "test/edit",
+			method: HttpMethod.PUT,
+			accessToken,
+			body: {
+				...input,
+			},
+		});
+	}
+
+	async publishTest(testId: string, accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: "test/publish",
+			method: HttpMethod.POST,
+			accessToken,
+			body: {
+				testId,
+			},
+		});
+	}
+
+	async deleteTest(id: string, accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: "test/delete",
+			method: HttpMethod.DELETE,
+			accessToken,
+			query: {
+				id,
+			},
+		});
+	}
+
+	async getAllTests(
+		accessToken: string,
+		page: number,
+		limit: number,
+	): Promise<GetAllTestsResponse[]> {
 		return await this.apiService.sendRequest({
 			url: "test/get",
 			method: HttpMethod.GET,
 			accessToken,
+			query: {
+				page,
+				limit,
+			},
 		});
 	}
 

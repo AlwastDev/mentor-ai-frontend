@@ -1,9 +1,12 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Button, ControlledInput } from "@/shared/components/ui";
+import { useCreateQuestionMutation } from "../hooks";
 
 export const QuestionsTab = () => {
 	const { control, register } = useFormContext();
+
+	const { createQuestion } = useCreateQuestionMutation();
 
 	const { fields: questionFields, append: appendQuestion } = useFieldArray({
 		control,

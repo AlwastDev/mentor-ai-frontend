@@ -1,8 +1,10 @@
 import { createTRPCRouter } from "./trpc";
-import { testRouter } from "./routers";
+import { learningMaterialRouter, questionRouter, testRouter } from "./routers";
 
 export const appRouter = createTRPCRouter({
 	test: testRouter,
+	question: questionRouter,
+	learningMaterial: learningMaterialRouter,
 });
 
 export type AppRouter = typeof appRouter;

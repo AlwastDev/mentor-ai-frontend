@@ -1,9 +1,15 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+
 import { cn } from "@/shared/utils/helpers";
-import { GeneralTab, MaterialsTab, QuestionsTab } from "@/features/admin/create-test/components";
+import {
+	GeneralTab,
+	MaterialsTab,
+	QuestionsTab,
+} from "@/features/admin/create-test/components";
 import { Form } from "@/shared/components/ui";
 
 interface QuestionForm {
@@ -20,6 +26,12 @@ interface FormData {
 }
 
 export default function AdminCreateTestPage() {
+	const [isTestCreated, setIsTestCreated] = useState(false);
+
+	const handleChangeIsTestCreated = useCallback(() => {
+		setIsTestCreated(true);
+	}, []);
+
 	const form = useForm<FormData>({
 		defaultValues: {
 			name: "",
@@ -42,9 +54,15 @@ export default function AdminCreateTestPage() {
 							className={({ selected }) =>
 								cn(
 									"px-4 py-2 font-medium border-b-2",
-									selected ? "border-blue-500 text-blue-600" : "border-transparent text-gray-500",
+									selected
+										? "border-blue-500 text-blue-600"
+										: "border-transparent text-gray-500",
+									index > 0 &&
+										!isTestCreated &&
+										"text-gray-300 cursor-not-allowed",
 								)
 							}
+							disabled={index > 0 && !isTestCreated}
 						>
 							{tab}
 						</Tab>
@@ -53,7 +71,7 @@ export default function AdminCreateTestPage() {
 
 				<TabPanels className="mt-4">
 					<TabPanel>
-						<GeneralTab />
+						<GeneralTab handleChangeIsTestCreated={handleChangeIsTestCreated} />
 					</TabPanel>
 
 					<TabPanel>

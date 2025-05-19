@@ -5,12 +5,14 @@ import { useGetAllTestsQuery } from "@/features/admin/hooks";
 import { useTestsColumns } from "@/features/admin/tests/hooks";
 import { Button, Table } from "@/shared/components/ui";
 import { ROUTES } from "@/shared/utils/routes";
+import { usePaginationQueryParams } from "@/shared/hooks";
 
 export default function AdminTestsPage() {
 	const router = useRouter();
 
-	const { tests, isLoading } = useGetAllTestsQuery();
+	const { page, handlePageChange } = usePaginationQueryParams();
 	const { columns } = useTestsColumns();
+	const { tests, isLoading } = useGetAllTestsQuery(page);
 
 	if (isLoading || !tests) {
 		return <div>Loading...</div>;
@@ -25,7 +27,12 @@ export default function AdminTestsPage() {
 				</Button>
 			</div>
 
-			<Table data={tests} columns={columns} count={tests.length} />
+			<Table
+				data={tests}
+				columns={columns}
+				count={tests.length}
+				onChangePage={handlePageChange}
+			/>
 		</div>
 	);
 }

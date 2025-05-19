@@ -10,11 +10,15 @@ import { defineBackendUrl } from "@/app/api/defineBackendUrl";
 import { type SessionUser } from "@/shared/utils/types";
 import { SignUpMethod } from "@/shared/utils/enums";
 import { computeHmac } from "@/shared/utils/helpers";
+import { signOut } from "next-auth/react";
+import { ROUTES } from "@/shared/utils/routes";
 
 declare module "next-auth" {
 	interface Session {
 		user: SessionUser;
 		accessToken: string;
+		refreshToken: string;
+		accessTokenExpires: number;
 	}
 }
 
@@ -36,6 +40,11 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 			body: JSON.stringify({ token: token.refreshToken }),
 		});
 
+		if (res.status === 401) {
+			await signOut({ redirect: true, callbackUrl: ROUTES.SignIn });
+			throw new Error("Refresh token expired or unauthorized");
+		}
+
 		if (!res.ok) throw new Error("Refresh failed");
 
 		const data = await res.json();
@@ -43,7 +52,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 			...token,
 			accessToken: data.accessToken,
 			refreshToken: data.refreshToken,
-			accessTokenExpires: Date.now() + 30 * 60 * 1000,
+			accessTokenExpires: Date.now() + env.ACCESS_TOKEN_EXPIRES_MIN * 60 * 1000,
 		};
 	} catch (err) {
 		console.error("❌ Error refreshing token:", err);
@@ -55,7 +64,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 export const authOptions: NextAuthOptions = {
-	session: { strategy: "jwt" },
+	session: { strategy: "database" },
 	secret: env.NEXTAUTH_SECRET,
 	pages: {
 		signIn: "/auth/sign-in",
@@ -79,7 +88,11 @@ export const authOptions: NextAuthOptions = {
 					body: JSON.stringify({ email, password }),
 				});
 				if (!r.ok) throw new Error((await r.json()).message);
-				return (await r.json()) as SessionUser;
+				const response = (await r.json()) as SessionUser;
+				return {
+					...response,
+					accessTokenExpires: Date.now() + env.ACCESS_TOKEN_EXPIRES_MIN * 60 * 1000,
+				};
 			},
 		}),
 		Credentials({
@@ -100,7 +113,11 @@ export const authOptions: NextAuthOptions = {
 					body: JSON.stringify({ email, password, name, surname }),
 				});
 				if (!r.ok) throw new Error((await r.json()).message);
-				return (await r.json()) as SessionUser;
+				const response = (await r.json()) as SessionUser;
+				return {
+					...response,
+					accessTokenExpires: Date.now() + env.ACCESS_TOKEN_EXPIRES_MIN * 60 * 1000,
+				};
 			},
 		}),
 		Google({
@@ -111,27 +128,43 @@ export const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		async jwt({ token, user }): Promise<JWT> {
+			console.log(token.accessTokenExpires)
+			if (Date.now() >= token.accessTokenExpires) {
+				console.log("🔄 Refreshing access token...");
+				return await refreshAccessToken(token as JWT);
+			}
+		
+			// 🔄 only if it's a login, not a refresh
 			if (user) {
+				const sessionUser = user as SessionUser & {
+					accessToken: string;
+					refreshToken: string;
+					accessTokenExpires: number;
+				};
+		
 				return {
-					...(token as JWT),
-					user: user as SessionUser,
-					accessToken: (user as any).accessToken,
-					refreshToken: (user as any).refreshToken,
-					accessTokenExpires: Date.now() + env.ACCESS_TOKEN_EXPIRES_MIN * 60 * 1000,
+					...token,
+					user: {
+						id: sessionUser.id,
+						email: sessionUser.email,
+						name: sessionUser.name,
+						surname: sessionUser.surname,
+						role: sessionUser.role,
+					},
+					accessToken: sessionUser.accessToken,
+					refreshToken: sessionUser.refreshToken,
+					accessTokenExpires: sessionUser.accessTokenExpires,
 				};
 			}
-
-			if (Date.now() < (token as JWT).accessTokenExpires) {
-				return token as JWT;
-			}
-
-			return await refreshAccessToken(token as JWT);
+		
+			// ✅ no changes
+			return token;
 		},
 		session({ session, token }) {
-			if (token.user) {
-				session.user = token.user as SessionUser;
-				session.accessToken = token.accessToken;
-			}
+			session.user = token.user;
+			session.accessToken = token.accessToken;
+			session.refreshToken = token.refreshToken;
+			session.accessTokenExpires = token.accessTokenExpires;
 			return session;
 		},
 		async signIn({ user, account, profile }) {
@@ -157,7 +190,12 @@ export const authOptions: NextAuthOptions = {
 				console.error("❌ Google sign-in backend error:", await r.text());
 				throw new Error("Backend error");
 			}
-			Object.assign(user, await r.json());
+			const response = await r.json();
+
+			Object.assign(user, {
+				...response,
+				accessTokenExpires: Date.now() + env.ACCESS_TOKEN_EXPIRES_MIN * 60 * 1000,
+			});
 			return true;
 		},
 	},
