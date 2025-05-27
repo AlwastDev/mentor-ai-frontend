@@ -1,63 +1,22 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import type {
-	NextApiRequest,
-	NextApiResponse,
-} from "@trpc/server/adapters/next";
+import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { getServerSession, type Session } from "next-auth";
+import * as cookie from "cookie";
 
 import { UserRole } from "@/shared/utils/enums";
-import { authOptions } from "../auth";
-import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { env } from "@/env.mjs";
+import { jwtVerify } from "jose";
 
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API.
- *
- * These allow you to access things when processing a request, like the database, the session, etc.
- */
 
-interface CreateContextOptions {
-	session: Session | null;
-	req: NextApiRequest;
-	res: NextApiResponse;
+export function createTRPCContext({ req }: FetchCreateContextFnOptions) {
+	const parsedCookies = cookie.parse(req.headers.get("cookie") ?? "");
+
+	return {
+		req,
+		cookies: parsedCookies,
+	};
 }
-
-/**
- * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
- * it from here.
- *
- * Examples of things you may need it for:
- * - testing, so we don't have to mock Next.js' req/res
- * - tRPC's `createSSGHelpers`, where we don't have req/res
- *
- * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
- */
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
-	return {
-		session: opts.session,
-		req: opts.req,
-		res: opts.res,
-	};
-};
-
-/**
- * This is the actual context you will use in your router. It will be used to process every request
- * that goes through your tRPC endpoint.
- *
- * @see https://trpc.io/docs/context
- */
-
-export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
-	const session = await getServerSession(authOptions);
-
-	return {
-		session,
-		req: opts.req,
-	};
-};
 
 /**
  * 2. INITIALIZATION
@@ -76,8 +35,7 @@ const t = initTRPC.context<Context>().create({
 			...shape,
 			data: {
 				...shape.data,
-				zodError:
-					error.cause instanceof ZodError ? error.cause.flatten() : null,
+				zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
 			},
 		};
 	},
@@ -108,13 +66,13 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const isAuthed = t.middleware(({ ctx, next }) => {
-	if (!ctx.session?.user) {
+	if (!ctx.cookies.access_token) {
 		throw new TRPCError({ code: "UNAUTHORIZED" });
 	}
+
 	return next({
 		ctx: {
-			// infers the `session` as non-nullable
-			session: { ...ctx.session, user: ctx.session.user },
+			access_token: ctx.cookies.access_token!,
 		},
 	});
 });
@@ -130,20 +88,24 @@ const isAuthed = t.middleware(({ ctx, next }) => {
 export const protectedProcedure = t.procedure.use(isAuthed);
 
 function createRoleMiddleware(allowedRoles: UserRole[]) {
-	return t.middleware(({ ctx, next }) => {
-		const userRole = ctx.session?.user?.role;
-		if (!allowedRoles.includes(userRole!)) {
-			throw new TRPCError({ code: "FORBIDDEN" });
-		}
-
-		if (!ctx.session?.user) {
+	return t.middleware(async ({ ctx, next }) => {
+		if (!ctx.cookies.access_token) {
 			throw new TRPCError({ code: "UNAUTHORIZED" });
 		}
 
+		const secret = new TextEncoder().encode(env.SECRET_KEY);
+
+		const { payload } = await jwtVerify(ctx.cookies.access_token!, secret);
+
+		const userRole = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] as UserRole;
+
+		if (!allowedRoles.includes(userRole!)) {
+			throw new TRPCError({ code: "FORBIDDEN" });
+		}
+		
 		return next({
 			ctx: {
-				// infers the `session` as non-nullable
-				session: { ...ctx.session, user: ctx.session.user },
+				access_token: ctx.cookies.access_token,
 			},
 		});
 	});

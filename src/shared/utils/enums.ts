@@ -1,6 +1,6 @@
 export enum UserRole {
-	ADMIN = 0,
-	STUDENT = 1,
+	ADMIN = "Admin",
+	STUDENT = "Student",
 }
 
 export enum SignUpMethod {

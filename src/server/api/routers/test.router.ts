@@ -13,38 +13,38 @@ export const testRouter = createTRPCRouter({
 	create: adminProcedure
 		.input(createTestSchema)
 		.mutation(async ({ input, ctx }) =>
-			testService.createTest({ ...input }, ctx.session?.accessToken),
+			testService.createTest({ ...input }, ctx.access_token),
 		),
 
 	edit: adminProcedure
 		.input(editTestSchema)
 		.mutation(async ({ input, ctx }) =>
-			testService.editTest({ ...input }, ctx.session?.accessToken),
+			testService.editTest({ ...input }, ctx.access_token),
 		),
 
 	publish: adminProcedure
 		.input(z.string().uuid())
-		.mutation(async ({ input, ctx }) => testService.publishTest(input, ctx.session?.accessToken)),
+		.mutation(async ({ input, ctx }) => testService.publishTest(input, ctx.access_token)),
 
 	delete: adminProcedure
 		.input(z.string().uuid())
-		.mutation(async ({ input, ctx }) => testService.deleteTest(input, ctx.session?.accessToken)),
+		.mutation(async ({ input, ctx }) => testService.deleteTest(input, ctx.access_token)),
 
 	getAllTests: adminProcedure
 		.input(paginationSchema)
 		.query(async ({ input, ctx }) =>
-			testService.getAllTests(ctx.session?.accessToken, input.page, input.limit),
+			testService.getAllTests(ctx.access_token, input.page, input.limit),
 		),
 
 	getById: adminProcedure
 		.input(z.string().uuid())
-		.query(async ({ input, ctx }) => testService.getById(input, ctx.session?.accessToken)),
+		.query(async ({ input, ctx }) => testService.getById(input, ctx.access_token)),
 
 	getPublished: protectedProcedure.query(async ({ ctx }) =>
-		testService.getPublished(ctx.session?.accessToken),
+		testService.getPublished(ctx.access_token),
 	),
 
 	getPublishedById: protectedProcedure
 		.input(z.string())
-		.query(async ({ input, ctx }) => testService.getPublishedById(input, ctx.session?.accessToken)),
+		.query(async ({ input, ctx }) => testService.getPublishedById(input, ctx.access_token)),
 });

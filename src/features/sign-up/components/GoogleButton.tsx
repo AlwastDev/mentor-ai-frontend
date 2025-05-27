@@ -1,21 +1,11 @@
 "use client";
 import { useCallback } from "react";
-import { signIn } from "next-auth/react";
 
 import { Button, Icon } from "@/shared/components/ui";
 
 export const GoogleButton = () => {
 	const handleGoogleLogin = useCallback(() => {
-		signIn("google", {
-			redirect: false,
-			callbackUrl: "/",
-		})
-			.then((response) => {
-				console.log("result", response);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+		window.location.href = "/api/auth/google";
 	}, []);
 
 	return (

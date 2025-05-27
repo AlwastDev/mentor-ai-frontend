@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 
-import { defineBackendUrl } from "@/app/api/defineBackendUrl";
 import type { IApiService, SendRequestOptions } from "./interfaces/IApiService";
+import { env } from "@/env.mjs";
 
 @injectable()
 export class ApiService implements IApiService {
@@ -14,7 +14,7 @@ export class ApiService implements IApiService {
 	}: SendRequestOptions<TBody, TQuery> & {
 		accessToken?: string;
 	}): Promise<TResponse> {
-		const backendUrl = await defineBackendUrl();
+		const backendUrl = env.BACKEND_URL;
 
 		const filteredQuery = this.getFilteredQueryParams(query);
 		const queryString = this.buildQueryString(filteredQuery);
@@ -42,13 +42,14 @@ export class ApiService implements IApiService {
 		}
 
 		if (!text) {
-			throw new Error("Empty response body");
+			return {} as TResponse;
 		}
 
 		let json: unknown;
 		try {
 			json = JSON.parse(text);
 		} catch (err) {
+			console.error("Invalid JSON response", err);
 			throw new Error("Invalid JSON response");
 		}
 

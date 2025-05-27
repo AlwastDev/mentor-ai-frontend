@@ -2,11 +2,11 @@
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 
 import { signInInputSchema, type SignInInput } from "../schemas/signIn.schema";
 import { useNotification } from "@/shared/hooks";
 import { Button, ControlledInput, Form } from "@/shared/components/ui";
+import { useSignInMutation } from "../hooks";
 
 export const SignInForm = () => {
 	const n = useNotification();
@@ -18,25 +18,14 @@ export const SignInForm = () => {
 		formState: { isValid },
 	} = form;
 
+	const { signIn } = useSignInMutation();
+
 	const handleSubmit = useCallback(
 		(data: SignInInput) => {
-			signIn("sign-in", {
-				redirect: false,
+			signIn({
 				email: data.email,
 				password: data.password,
-				callbackUrl: window === undefined ? "" : `/`,
-			})
-				.then(async (response) => {
-					if (response?.ok && response.url) {
-						window.location.href = response.url;
-					} else if (response?.error) {
-						n.error(response.error);
-					}
-				})
-				.catch((error) => {
-					// eslint-disable-next-line no-console
-					console.error("error", error);
-				});
+			});
 		},
 		[form, n],
 	);

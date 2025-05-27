@@ -10,10 +10,13 @@ import type { IQuestionService } from "./core/services/interfaces/IQuestionServi
 import { QuestionService } from "./core/services/QuestionService";
 import type { ILearningMaterialService } from "./core/services/interfaces/ILearningMaterialService";
 import { LearningMaterialService } from "./core/services/LearningMaterialService";
+import { AuthService } from "./core/services/AuthService";
+import type { IAuthService } from "./core/services/interfaces/IAuthService";
 
 const container = new Container();
 
 container.bind<IApiService>(SYMBOLS.IApiService).to(ApiService);
+container.bind<IAuthService>(SYMBOLS.IAuthService).to(AuthService);
 container.bind<ITestService>(SYMBOLS.ITestService).to(TestService);
 container.bind<IQuestionService>(SYMBOLS.IQuestionService).to(QuestionService);
 container.bind<ILearningMaterialService>(SYMBOLS.ILearningMaterialService).to(LearningMaterialService);

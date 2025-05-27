@@ -17,18 +17,18 @@ export const learningMaterialRouter = createTRPCRouter({
 	create: adminProcedure
 		.input(addLearningMaterialSchema)
 		.mutation(async ({ input, ctx }) =>
-			learningMaterialService.createLearningMaterial({ ...input }, ctx.session?.accessToken),
+			learningMaterialService.createLearningMaterial({ ...input }, ctx.access_token!),
 		),
 
 	edit: adminProcedure
 		.input(editLearningMaterialSchema)
 		.mutation(async ({ input, ctx }) =>
-			learningMaterialService.editLearningMaterial({ ...input }, ctx.session?.accessToken),
+			learningMaterialService.editLearningMaterial({ ...input }, ctx.access_token!),
 		),
 
 	delete: adminProcedure
 		.input(z.string().uuid())
 		.mutation(async ({ input, ctx }) =>
-			learningMaterialService.deleteLearningMaterial(input, ctx.session?.accessToken),
+			learningMaterialService.deleteLearningMaterial(input, ctx.access_token!),
 		),
 });

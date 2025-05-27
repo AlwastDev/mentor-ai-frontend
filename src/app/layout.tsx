@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { getServerSession } from "next-auth";
 import { Inter } from "next/font/google";
 import parser from "ua-parser-js";
 
 import { ModalRoot } from "@/shared/layouts/Modal/ModalRoot";
-import { authOptions } from "@/server/auth";
 import { Header } from "@/shared/layouts/Header";
 import Providers from "./providers";
 
@@ -27,7 +25,6 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const session = await getServerSession(authOptions);
 	const headersList = await headers();
 	const userAgent = headersList.get("user-agent") || "";
 	const deviceType = parser(userAgent).device.type || "desktop";
@@ -35,7 +32,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.variable} antialiased`}>
-				<Providers session={session} deviceType={deviceType}>
+				<Providers deviceType={deviceType}>
 					<ModalRoot />
 					<Header />
 					<main>{children}</main>

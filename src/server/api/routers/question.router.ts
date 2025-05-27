@@ -12,16 +12,16 @@ export const questionRouter = createTRPCRouter({
 	create: adminProcedure
 		.input(createQuestionSchema)
 		.mutation(async ({ input, ctx }) =>
-			questionService.createQuestion({ ...input }, ctx.session?.accessToken),
+			questionService.createQuestion({ ...input }, ctx.access_token),
 		),
 
 	edit: adminProcedure
 		.input(editQuestionSchema)
 		.mutation(async ({ input, ctx }) =>
-			questionService.editQuestion({ ...input }, ctx.session?.accessToken),
+			questionService.editQuestion({ ...input }, ctx.access_token),
 		),
 
 	delete: adminProcedure
 		.input(z.string().uuid())
-		.mutation(async ({ input, ctx }) => questionService.deleteQuestion(input, ctx.session?.accessToken)),
+		.mutation(async ({ input, ctx }) => questionService.deleteQuestion(input, ctx.access_token)),
 });

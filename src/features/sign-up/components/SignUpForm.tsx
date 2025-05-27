@@ -1,11 +1,11 @@
 "use client";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useNotification } from "@/shared/hooks";
 import { Button, ControlledInput, Form } from "@/shared/components/ui";
+import { useSignUpMutation } from "../hooks";
 
 export const signUpInputSchema = z
 	.object({
@@ -35,6 +35,8 @@ export const SignUpForm = () => {
 		mode: "onChange",
 	});
 
+	const { signUp } = useSignUpMutation();
+
 	const {
 		formState: { isValid },
 	} = form;
@@ -45,25 +47,12 @@ export const SignUpForm = () => {
 			return;
 		}
 
-		signIn("sign-up", {
-			redirect: false,
+		signUp({
 			email: data.email,
 			password: data.password,
 			name: data.name,
 			surname: data.surname,
-			callbackUrl: window === undefined ? "" : `/`,
-		})
-			.then(async (response) => {
-				if (response?.ok && response.url) {
-					window.location.href = response.url;
-				} else if (response?.error) {
-					n.error(response.error);
-				}
-			})
-			.catch((error) => {
-				// eslint-disable-next-line no-console
-				console.error("error", error);
-			});
+		});
 	};
 
 	const isDisabled = !isValid;
