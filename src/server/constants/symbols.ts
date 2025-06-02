@@ -4,4 +4,5 @@ export const SYMBOLS = {
 	ITestService: Symbol.for("ITestService"),
 	IQuestionService: Symbol.for("IQuestionService"),
 	ILearningMaterialService: Symbol.for("ILearningMaterialService"),
+	ISubscriptionService: Symbol.for("ISubscriptionService"),
 };

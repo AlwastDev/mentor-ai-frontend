@@ -3,17 +3,16 @@ import { Switch } from "@headlessui/react";
 
 import { Button, ControlledInput } from "@/shared/components/ui";
 import { cn } from "@/shared/utils/helpers";
-import { useCreateTestMutation } from "../hooks";
 
 type GeneralTabProps = {
-	handleChangeIsTestCreated: () => void;
+	isDisabledSaveButton: boolean;
+	onSaveGeneral: () => void;
 };
 
 export const GeneralTab = (props: GeneralTabProps) => {
-	const { handleChangeIsTestCreated } = props;
+	const { isDisabledSaveButton, onSaveGeneral } = props;
 
 	const { watch, setValue } = useFormContext();
-	const { createTest } = useCreateTestMutation();
 
 	const isEntryTest = watch("isEntryTest");
 
@@ -21,25 +20,15 @@ export const GeneralTab = (props: GeneralTabProps) => {
 		setValue("isEntryTest", val);
 	};
 
-	const onSaveGeneral = async () => {
-		await createTest({
-			testName: watch("name"),
-			description: watch("description"),
-			isEntryTest,
-		}).then(() => {
-			handleChangeIsTestCreated();
-		});
-	};
-
 	return (
 		<div className="space-y-4">
-			<ControlledInput name="name" placeholder="Назва тесту" />
+			<ControlledInput name="testName" placeholder="Назва тесту" />
 			<ControlledInput name="description" placeholder="Опис (необов’язково)" />
 
 			<div className="flex items-center gap-4">
 				<label className="text-sm">Вступний тест</label>
 				<Switch
-					checked={isEntryTest}
+					checked={!!isEntryTest}
 					onChange={changeIsEntryTest}
 					className={cn(
 						"relative inline-flex h-6 w-11 items-center rounded-full",
@@ -56,7 +45,7 @@ export const GeneralTab = (props: GeneralTabProps) => {
 				</Switch>
 			</div>
 
-			<Button type="button" className="mt-4" onClick={onSaveGeneral}>
+			<Button disabled={isDisabledSaveButton} type="button" className="mt-4" onClick={onSaveGeneral}>
 				Зберегти тест
 			</Button>
 		</div>

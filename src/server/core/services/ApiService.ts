@@ -35,10 +35,13 @@ export class ApiService implements IApiService {
 			body: body ? JSON.stringify(body) : undefined,
 		});
 
-		const text = await response.text();
+		let text = await response.text();
 
 		if (!response.ok) {
-			throw new Error(`Request failed with status ${response.status}: ${text}`);
+			console.log(text);
+			throw new Error(
+				text.includes("message") ? JSON.parse(text).message : `Request failed with status ${response.status}: ${JSON.parse(text)}`,
+			);
 		}
 
 		if (!text) {

@@ -1,23 +1,8 @@
-export interface GetAllTestsResponse {
-  id: string;
-  testName: string;
-  description?: string;
-  isEntryTest: boolean;
-  isPublished: boolean;
-}
-
-export interface GetPublishedResponse {
-  id: string;
-  testName: string;
-  description?: string;
-  isEntryTest: boolean;
-}
-
-//GetByIdTestResponse Start
 export interface GetByIdResponse {
   id: string;
   testName: string;
   description?: string;
+  isEntryTest: boolean;
   questions: QuestionDetailsResponse[];
   materials: LearningMaterialResponse[];
 }
@@ -31,6 +16,7 @@ export interface QuestionDetailsResponse {
 export interface AnswerDetailsResponse {
   id: string;
   answerText: string;
+  isCorrect: boolean;
 }
 
 export interface LearningMaterialResponse {
@@ -38,5 +24,3 @@ export interface LearningMaterialResponse {
   title: string;
   content: string;
 }
-
-//End

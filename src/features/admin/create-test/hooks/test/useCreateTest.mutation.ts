@@ -4,7 +4,7 @@ import { trpc } from "@/shared/utils/trpc";
 export const useCreateTestMutation = () => {
 	const n = useNotification();
 
-	const { mutateAsync: createTest } =
+	const { mutateAsync: createTest, isPending } =
 		trpc.test.create.useMutation({
 			onSuccess() {
 				n.success("Тест був успішно створений");
@@ -26,5 +26,5 @@ export const useCreateTestMutation = () => {
 			},
 		});
 
-	return { createTest };
+	return { createTest, isPending };
 };

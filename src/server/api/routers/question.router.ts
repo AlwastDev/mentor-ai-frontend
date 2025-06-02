@@ -1,27 +1,15 @@
-import { z } from "zod";
-
 import { adminProcedure, createTRPCRouter } from "../trpc";
 import { SYMBOLS } from "@/server/constants/symbols";
 import { container } from "@/server/inversify.config";
 import type { IQuestionService } from "@/server/core/services/interfaces/IQuestionService";
-import { createQuestionSchema, editQuestionSchema } from "@/server/core/schemas/QuestionService.schemas";
+import { editQuestionsSchema } from "@/server/core/schemas/QuestionService/editQuestion.schema";
 
 const questionService = container.get<IQuestionService>(SYMBOLS.IQuestionService);
 
 export const questionRouter = createTRPCRouter({
-	create: adminProcedure
-		.input(createQuestionSchema)
-		.mutation(async ({ input, ctx }) =>
-			questionService.createQuestion({ ...input }, ctx.access_token),
-		),
-
 	edit: adminProcedure
-		.input(editQuestionSchema)
+		.input(editQuestionsSchema)
 		.mutation(async ({ input, ctx }) =>
 			questionService.editQuestion({ ...input }, ctx.access_token),
 		),
-
-	delete: adminProcedure
-		.input(z.string().uuid())
-		.mutation(async ({ input, ctx }) => questionService.deleteQuestion(input, ctx.access_token)),
 });

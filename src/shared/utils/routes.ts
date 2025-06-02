@@ -3,7 +3,13 @@ export const ROUTES = {
 	SignIn: "/auth/sign-in",
 	SignUp: "/auth/sign-up",
 	Admin: {
-		Tests: "/admin/tests",
-		CreateTest: "/admin/create-test",
+		Tests: {
+			Root: "/admin/tests",
+			Create: "/admin/tests/create",
+		},
+		Subscriptions: {
+			Root: "/admin/subscriptions",
+			Create: "/admin/subscriptions/create",
+		},
 	},
 };

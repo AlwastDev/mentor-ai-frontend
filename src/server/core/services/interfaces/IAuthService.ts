@@ -1,4 +1,5 @@
-import type { LoginSchema, RegisterSchema } from "@/server/core/schemas/AuthService.schemas";
+import type { LoginSchema } from "@/server/core/schemas/AuthService/login.schema";
+import type { RegisterSchema } from "@/server/core/schemas/AuthService/register.schema";
 import type { SessionUser } from "@/shared/utils/types";
 
 export interface IAuthService {

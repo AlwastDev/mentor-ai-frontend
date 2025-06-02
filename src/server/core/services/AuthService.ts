@@ -3,7 +3,8 @@ import { inject, injectable } from "inversify";
 import { SYMBOLS } from "@/server/constants/symbols";
 import { HttpMethod, type IApiService } from "./interfaces/IApiService";
 import type { IAuthService } from "./interfaces/IAuthService";
-import type { LoginSchema, RegisterSchema } from "../schemas/AuthService.schemas";
+import type { LoginSchema } from "../schemas/AuthService/login.schema";
+import type { RegisterSchema } from "../schemas/AuthService/register.schema";
 import type { SessionUser } from "@/shared/utils/types";
 
 @injectable()

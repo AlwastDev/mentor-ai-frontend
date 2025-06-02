@@ -4,7 +4,7 @@ import { trpc } from "@/shared/utils/trpc";
 export const useEditTestMutation = () => {
 	const n = useNotification();
 
-	const { mutateAsync: editTest } =
+	const { mutateAsync: editTest, isPending } =
 		trpc.test.edit.useMutation({
 			onSuccess() {
 				n.success("Тест було успішно відредаговано");
@@ -26,5 +26,5 @@ export const useEditTestMutation = () => {
 			},
 		});
 
-	return { editTest };
+	return { editTest, isPending };
 };

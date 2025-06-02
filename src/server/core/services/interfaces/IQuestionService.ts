@@ -1,10 +1,6 @@
-import type {
-	CreateQuestionSchema,
-	EditQuestionSchema,
-} from "../../schemas/QuestionService.schemas";
+import type { EditQuestionsResponse } from "../../responses/LearningService/EditQuestionsResponse";
+import type { EditQuestionsSchema } from "../../schemas/QuestionService/editQuestion.schema";
 
 export interface IQuestionService {
-	createQuestion(input: CreateQuestionSchema, accessToken: string): Promise<void>;
-	editQuestion(input: EditQuestionSchema, accessToken: string): Promise<void>;
-	deleteQuestion(id: string, accessToken: string): Promise<void>;
+	editQuestion(input: EditQuestionsSchema, accessToken: string): Promise<EditQuestionsResponse>;
 }

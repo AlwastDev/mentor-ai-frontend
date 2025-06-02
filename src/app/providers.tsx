@@ -13,7 +13,9 @@ export default function Providers({ children, deviceType }: Props) {
 	return (
 		<DeviceTypeProvider deviceType={deviceType}>
 			<TRPCProvider>
-				<SnackbarProvider>{children}</SnackbarProvider>
+				<SnackbarProvider anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+					{children}
+				</SnackbarProvider>
 			</TRPCProvider>
 		</DeviceTypeProvider>
 	);

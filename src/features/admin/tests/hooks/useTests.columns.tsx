@@ -1,9 +1,36 @@
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 import { Button, type TableColumn } from "@/shared/components/ui";
-import { type GetAllTestsResponse } from "@/server/core/responses/TestService.responses";
+import { useDeleteTestMutation, usePublishTestMutation } from "../../hooks";
+import { ROUTES } from "@/shared/utils/routes";
+import type { GetAllTestsResponse } from "@/server/core/responses/TestService/GetAllTestsResponse";
 
-export const useTestsColumns = () => {
+type UseTestsColumnsProps = {
+	handleRefetch: () => void;
+};
+
+export const useTestsColumns = (props: UseTestsColumnsProps) => {
+	const { handleRefetch } = props;
+
+	const router = useRouter();
+	const { deleteTest } = useDeleteTestMutation();
+	const { publishTest } = usePublishTestMutation();
+
+	const handleDeleteTest = (id: string) => async () => {
+		await deleteTest(id);
+		handleRefetch();
+	};
+
+	const handleEditTest = (id: string) => () => {
+		router.push(`${ROUTES.Admin.Tests.Root}/${id}`);
+	};
+
+	const handlePublishTest = (id: string) => async () => {
+		await publishTest(id);
+		handleRefetch();
+	};
+
 	const testColumns: TableColumn<GetAllTestsResponse>[] = useMemo(
 		() => [
 			{
@@ -17,27 +44,21 @@ export const useTestsColumns = () => {
 				dataIndex: "description",
 				mobileOrder: 2,
 				isShowOnMobile: true,
-				render: (_, record) => (
-					<p className="truncate">{record.description ?? "-"}</p>
-				),
+				render: (_, record) => <p className="truncate">{record.description ?? "-"}</p>,
 			},
 			{
 				title: "Вступний тест",
 				dataIndex: "isEntryTest",
 				mobileOrder: 3,
 				isShowOnMobile: true,
-				render: (_, record) => (
-					<p className="truncate">{record.isEntryTest ? "✅" : "❌"}</p>
-				),
+				render: (_, record) => <p className="truncate">{record.isEntryTest ? "✅" : "❌"}</p>,
 			},
 			{
 				title: "Опубліковано",
 				dataIndex: "isPublished",
 				mobileOrder: 4,
 				isShowOnMobile: true,
-				render: (_, record) => (
-					<p className="truncate">{record.isPublished ? "✅" : "❌"}</p>
-				),
+				render: (_, record) => <p className="truncate">{record.isPublished ? "✅" : "❌"}</p>,
 			},
 			{
 				title: "Дії",
@@ -48,9 +69,9 @@ export const useTestsColumns = () => {
 					<>
 						{!record.isPublished && (
 							<div className="flex gap-x-2">
-								<Button>Редагувати</Button>
-								<Button>Видалити</Button>
-								<Button>Опублікувати</Button>
+								<Button onClick={handleEditTest(record.id)}>Редагувати</Button>
+								<Button onClick={handleDeleteTest(record.id)}>Видалити</Button>
+								<Button onClick={handlePublishTest(record.id)}>Опублікувати</Button>
 							</div>
 						)}
 					</>

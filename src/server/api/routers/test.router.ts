@@ -5,13 +5,14 @@ import { SYMBOLS } from "@/server/constants/symbols";
 import { container } from "@/server/inversify.config";
 import type { ITestService } from "@/server/core/services/interfaces/ITestService";
 import { paginationSchema } from "@/shared/schemas/pagination.schema";
-import { createTestSchema, editTestSchema } from "@/server/core/schemas/TestService.schemas";
+import { addTestSchema } from "@/server/core/schemas/TestService/addTest.schema";
+import { editTestSchema } from "@/server/core/schemas/TestService/editTest.schema";
 
 const testService = container.get<ITestService>(SYMBOLS.ITestService);
 
 export const testRouter = createTRPCRouter({
 	create: adminProcedure
-		.input(createTestSchema)
+		.input(addTestSchema)
 		.mutation(async ({ input, ctx }) =>
 			testService.createTest({ ...input }, ctx.access_token),
 		),

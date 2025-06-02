@@ -3,18 +3,17 @@ import { inject, injectable } from "inversify";
 import { SYMBOLS } from "@/server/constants/symbols";
 import { HttpMethod, type IApiService } from "./interfaces/IApiService";
 import { type ITestService } from "./interfaces/ITestService";
-import type {
-	GetAllTestsResponse,
-	GetByIdResponse,
-	GetPublishedResponse,
-} from "../responses/TestService.responses";
-import type { CreateTestSchema, EditTestSchema } from "../schemas/TestService.schemas";
+import type { AddTestSchema } from "../schemas/TestService/addTest.schema";
+import type { EditTestSchema } from "../schemas/TestService/editTest.schema";
+import type { GetAllTestsResponse } from "../responses/TestService/GetAllTestsResponse";
+import type { GetByIdResponse } from "../responses/TestService/GetByIdResponse";
+import type { GetPublishedResponse } from "../responses/TestService/GetPublishedResponse";
 
 @injectable()
 export class TestService implements ITestService {
 	constructor(@inject(SYMBOLS.IApiService) private apiService: IApiService) {}
 
-	async createTest(input: CreateTestSchema, accessToken: string): Promise<void> {
+	async createTest(input: AddTestSchema, accessToken: string): Promise<string> {
 		return await this.apiService.sendRequest({
 			url: "test/add",
 			method: HttpMethod.POST,
@@ -49,12 +48,9 @@ export class TestService implements ITestService {
 
 	async deleteTest(id: string, accessToken: string): Promise<void> {
 		return await this.apiService.sendRequest({
-			url: "test/delete",
+			url: `test/delete/${id}`,
 			method: HttpMethod.DELETE,
 			accessToken,
-			query: {
-				id,
-			},
 		});
 	}
 
