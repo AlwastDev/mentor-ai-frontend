@@ -6,13 +6,15 @@ import type { IQuestionService } from "./interfaces/IQuestionService";
 import type { EditQuestionsSchema } from "../schemas/QuestionService/editQuestion.schema";
 import type { EditQuestionsResponse } from "../responses/LearningService/EditQuestionsResponse";
 
+const ROUTE_NAME = "question";
+
 @injectable()
 export class QuestionService implements IQuestionService {
 	constructor(@inject(SYMBOLS.IApiService) private apiService: IApiService) {}
 
 	async editQuestion(input: EditQuestionsSchema, accessToken: string): Promise<EditQuestionsResponse> {
 		return await this.apiService.sendRequest({
-			url: "question/edit",
+			url: `${ROUTE_NAME}/edit`,
 			method: HttpMethod.PUT,
 			accessToken,
 			body: {

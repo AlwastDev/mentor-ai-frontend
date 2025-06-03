@@ -1,3 +1,4 @@
+"use client";
 import { useMemo } from "react";
 import { useSnackbar } from "notistack";
 import type { SnackbarMessage, OptionsObject, VariantType } from "notistack";

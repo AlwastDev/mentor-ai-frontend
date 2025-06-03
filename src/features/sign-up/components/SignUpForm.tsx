@@ -1,11 +1,13 @@
 "use client";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useNotification } from "@/shared/hooks";
+import { useAuth, useNotification } from "@/shared/hooks";
 import { Button, ControlledInput, Form } from "@/shared/components/ui";
-import { useSignUpMutation } from "../hooks";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const signUpInputSchema = z
 	.object({
@@ -29,31 +31,47 @@ export const signUpInputSchema = z
 type SignUpInput = z.infer<typeof signUpInputSchema>;
 
 export const SignUpForm = () => {
+	const { refetch } = useAuth();
+	const router = useRouter();
 	const n = useNotification();
 	const form = useForm<SignUpInput>({
 		resolver: zodResolver(signUpInputSchema),
 		mode: "onChange",
 	});
 
-	const { signUp } = useSignUpMutation();
-
 	const {
 		formState: { isValid },
 	} = form;
 
-	const handleSubmit = (data: SignUpInput) => {
-		if (data.password !== data.confirmPassword) {
-			n.error("Passwords do not match");
-			return;
-		}
+	const handleSubmit = useCallback(
+		async (data: SignUpInput) => {
+			if (data.password !== data.confirmPassword) {
+				n.error("Passwords do not match");
+				return;
+			}
+			
+			try {
+				const res = await fetch("/api/auth/register", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(data),
+				});
 
-		signUp({
-			email: data.email,
-			password: data.password,
-			name: data.name,
-			surname: data.surname,
-		});
-	};
+				if (!res.ok) {
+					const { message } = await res.json();
+					n.error(message || "Помилка реєстрації");
+					return;
+				}
+
+				refetch();
+				router.push(ROUTES.Home);
+			} catch (err: any) {
+				console.log(err);
+				n.error("Помилка з'єднання з сервером");
+			}
+		},
+		[form, n],
+	);
 
 	const isDisabled = !isValid;
 

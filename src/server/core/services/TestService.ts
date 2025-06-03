@@ -9,13 +9,15 @@ import type { GetAllTestsResponse } from "../responses/TestService/GetAllTestsRe
 import type { GetByIdResponse } from "../responses/TestService/GetByIdResponse";
 import type { GetPublishedResponse } from "../responses/TestService/GetPublishedResponse";
 
+const ROUTE_NAME = "test";
+
 @injectable()
 export class TestService implements ITestService {
 	constructor(@inject(SYMBOLS.IApiService) private apiService: IApiService) {}
 
 	async createTest(input: AddTestSchema, accessToken: string): Promise<string> {
 		return await this.apiService.sendRequest({
-			url: "test/add",
+			url: `${ROUTE_NAME}/add`,
 			method: HttpMethod.POST,
 			accessToken,
 			body: {
@@ -26,7 +28,7 @@ export class TestService implements ITestService {
 
 	async editTest(input: EditTestSchema, accessToken: string): Promise<void> {
 		return await this.apiService.sendRequest({
-			url: "test/edit",
+			url: `${ROUTE_NAME}/edit`,
 			method: HttpMethod.PUT,
 			accessToken,
 			body: {
@@ -37,7 +39,7 @@ export class TestService implements ITestService {
 
 	async publishTest(testId: string, accessToken: string): Promise<void> {
 		return await this.apiService.sendRequest({
-			url: "test/publish",
+			url: `${ROUTE_NAME}/publish`,
 			method: HttpMethod.POST,
 			accessToken,
 			body: {
@@ -48,7 +50,7 @@ export class TestService implements ITestService {
 
 	async deleteTest(id: string, accessToken: string): Promise<void> {
 		return await this.apiService.sendRequest({
-			url: `test/delete/${id}`,
+			url: `${ROUTE_NAME}/delete/${id}`,
 			method: HttpMethod.DELETE,
 			accessToken,
 		});
@@ -60,7 +62,7 @@ export class TestService implements ITestService {
 		limit: number,
 	): Promise<GetAllTestsResponse[]> {
 		return await this.apiService.sendRequest({
-			url: "test/get",
+			url: `${ROUTE_NAME}/get`,
 			method: HttpMethod.GET,
 			accessToken,
 			query: {
@@ -72,7 +74,7 @@ export class TestService implements ITestService {
 
 	async getById(id: string, accessToken: string): Promise<GetByIdResponse | null> {
 		return await this.apiService.sendRequest({
-			url: `test/get/${id}`,
+			url: `${ROUTE_NAME}/get/${id}`,
 			method: HttpMethod.GET,
 			accessToken,
 		});
@@ -80,7 +82,7 @@ export class TestService implements ITestService {
 
 	async getPublished(accessToken: string): Promise<GetPublishedResponse[]> {
 		return await this.apiService.sendRequest({
-			url: `get/published`,
+			url: `${ROUTE_NAME}/get/published`,
 			method: HttpMethod.GET,
 			accessToken,
 		});
@@ -88,7 +90,7 @@ export class TestService implements ITestService {
 
 	async getPublishedById(id: string, accessToken: string): Promise<GetByIdResponse | null> {
 		return await this.apiService.sendRequest({
-			url: `get/published/${id}`,
+			url: `${ROUTE_NAME}/get/published/${id}`,
 			method: HttpMethod.GET,
 			accessToken,
 		});

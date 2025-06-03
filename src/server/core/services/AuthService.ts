@@ -7,21 +7,23 @@ import type { LoginSchema } from "../schemas/AuthService/login.schema";
 import type { RegisterSchema } from "../schemas/AuthService/register.schema";
 import type { SessionUser } from "@/shared/utils/types";
 
+const ROUTE_NAME = "auth";
+
 @injectable()
 export class AuthService implements IAuthService {
 	constructor(@inject(SYMBOLS.IApiService) private apiService: IApiService) {}
 
 	async me(accessToken: string): Promise<SessionUser> {
 		return await this.apiService.sendRequest({
-			url: "auth/me",
+			url: `${ROUTE_NAME}/me`,
 			method: HttpMethod.GET,
 			accessToken,
 		});
 	}
 
-	async login(input: LoginSchema): Promise<void> {
+	async login(input: LoginSchema): Promise<{ accessToken: string; refreshToken: string }> {
 		return await this.apiService.sendRequest({
-			url: "auth/login",
+			url: `${ROUTE_NAME}/login`,
 			method: HttpMethod.POST,
 			body: {
 				...input,
@@ -29,9 +31,9 @@ export class AuthService implements IAuthService {
 		});
 	}
 
-	async register(input: RegisterSchema): Promise<void> {
+	async register(input: RegisterSchema): Promise<{ accessToken: string; refreshToken: string }> {
 		return await this.apiService.sendRequest({
-			url: "auth/register",
+			url: `${ROUTE_NAME}/register`,
 			method: HttpMethod.POST,
 			body: {
 				...input,
@@ -41,7 +43,7 @@ export class AuthService implements IAuthService {
 
 	async refreshToken(token: string): Promise<{ accessToken: string }> {
 		return await this.apiService.sendRequest({
-			url: "auth/refresh",
+			url: `${ROUTE_NAME}/refresh`,
 			method: HttpMethod.POST,
 			body: {
 				token,
@@ -51,7 +53,7 @@ export class AuthService implements IAuthService {
 
 	async logout(accessToken: string): Promise<void> {
 		return await this.apiService.sendRequest({
-			url: "auth/logout",
+			url: `${ROUTE_NAME}/logout`,
 			method: HttpMethod.POST,
 			accessToken,
 		});

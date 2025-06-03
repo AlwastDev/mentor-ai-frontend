@@ -4,6 +4,7 @@ import { jwtVerify } from "jose";
 
 import { UserRole } from "@/shared/utils/enums";
 import { env } from "./env.mjs";
+import { ROUTES } from "./shared/utils/routes";
 
 export const config = {
 	matcher: ["/admin", "/admin/:path*"],
@@ -25,14 +26,14 @@ export async function middleware(request: NextRequest) {
 
 		if (request.nextUrl.pathname.startsWith("/admin")) {
 			if (role !== UserRole.ADMIN) {
-				return NextResponse.redirect(new URL("/", request.url));
+				return NextResponse.redirect(new URL(ROUTES.Home, request.url));
 			}
 		}
 
 		return NextResponse.next();
 	} catch (err) {
 		console.error("Invalid JWT:", err);
-		return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+		return NextResponse.redirect(new URL(ROUTES.SignIn, request.url));
 	}
 }
 

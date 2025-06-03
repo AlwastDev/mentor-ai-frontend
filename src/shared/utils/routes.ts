@@ -10,6 +10,7 @@ export const ROUTES = {
 		Subscriptions: {
 			Root: "/admin/subscriptions",
 			Create: "/admin/subscriptions/create",
+			Edit: (id: string) => `/admin/subscriptions/edit/${id}`,
 		},
 	},
 };

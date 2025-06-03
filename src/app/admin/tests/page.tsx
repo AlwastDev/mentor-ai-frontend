@@ -1,8 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useGetAllTestsQuery } from "@/features/admin/hooks";
-import { useTestsColumns } from "@/features/admin/tests/hooks";
+import { useGetAllTestsQuery, useTestsColumns } from "@/features/admin/tests/hooks";
 import { Button, Table } from "@/shared/components/ui";
 import { ROUTES } from "@/shared/utils/routes";
 import { usePaginationQueryParams } from "@/shared/hooks";

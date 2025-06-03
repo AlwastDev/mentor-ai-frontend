@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button, type TableColumn } from "@/shared/components/ui";
-import { useDeleteTestMutation, usePublishTestMutation } from "../../hooks";
+import { useDeleteTestMutation, usePublishTestMutation } from "../hooks";
 import { ROUTES } from "@/shared/utils/routes";
 import type { GetAllTestsResponse } from "@/server/core/responses/TestService/GetAllTestsResponse";
 

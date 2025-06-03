@@ -18,6 +18,10 @@ export const Header = memo(() => {
 	if (isAdmin) {
 		return (
 			<header className="h-[70px] flex px-3 items-center gap-x-2 justify-end border-b-2 border-[#E5E5E5]">
+				<Link href={ROUTES.Admin.Subscriptions.Root}>
+					<Button>Підписки</Button>
+				</Link>
+
 				<Link href={ROUTES.Admin.Tests.Root}>
 					<Button>Тести</Button>
 				</Link>

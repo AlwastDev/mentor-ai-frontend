@@ -1,14 +1,17 @@
 "use client";
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signInInputSchema, type SignInInput } from "../schemas/signIn.schema";
-import { useNotification } from "@/shared/hooks";
+import { useAuth, useNotification } from "@/shared/hooks";
 import { Button, ControlledInput, Form } from "@/shared/components/ui";
-import { useSignInMutation } from "../hooks";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const SignInForm = () => {
+	const { refetch } = useAuth();
+	const router = useRouter();
 	const n = useNotification();
 	const form = useForm<SignInInput>({
 		resolver: zodResolver(signInInputSchema),
@@ -18,14 +21,27 @@ export const SignInForm = () => {
 		formState: { isValid },
 	} = form;
 
-	const { signIn } = useSignInMutation();
-
 	const handleSubmit = useCallback(
-		(data: SignInInput) => {
-			signIn({
-				email: data.email,
-				password: data.password,
-			});
+		async (data: SignInInput) => {
+			try {
+				const res = await fetch("/api/auth/login", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(data),
+				});
+
+				if (!res.ok) {
+					const { message } = await res.json();
+					n.error(message || "Помилка авторизації");
+					return;
+				}
+
+				refetch();
+				router.push(ROUTES.Home);
+			} catch (err: any) {
+				console.log(err);
+				n.error("Помилка з'єднання з сервером");
+			}
 		},
 		[form, n],
 	);
