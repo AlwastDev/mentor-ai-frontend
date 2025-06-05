@@ -2,6 +2,11 @@ export const ROUTES = {
 	Home: "/",
 	SignIn: "/auth/sign-in",
 	SignUp: "/auth/sign-up",
+	Learning: {
+		Roadmap: "/learning/roadmap",
+		Learning: (testId: string) => `/learning/${testId}`,
+		TestAttempt: (testAttemptId: string) => `/learning/test/${testAttemptId}`,
+	},
 	Admin: {
 		Tests: {
 			Root: "/admin/tests",

@@ -1,14 +1,15 @@
 "use client";
 import { memo, Suspense } from "react";
+import dynamic from "next/dynamic";
 
 import { useModalStore } from "@/shared/store";
 
 const modalComponents = {
-	// SelectTokenModal: dynamic(() =>
-	// 	import("@/features/swap/modals/SelectTokenModal").then((mod) => ({
-	// 		default: mod.SelectTokenModal,
-	// 	}))
-	// ),
+	RewardModal: dynamic(() =>
+		import("@/features/learning-test/modals/RewardModal").then((mod) => ({
+			default: mod.default,
+		}))
+	),
 };
 
 export const ModalRoot = memo(() => {

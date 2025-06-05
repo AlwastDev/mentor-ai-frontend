@@ -6,4 +6,6 @@ export const SYMBOLS = {
 	ILearningMaterialService: Symbol.for("ILearningMaterialService"),
 	ISubscriptionService: Symbol.for("ISubscriptionService"),
 	IStudentSubscriptionService: Symbol.for("IStudentSubscriptionService"),
+	IRoadmapService: Symbol.for("IRoadmapService"),
+	ITestAttemptService: Symbol.for("ITestAttemptService"),
 };

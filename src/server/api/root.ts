@@ -2,9 +2,11 @@ import { createTRPCRouter } from "./trpc";
 import {
 	learningMaterialRouter,
 	questionRouter,
+	roadmapRouter,
 	studentSubscriptionRouter,
 	subscriptionRouter,
 	testRouter,
+	testAttemptRouter,
 } from "./routers";
 
 export const appRouter = createTRPCRouter({
@@ -13,6 +15,8 @@ export const appRouter = createTRPCRouter({
 	learningMaterial: learningMaterialRouter,
 	subscription: subscriptionRouter,
 	studentSubscription: studentSubscriptionRouter,
+	roadmap: roadmapRouter,
+	testAttempt: testAttemptRouter,
 });
 
 export type AppRouter = typeof appRouter;

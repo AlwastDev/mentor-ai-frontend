@@ -16,6 +16,10 @@ import type { ISubscriptionService } from "./core/services/interfaces/ISubscript
 import { SubscriptionService } from "./core/services/SubscriptionService";
 import type { IStudentSubscriptionService } from "./core/services/interfaces/IStudentSubscriptionService";
 import { StudentSubscriptionService } from "./core/services/StudentSubscriptionService";
+import type { IRoadmapService } from "./core/services/interfaces/IRoadmapService";
+import { RoadmapService } from "./core/services/RoadmapService";
+import type { ITestAttemptService } from "./core/services/interfaces/ITestAttemptService";
+import { TestAttemptService } from "./core/services/TestAttemptService";
 
 const container = new Container();
 
@@ -26,5 +30,7 @@ container.bind<IQuestionService>(SYMBOLS.IQuestionService).to(QuestionService);
 container.bind<ILearningMaterialService>(SYMBOLS.ILearningMaterialService).to(LearningMaterialService);
 container.bind<ISubscriptionService>(SYMBOLS.ISubscriptionService).to(SubscriptionService);
 container.bind<IStudentSubscriptionService>(SYMBOLS.IStudentSubscriptionService).to(StudentSubscriptionService);
+container.bind<IRoadmapService>(SYMBOLS.IRoadmapService).to(RoadmapService);
+container.bind<ITestAttemptService>(SYMBOLS.ITestAttemptService).to(TestAttemptService);
 
 export { container };

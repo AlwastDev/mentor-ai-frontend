@@ -1,4 +1,6 @@
-import { adminProcedure, createTRPCRouter } from "../trpc";
+import { z } from "zod";
+
+import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { SYMBOLS } from "@/server/constants/symbols";
 import { container } from "@/server/inversify.config";
 import type { ILearningMaterialService } from "@/server/core/services/interfaces/ILearningMaterialService";
@@ -9,6 +11,12 @@ const learningMaterialService = container.get<ILearningMaterialService>(
 );
 
 export const learningMaterialRouter = createTRPCRouter({
+	getPublishedByTestId: protectedProcedure
+		.input(z.string().uuid())
+		.query(async ({ input, ctx }) =>
+			learningMaterialService.getPublishedByTestId(input, ctx.access_token!),
+	),
+
 	edit: adminProcedure
 		.input(editLearningMaterialsSchema)
 		.mutation(async ({ input, ctx }) =>
