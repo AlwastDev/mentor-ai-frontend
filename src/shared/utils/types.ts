@@ -6,4 +6,6 @@ export interface SessionUser {
 	name: string;
 	surname: string;
 	role: UserRole;
+	coins: number;
+	experience: number;
 }

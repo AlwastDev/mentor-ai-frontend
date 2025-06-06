@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
 import { cn } from "@/shared/utils/helpers";
@@ -11,6 +11,7 @@ import { useEditTestMutation, useGetByIdTestQuery } from "@/features/admin/creat
 import { Form } from "@/shared/components/ui";
 import type { GetByIdResponse } from "@/server/core/responses/TestService/GetByIdResponse";
 import { useNotification } from "@/shared/hooks";
+import { Loader } from "@/shared/components/ui/Loader";
 
 export default function EditTestPage() {
 	const n = useNotification();
@@ -51,8 +52,8 @@ export default function EditTestPage() {
 		});
 	};
 
-	if (!test && !isLoading) return <div>Test not found</div>;
-	if (isLoading) return <div>Loading...</div>;
+	if (!test && !isLoading) return notFound();
+	if (isLoading) return <Loader />;
 
 	return (
 		<Form form={form} className="max-w-4xl mx-auto p-6 space-y-6">

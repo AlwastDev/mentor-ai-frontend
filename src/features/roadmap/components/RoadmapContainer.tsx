@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 
 import { useGetRoadmapQuery } from "../hooks";
 import { RoadmapNode } from "./RoadmapNode";
+import { Loader } from "@/shared/components/ui/Loader";
 
 export const RoadmapContainer = () => {
 	const { roadmapItems, isLoading } = useGetRoadmapQuery();
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loader />;
 	}
 
 	const currentIndex = roadmapItems.findIndex((x) => !x.completedDate);

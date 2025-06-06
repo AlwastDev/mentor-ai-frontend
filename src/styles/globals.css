@@ -9,6 +9,10 @@
 		--font-inter: "Inter", sans-serif;
 	}
 
+	html {
+		scrollbar-gutter: stable;
+	}
+
 	html,
 	body,
 	#__next {

@@ -25,8 +25,8 @@ export const useAuth = () => {
 	} = useQuery<SessionUser>({
 		queryKey: ["auth.me"],
 		queryFn: fetchMe,
-		staleTime: 1000 * 60 * 5,
 		retry: 1,
+		staleTime: 1000 * 60 * 5,
 		refetchOnWindowFocus: false,
 	});
 
@@ -46,15 +46,17 @@ export const useAuth = () => {
 	const userId = session?.id ?? "";
 	const role = session?.role ?? UserRole.STUDENT;
 
-	const isUser = role === UserRole.STUDENT;
+	const isStudent = role === UserRole.STUDENT;
 	const isAdmin = role === UserRole.ADMIN;
 	const isAuthed = !!session;
+	const isChecking = isLoading && session === undefined;
 
 	return {
 		session,
 		role,
 		userId,
-		isUser,
+		isChecking,
+		isStudent,
 		isAdmin,
 		isAuthed,
 		status: isLoading ? "loading" : isAuthed ? "authenticated" : "unauthenticated",

@@ -8,10 +8,10 @@ import { ROUTES } from "@/shared/utils/routes";
 import { useAuth } from "@/shared/hooks";
 
 export default function SubscriptionsPage() {
-	const { isAdmin } = useAuth();
+	const { isAdmin, isChecking } = useAuth();
 	const { subscriptions, isLoading } = useGetSubscriptionsQuery();
 
-	if (isLoading) {
+	if (isLoading || isChecking) {
 		return (
 			<div className="flex h-64 items-center justify-center">
 				<span className="animate-pulse text-lg">Завантаження…</span>

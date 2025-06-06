@@ -19,7 +19,7 @@
 					defaultOptions: {
 						queries: {
 							refetchOnWindowFocus: false,
-							retry: 2,
+							retry: false,
 							staleTime: Infinity,
 						},
 					},

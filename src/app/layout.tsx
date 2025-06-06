@@ -35,7 +35,7 @@ export default async function RootLayout({
 				<Providers deviceType={deviceType}>
 					<ModalRoot />
 					<Header />
-					<main>{children}</main>
+					<main className="mt-[70px]">{children}</main>
 				</Providers>
 			</body>
 		</html>

@@ -4,11 +4,19 @@ import { notFound } from "next/navigation";
 
 import { TestRunner } from "@/features/learning-test/components";
 import { useGetTestAttemptByIdQuery } from "@/features/learning-test/hooks";
+import { useValidateUuid } from "@/shared/hooks";
+import { Loader } from "@/shared/components/ui/Loader";
 
 type Props = { params: Promise<{ testAttemptId: string }> };
 
 export default function TestAttemptPage({ params }: Props) {
 	const { testAttemptId } = use(params);
+
+	const isValid = useValidateUuid(testAttemptId)
+
+	if (!isValid) {
+		notFound();
+	}
 
 	const { testAttempt, isLoading } = useGetTestAttemptByIdQuery(testAttemptId);
 
@@ -17,7 +25,7 @@ export default function TestAttemptPage({ params }: Props) {
 	}
 
 	if (isLoading || !testAttempt) {
-		return <div>Loading...</div>;
+		return <Loader />;
 	}
 
 	return (

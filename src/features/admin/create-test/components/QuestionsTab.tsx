@@ -37,19 +37,6 @@ export const QuestionsTab = ({ testId }: QuestionsTabProps) => {
 
 		const formValues = getValues();
 
-		console.log({
-			testId,
-			questions: formValues.questions.map((q) => ({
-				questionId: q.id === "" ? undefined : q.id,
-				questionText: q.questionText,
-				answers: q.answers.map((a) => ({
-					answerId: a.id === "" ? undefined : a.id,
-					answerText: a.answerText,
-					isCorrect: a.isCorrect,
-				})),
-			})),
-		})
-
 		const updated = await editQuestion({
 			testId,
 			questions: formValues.questions.map((q) => ({

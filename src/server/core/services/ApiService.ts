@@ -2,6 +2,8 @@ import { injectable } from "inversify";
 
 import type { IApiService, SendRequestOptions } from "./interfaces/IApiService";
 import { env } from "@/env.mjs";
+import { TRPCError } from "@trpc/server";
+import { type TRPC_ERROR_CODE_KEY } from "@trpc/server/unstable-core-do-not-import";
 
 @injectable()
 export class ApiService implements IApiService {
@@ -38,9 +40,13 @@ export class ApiService implements IApiService {
 		let text = await response.text();
 
 		if (!response.ok) {
-			console.log(text);
-			throw new Error(
-				text.includes("message") ? JSON.parse(text).message : `Request failed with status ${response.status}: ${JSON.parse(text)}`,
+			const trpcCodeMessage = this.transformStatusTextToTrpcCode(response.status);
+
+			throw new TRPCError(
+				{
+					code: trpcCodeMessage,
+					message: text.includes("message") ? JSON.parse(text).message : `Request failed with status ${response.status}: ${JSON.parse(text)}`,
+				},
 			);
 		}
 
@@ -78,5 +84,31 @@ export class ApiService implements IApiService {
 			return "";
 		}
 		return `?${new URLSearchParams(params).toString()}`;
+	}
+
+	private transformStatusTextToTrpcCode(statusCode: number): TRPC_ERROR_CODE_KEY {
+		switch (statusCode) {
+			case 400:
+				return "BAD_REQUEST";
+			case 401:
+				return "UNAUTHORIZED";
+			case 403:
+				return "FORBIDDEN";
+			case 404:
+				return "NOT_FOUND";
+			case 409:
+				return "CONFLICT";
+			case 422:
+				return "UNPROCESSABLE_CONTENT";
+			case 429:
+				return "TOO_MANY_REQUESTS";
+			case 500:
+			case 502:
+			case 503:
+			case 504:
+				return "INTERNAL_SERVER_ERROR";
+			default:
+				return "INTERNAL_SERVER_ERROR";
+		}
 	}
 }

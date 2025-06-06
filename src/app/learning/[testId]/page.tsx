@@ -4,11 +4,19 @@ import { notFound } from "next/navigation";
 
 import { StartTestButton } from "@/features/material/components";
 import { useGetPublishedByTestIdQuery } from "@/features/material/hooks";
+import { useValidateUuid } from "@/shared/hooks";
+import { Loader } from "@/shared/components/ui/Loader";
 
 type Props = { params: Promise<{ testId: string }> };
 
 export default function MaterialPage({ params }: Props) {
 	const { testId } = use(params);
+
+	const isValid = useValidateUuid(testId)
+
+	if (!isValid) {
+		notFound();
+	}
 
 	const { materials, isLoading } = useGetPublishedByTestIdQuery(testId);
 
@@ -17,7 +25,7 @@ export default function MaterialPage({ params }: Props) {
 	}
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <Loader />;
 	}
 
 	return (
