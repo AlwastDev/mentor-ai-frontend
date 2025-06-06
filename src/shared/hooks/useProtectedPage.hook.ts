@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { type UserRole } from "@/shared/utils/enums";
 import { ROUTES } from "../utils/routes";
 import { type SessionUser } from "../utils/types";
+import { useAuth } from "./useAuth.hook";
 
 const fetchMe = async () => {
 	const res = await fetch(`/api/auth/me`);
@@ -19,9 +20,15 @@ type ProtectedPageOptions = {
 export const useProtectedPage = (options?: ProtectedPageOptions) => {
 	const { requiredRole } = options || {};
 
+	const { isAuthed, isChecking } = useAuth();
+
 	const [isAllowed, setIsAllowed] = useState(false);
 
 	useEffect(() => {
+		if (isChecking || !isAuthed) {
+			return;
+		}
+
 		(async () => {
 			try {
 				const user = (await fetchMe()) as SessionUser;

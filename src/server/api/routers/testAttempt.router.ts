@@ -12,11 +12,17 @@ const testAttemptService = container.get<ITestAttemptService>(SYMBOLS.ITestAttem
 export const testAttemptRouter = createTRPCRouter({
 	getById: protectedProcedure
 		.input(z.object({ id: z.string().uuid() }))
-		.query(async ({ input, ctx }) => testAttemptService.getTestAttemptById(input.id, ctx.access_token!)),
+		.query(async ({ input, ctx }) =>
+			testAttemptService.getTestAttemptById(input.id, ctx.access_token!),
+		),
 
 	start: protectedProcedure
 		.input(startTestAttemptSchema)
 		.mutation(async ({ input, ctx }) => testAttemptService.start({ ...input }, ctx.access_token!)),
+
+	startEntry: protectedProcedure.mutation(async ({ ctx }) =>
+		testAttemptService.startEntry(ctx.access_token!),
+	),
 
 	complete: protectedProcedure
 		.input(completeTestAttemptSchema)

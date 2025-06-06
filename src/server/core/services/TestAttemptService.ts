@@ -31,6 +31,14 @@ export class TestAttemptService implements ITestAttemptService {
 		});
 	}
 
+  async startEntry(accessToken: string): Promise<string> {
+    return await this.apiService.sendRequest({
+      url: `${ROUTE_NAME}/start-entry`,
+      method: HttpMethod.POST,
+      accessToken,
+    });
+  }
+
   async complete(input: CompleteTestAttemptSchema, accessToken: string): Promise<CompleteTestAttemptResponse> {
     return await this.apiService.sendRequest({
       url: `${ROUTE_NAME}/complete`,

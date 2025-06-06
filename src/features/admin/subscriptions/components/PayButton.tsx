@@ -1,9 +1,11 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import Script from "next/script";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/shared/components/ui";
 import { HttpMethod } from "@/server/core/services/interfaces/IApiService";
 import { useAuth } from "@/shared/hooks";
+import { ROUTES } from "@/shared/utils/routes";
 
 type PayButtonProps = {
 	plan: {
@@ -18,10 +20,12 @@ const API_URL = "/api/payments/liqpay/create";
 export const PayButton = memo((props: PayButtonProps) => {
 	const { plan } = props;
 
+	const router = useRouter();
 	const { userId } = useAuth();
 
-	const handlePay = async () => {
+	const handlePay = useCallback(async () => {
 		if (!userId) {
+			router.push(ROUTES.SignIn);
 			return;
 		}
 
@@ -41,7 +45,7 @@ export const PayButton = memo((props: PayButtonProps) => {
 		})
 			.on("liqpay.callback", (d: any) => console.log("status:", d.status))
 			.on("liqpay.close", () => console.log("close"));
-	};
+	}, [userId, plan]);
 
 	return (
 		<>

@@ -8,7 +8,8 @@ import { ROUTES } from "../utils/routes";
 import { type SessionUser } from "../utils/types";
 
 const fetchMe = async () => {
-	const res = await fetch(`/api/auth/me`);
+	const res = await fetch("/api/auth/me");
+	if (res.status === 401) return null;
 	if (!res.ok) throw new Error("Unauthorized");
 	return res.json();
 };

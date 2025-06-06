@@ -2,7 +2,6 @@ export interface GetByIdResponse {
   id: string;
   testName: string;
   description?: string;
-  isEntryTest: boolean;
   questions: QuestionDetailsResponse[];
   materials: LearningMaterialResponse[];
 }

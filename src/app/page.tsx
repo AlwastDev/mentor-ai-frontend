@@ -1,23 +1,34 @@
 "use client";
 
-import Link from "next/link";
 import { BarChart3, BrainCircuit, UsersRound } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { useCallback } from "react";
 
 import { Button, Icon } from "@/shared/components/ui";
-import { FeatureCard } from "@/features/home/components";
+import { FeatureCard, PlansSection } from "@/features/home/components";
 import { useAuth } from "@/shared/hooks";
 import { ROUTES } from "@/shared/utils/routes";
 import { Loader } from "@/shared/components/ui/Loader";
+import { useStartEntryTestAttemptMutation } from "@/features/home/hooks";
 
 export default function HomePage() {
+	const router = useRouter();
 	const { isAuthed, isChecking } = useAuth();
+	const { startEntryTestAttempt, isPending } = useStartEntryTestAttemptMutation();
+
+	const handleStartTest = useCallback(() => {
+		if (!isAuthed || isChecking) {
+			router.push(ROUTES.SignIn);
+			return;
+		}
+
+		startEntryTestAttempt();
+	}, [startEntryTestAttempt, isAuthed, isChecking]);
 
 	if (isChecking) {
 		return <Loader />;
 	}
-
-	const entryTestLink = isAuthed ? ROUTES.Learning.EntryTest : ROUTES.SignIn;
 
 	return (
 		<div className="min-h-screen overflow-x-hidden">
@@ -40,9 +51,13 @@ export default function HomePage() {
 						одному місці.
 					</p>
 					<div className="flex flex-col items-center gap-4 sm:flex-row">
-						<Link href={entryTestLink} className="inline-flex items-center justify-center">
-							<Button>Почати вступний тест</Button>
-						</Link>
+						<Button
+							disabled={isPending}
+							onClick={handleStartTest}
+							className="inline-flex items-center justify-center"
+						>
+							Почати вступний тест
+						</Button>
 					</div>
 				</motion.div>
 
@@ -98,10 +113,18 @@ export default function HomePage() {
 					<p className="mb-8 text-lg opacity-90">
 						Визначимо твій поточний рівень і одразу сформуємо індивідуальний Roadmap.
 					</p>
-					<Link href={entryTestLink} className="inline-flex items-center justify-center">
-						<Button color="white">Почати тест</Button>
-					</Link>
+					<Button
+						disabled={isPending}
+						onClick={handleStartTest}
+						className="inline-flex items-center justify-center"
+					>
+						Почати тест
+					</Button>
 				</motion.div>
+			</section>
+
+			<section className="bg-zinc-50 dark:bg-zinc-900 px-6 pb-28 pt-32">
+				<PlansSection />
 			</section>
 		</div>
 	);

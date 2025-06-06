@@ -4,7 +4,6 @@ export const ROUTES = {
 	SignUp: "/auth/sign-up",
 	Profile: "/profile",
 	Learning: {
-		EntryTest: "/learning/entry-test",
 		Roadmap: "/learning/roadmap",
 		Learning: (testId: string) => `/learning/${testId}`,
 		TestAttempt: (testAttemptId: string) => `/learning/test/${testAttemptId}`,

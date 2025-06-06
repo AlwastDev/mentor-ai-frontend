@@ -25,7 +25,6 @@ export default function CreateTestPage() {
 		defaultValues: {
 			testName: "",
 			description: "",
-			isEntryTest: false,
 			questions: [{ questionText: "", answers: [{ answerText: "", isCorrect: false }] }],
 			materials: [{ title: "" }],
 		},
@@ -37,7 +36,6 @@ export default function CreateTestPage() {
 		const testId = await createTest({
 			testName: watch("testName"),
 			description: watch("description"),
-			isEntryTest: watch("isEntryTest"),
 		})
 
 		if (!testId) {

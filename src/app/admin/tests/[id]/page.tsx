@@ -29,7 +29,6 @@ export default function EditTestPage() {
 				id: test.id,
 				testName: test.testName ?? "",
 				description: test.description ?? "",
-				isEntryTest: test.isEntryTest ?? false,
 				questions:
 					test.questions.length > 0
 						? test.questions
@@ -46,7 +45,6 @@ export default function EditTestPage() {
 			testId: test.id,
 			testName: watch("testName"),
 			description: watch("description"),
-			isEntryTest: watch("isEntryTest"),
 		}).then(() => {
 			n.success("Тест було успішно відредаговано");
 		});

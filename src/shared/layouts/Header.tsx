@@ -23,10 +23,6 @@ export const Header = memo(() => {
 	const pathname = usePathname();
 	const { session, isAdmin, isChecking, logout } = useAuth();
 
-	if (isChecking) {
-		return null;
-	}
-
 	const isSignInPage = pathname === ROUTES.SignIn;
 	const authLink = isSignInPage ? ROUTES.SignUp : ROUTES.SignIn;
 
@@ -67,6 +63,10 @@ export const Header = memo(() => {
 			<Button onClick={logout}>Вийти</Button>
 		</div>
 	);
+
+	if (isChecking) {
+		return null;
+	}
 
 	return (
 		<header className="fixed inset-x-0 top-0 z-50 h-[70px] border-b border-white/20 bg-white/80 backdrop-blur dark:bg-zinc-900/80">
