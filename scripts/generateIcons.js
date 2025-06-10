@@ -6,7 +6,9 @@ const iconsDir = path.resolve(__dirname, "../src/assets/icons");
 const outputFile = path.resolve(__dirname, "../src/assets/icons/index.ts");
 
 function generateIconsFile() {
-	const files = fs.readdirSync(iconsDir).filter((file) => file.endsWith(".svg"));
+	const files = fs
+		.readdirSync(iconsDir)
+		.filter((file) => file.endsWith(".svg"));
 	const imports = [];
 	const exports = [];
 

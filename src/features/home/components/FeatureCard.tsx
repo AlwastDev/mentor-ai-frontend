@@ -8,7 +8,7 @@ type FeatureCardProps = {
 
 export function FeatureCard(props: FeatureCardProps) {
 	const { Icon, title, desc } = props;
-  
+
 	return (
 		<motion.article
 			initial={{ opacity: 0, y: 20 }}

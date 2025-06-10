@@ -19,6 +19,7 @@ export const usePaginationQueryParams = () => {
 
 			router.replace(`${pathname}?${new URLSearchParams(query).toString()}`);
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[router],
 	);
 
@@ -29,6 +30,7 @@ export const usePaginationQueryParams = () => {
 
 	useEffect(() => {
 		updateQueryParams(page);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [page]);
 
 	return {

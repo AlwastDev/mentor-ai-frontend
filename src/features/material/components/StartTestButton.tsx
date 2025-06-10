@@ -1,6 +1,5 @@
 "use client";
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/shared/components/ui";
 import { useAuth } from "@/shared/hooks";
@@ -14,7 +13,6 @@ export const StartTestButton = (props: StartTestButtonProps) => {
 	const { testId } = props;
 
 	const { userId } = useAuth();
-	const router = useRouter();
 
 	const { startTestAttempt, isPending } = useStartTestAttemptMutation();
 
@@ -23,11 +21,15 @@ export const StartTestButton = (props: StartTestButtonProps) => {
 			studentId: userId,
 			testId: testId,
 		});
-	}, [testId, router, startTestAttempt, userId]);
+	}, [testId, startTestAttempt, userId]);
 
 	return (
 		<>
-			<Button disabled={isPending} className="mx-auto" onClick={handleStartTest}>
+			<Button
+				disabled={isPending}
+				className="mx-auto"
+				onClick={handleStartTest}
+			>
 				Почати тест
 			</Button>
 		</>

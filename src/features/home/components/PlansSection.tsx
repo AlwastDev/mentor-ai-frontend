@@ -31,7 +31,9 @@ export const PlansSection = () => {
 						key={plan.id}
 						className="flex flex-col rounded-2xl bg-white p-8 shadow-lg dark:bg-zinc-800"
 					>
-						<h3 className="mb-4 text-xl font-semibold dark:text-white">{plan.planName}</h3>
+						<h3 className="mb-4 text-xl font-semibold dark:text-white">
+							{plan.planName}
+						</h3>
 
 						<p className="mb-6 text-3xl font-bold">
 							{plan.price.toLocaleString("uk-UA", {
@@ -43,7 +45,7 @@ export const PlansSection = () => {
 							</span>
 						</p>
 
-						<ul className="space-y-2 text-sm text-zinc-700 dark:text-zinc-300 flex-1">
+						<ul className="flex-1 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
 							<Feature
 								active={plan.accessToCharts}
 								icon={<BarChart3 className="h-4 w-4" />}

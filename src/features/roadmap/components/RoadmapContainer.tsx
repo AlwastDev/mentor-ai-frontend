@@ -19,8 +19,8 @@ export const RoadmapContainer = () => {
 		return (
 			<div className="flex flex-col items-center gap-6 py-20 text-center">
 				<p className="max-w-md text-lg text-zinc-600 dark:text-zinc-300">
-					Дорожню карту ще не створено. Натисніть кнопку нижче, і ми згенеруємо персональний план
-					навчання.
+					Дорожню карту ще не створено. Натисніть кнопку нижче, і ми згенеруємо
+					персональний план навчання.
 				</p>
 
 				<motion.button
@@ -55,14 +55,17 @@ export const RoadmapContainer = () => {
 
 					return (
 						<li key={node.id} className="relative flex justify-center">
-							<RoadmapNode state={isDone ? "done" : isLocked ? "locked" : "current"} {...node} />
+							<RoadmapNode
+								state={isDone ? "done" : isLocked ? "locked" : "current"}
+								{...node}
+							/>
 
 							{idx < roadmapItems.length - 1 && (
 								<motion.div
 									initial={{ scaleY: 0 }}
 									animate={{ scaleY: 1 }}
 									transition={{ duration: 0.4, delay: idx * 0.05 }}
-									className="absolute left-1/2 top-full h-14 w-px -translate-x-1/2 origin-top bg-slate-300 dark:bg-slate-600"
+									className="absolute left-1/2 top-full h-14 w-px origin-top -translate-x-1/2 bg-slate-300 dark:bg-slate-600"
 								/>
 							)}
 						</li>

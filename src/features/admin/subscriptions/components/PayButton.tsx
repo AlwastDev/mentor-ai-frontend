@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/shared/components/ui";
 import { HttpMethod } from "@/server/core/services/interfaces/IApiService";
-import { useAuth } from "@/shared/hooks";
+import { useAuth, useNotification } from "@/shared/hooks";
 import { ROUTES } from "@/shared/utils/routes";
 
 type PayButtonProps = {
@@ -21,11 +21,17 @@ export const PayButton = memo((props: PayButtonProps) => {
 	const { plan } = props;
 
 	const router = useRouter();
-	const { userId } = useAuth();
+	const n = useNotification();
+	const { userId, isAdmin } = useAuth();
 
 	const handlePay = useCallback(async () => {
 		if (!userId) {
 			router.push(ROUTES.SignIn);
+			return;
+		}
+
+		if (isAdmin) {
+			n.error("Адміністратор не може оплачувати підписку");
 			return;
 		}
 
@@ -45,11 +51,14 @@ export const PayButton = memo((props: PayButtonProps) => {
 		})
 			.on("liqpay.callback", (d: any) => console.log("status:", d.status))
 			.on("liqpay.close", () => console.log("close"));
-	}, [userId, plan]);
+	}, [userId, isAdmin, plan, router, n]);
 
 	return (
 		<>
-			<Script src="https://static.liqpay.ua/libjs/checkout.js" strategy="afterInteractive" />
+			<Script
+				src="https://static.liqpay.ua/libjs/checkout.js"
+				strategy="afterInteractive"
+			/>
 			<Button className="w-full" onClick={handlePay}>
 				Оформити
 			</Button>

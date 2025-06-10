@@ -1,7 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useGetAllTestsQuery, useTestsColumns } from "@/features/admin/tests/hooks";
+import {
+	useGetAllTestsQuery,
+	useTestsColumns,
+} from "@/features/admin/tests/hooks";
 import { Button, Table } from "@/shared/components/ui";
 import { ROUTES } from "@/shared/utils/routes";
 import { usePaginationQueryParams } from "@/shared/hooks";
@@ -11,13 +14,8 @@ export default function TestsPage() {
 	const router = useRouter();
 
 	const { page, handlePageChange } = usePaginationQueryParams();
-	const { tests, isLoading, refetch } = useGetAllTestsQuery(page);
-
-	const handleRefetch = () => {
-		refetch();
-	};
-
-	const { columns } = useTestsColumns({ handleRefetch });
+	const { tests, total, isLoading } = useGetAllTestsQuery(page);
+	const { columns } = useTestsColumns();
 
 	if (isLoading || !tests) {
 		return <Loader />;
@@ -25,12 +23,19 @@ export default function TestsPage() {
 
 	return (
 		<div className="p-4">
-			<div className="flex justify-between items-center my-4">
+			<div className="my-4 flex items-center justify-between">
 				<h1 className="text-2xl font-bold">Тести</h1>
-				<Button onClick={() => router.push(ROUTES.Admin.Tests.Create)}>Створити тест</Button>
+				<Button onClick={() => router.push(ROUTES.Admin.Tests.Create)}>
+					Створити тест
+				</Button>
 			</div>
 
-			<Table data={tests} columns={columns} count={tests.length} onChangePage={handlePageChange} />
+			<Table
+				data={tests}
+				columns={columns}
+				count={total}
+				onChangePage={handlePageChange}
+			/>
 		</div>
 	);
 }

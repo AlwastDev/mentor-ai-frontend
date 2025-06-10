@@ -23,7 +23,10 @@ export class SubscriptionService implements ISubscriptionService {
 		});
 	}
 
-	async create(input: CreateSubscriptionSchema, accessToken: string): Promise<void> {
+	async create(
+		input: CreateSubscriptionSchema,
+		accessToken: string,
+	): Promise<void> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/create`,
 			method: HttpMethod.POST,
@@ -32,7 +35,10 @@ export class SubscriptionService implements ISubscriptionService {
 		});
 	}
 
-	async edit(input: EditSubscriptionSchema, accessToken: string): Promise<void> {
+	async edit(
+		input: EditSubscriptionSchema,
+		accessToken: string,
+	): Promise<void> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/edit`,
 			method: HttpMethod.PUT,
@@ -41,7 +47,10 @@ export class SubscriptionService implements ISubscriptionService {
 		});
 	}
 
-	async delete(input: DeleteSubscriptionSchema, accessToken: string): Promise<void> {
+	async delete(
+		input: DeleteSubscriptionSchema,
+		accessToken: string,
+	): Promise<void> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/delete/${input.id}`,
 			method: HttpMethod.DELETE,

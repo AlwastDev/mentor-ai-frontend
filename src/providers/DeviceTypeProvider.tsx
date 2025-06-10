@@ -15,8 +15,15 @@ type DeviceTypeProviderProps = {
 	children: React.ReactNode;
 };
 
-export function DeviceTypeProvider({ deviceType, children }: DeviceTypeProviderProps) {
-	return <DeviceTypeContext.Provider value={{ deviceType }}>{children}</DeviceTypeContext.Provider>;
+export function DeviceTypeProvider({
+	deviceType,
+	children,
+}: DeviceTypeProviderProps) {
+	return (
+		<DeviceTypeContext.Provider value={{ deviceType }}>
+			{children}
+		</DeviceTypeContext.Provider>
+	);
 }
 
 export function useDeviceType() {

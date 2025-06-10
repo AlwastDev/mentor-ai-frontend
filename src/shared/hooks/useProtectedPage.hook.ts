@@ -47,7 +47,7 @@ export const useProtectedPage = (options?: ProtectedPageOptions) => {
 				redirect(ROUTES.SignIn);
 			}
 		})();
-	}, []);
+	}, [isAuthed, isChecking, requiredRole]);
 
 	return isAllowed;
 };

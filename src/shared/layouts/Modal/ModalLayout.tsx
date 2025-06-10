@@ -39,9 +39,12 @@ const ModalLayout = (props: ModalLayoutProps) => {
 		[closeModal, closeable],
 	);
 
-	const handleModalClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-		e.stopPropagation();
-	}, []);
+	const handleModalClick = useCallback(
+		(e: React.MouseEvent<HTMLDivElement>) => {
+			e.stopPropagation();
+		},
+		[],
+	);
 
 	useEffect(() => {
 		setTimeout(() => setIsVisible(true), 10);
@@ -49,7 +52,8 @@ const ModalLayout = (props: ModalLayoutProps) => {
 
 	useEffect(() => {
 		if (isVisible) {
-			const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+			const scrollBarWidth =
+				window.innerWidth - document.documentElement.clientWidth;
 
 			document.documentElement.style.overflow = "hidden";
 			document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
@@ -82,8 +86,8 @@ const ModalLayout = (props: ModalLayoutProps) => {
 						}}
 						className={cn(
 							className,
-							"relative w-full transform rounded-t-xl bg-cod-gray-2",
-							"border-t border-white-7 max-h-[70vh]",
+							"bg-cod-gray-2 relative w-full transform rounded-t-xl",
+							"border-white-7 max-h-[70vh] border-t",
 							"transition-all duration-300 ease-in-out",
 							{ "overflow-y-auto": scrollable },
 							{
@@ -93,14 +97,23 @@ const ModalLayout = (props: ModalLayoutProps) => {
 						)}
 						onClick={handleModalClick}
 					>
-						<div className={cn("flex px-5 pt-5 justify-between")}>
+						<div className={cn("flex justify-between px-5 pt-5")}>
 							<h2
-								className={cn("font-semibold text-white text-base leading-normal", titleClassName)}
+								className={cn(
+									"text-base font-semibold leading-normal text-white",
+									titleClassName,
+								)}
 							>
 								{title}
 							</h2>
 
-							{closeable && <Icon icon="cross" className={cn("size-6")} onClick={closeModal} />}
+							{closeable && (
+								<Icon
+									icon="cross"
+									className={cn("size-6")}
+									onClick={closeModal}
+								/>
+							)}
 						</div>
 						{children}
 					</div>
@@ -125,8 +138,8 @@ const ModalLayout = (props: ModalLayoutProps) => {
 						"12px 16px 24px 0px rgba(0, 0, 0, 0.24), 12px 8px 12px 0px rgba(0, 0, 0, 0.24), 4px 4px 8px 0px rgba(0, 0, 0, 0.32)",
 				}}
 				className={cn(
-					"relative transform rounded-[20px] bg-cod-gray",
-					"border border-white-7",
+					"bg-cod-gray relative transform rounded-[20px]",
+					"border-white-7 border",
 					"transition-all duration-300 ease-in-out",
 					className,
 					{
@@ -136,12 +149,19 @@ const ModalLayout = (props: ModalLayoutProps) => {
 				)}
 				onClick={handleModalClick}
 			>
-				<div className={cn("flex px-5 pt-5 justify-between")}>
-					<h2 className={cn("font-semibold text-white text-base leading-normal", titleClassName)}>
+				<div className={cn("flex justify-between px-5 pt-5")}>
+					<h2
+						className={cn(
+							"text-base font-semibold leading-normal text-white",
+							titleClassName,
+						)}
+					>
 						{title}
 					</h2>
 
-					{closeable && <Icon icon="cross" className={cn("size-6")} onClick={closeModal} />}
+					{closeable && (
+						<Icon icon="cross" className={cn("size-6")} onClick={closeModal} />
+					)}
 				</div>
 
 				{children}

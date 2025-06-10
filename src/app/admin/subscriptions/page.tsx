@@ -33,7 +33,7 @@ export default function SubscriptionsPage() {
 
 	return (
 		<div className="container mx-auto max-w-6xl px-4 py-10">
-			<div className="flex justify-between items-center">
+			<div className="flex items-center justify-between">
 				<h1 className="mb-8 text-3xl font-bold">Плани підписки</h1>
 
 				{isAdmin && (

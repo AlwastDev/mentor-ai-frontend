@@ -16,11 +16,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 				autoComplete="off"
 				className={cn(
 					"focus:outline-none focus:ring-0 focus-visible:outline-none",
-					"appearance-none w-full py-[12px] px-[20px]",
+					"w-full appearance-none px-[20px] py-[12px]",
 					"rounded-2xl border-2",
-					"placeholder:text-[#AFAFAF] placeholder:text-base placeholder:font-medium",
+					"placeholder:text-base placeholder:font-medium placeholder:text-[#AFAFAF]",
 					"bg-[#F7F7F7]",
-					rest["aria-invalid"] === "true" ? "border-red-500" : "border-[#E5E5E5]",
+					rest["aria-invalid"] === "true"
+						? "border-red-500"
+						: "border-[#E5E5E5]",
 					className,
 				)}
 				{...rest}
@@ -62,7 +64,9 @@ export const ControlledInput = (props: ControlledInputProps) => {
 	return (
 		<div className="space-y-1">
 			<Input {...field} {...rest} disabled={disabled} aria-invalid={!!error} />
-			{error && <p className="text-sm text-red-600 font-medium">{error.message}</p>}
+			{error && (
+				<p className="text-sm font-medium text-red-600">{error.message}</p>
+			)}
 		</div>
 	);
 };

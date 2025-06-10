@@ -12,7 +12,7 @@ type Props = { params: Promise<{ testId: string }> };
 export default function MaterialPage({ params }: Props) {
 	const { testId } = use(params);
 
-	const isValid = useValidateUuid(testId)
+	const isValid = useValidateUuid(testId);
 
 	if (!isValid) {
 		notFound();
@@ -30,15 +30,19 @@ export default function MaterialPage({ params }: Props) {
 
 	return (
 		<div className="mx-auto max-w-3xl space-y-8 px-4 py-10">
-			{materials.map((material) => (
-				<div key={material.id}>
-					<h1 className="text-3xl font-bold">{material.title}</h1>
-					<article
-						className="prose max-w-none dark:prose-invert"
-						dangerouslySetInnerHTML={{ __html: material.content }}
-					/>
-				</div>
-			))}
+			{materials.map((material) => {
+				return (
+					<div key={material.id}>
+						<h1 className="text-3xl font-bold">{material.title}</h1>
+						<article
+							className="prose dark:prose-invert max-w-none markdown"
+							dangerouslySetInnerHTML={{
+								__html: material.content,
+							}}
+						/>
+					</div>
+				);
+			})}
 
 			<StartTestButton testId={testId} />
 		</div>

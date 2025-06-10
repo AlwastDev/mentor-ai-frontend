@@ -12,7 +12,10 @@ const ROUTE_NAME = "question";
 export class QuestionService implements IQuestionService {
 	constructor(@inject(SYMBOLS.IApiService) private apiService: IApiService) {}
 
-	async editQuestion(input: EditQuestionsSchema, accessToken: string): Promise<EditQuestionsResponse> {
+	async editQuestion(
+		input: EditQuestionsSchema,
+		accessToken: string,
+	): Promise<EditQuestionsResponse> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/edit`,
 			method: HttpMethod.PUT,

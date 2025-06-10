@@ -11,4 +11,6 @@ export const editLearningMaterialsSchema = z.object({
 	materials: z.array(editLearningMaterialSchema).min(1),
 });
 
-export type EditLearningMaterialsSchema = z.infer<typeof editLearningMaterialsSchema>;
+export type EditLearningMaterialsSchema = z.infer<
+	typeof editLearningMaterialsSchema
+>;

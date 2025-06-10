@@ -8,7 +8,6 @@ import { UserRole } from "@/shared/utils/enums";
 import { env } from "@/env.mjs";
 import { jwtVerify } from "jose";
 
-
 export function createTRPCContext({ req }: FetchCreateContextFnOptions) {
 	const parsedCookies = cookie.parse(req.headers.get("cookie") ?? "");
 
@@ -35,7 +34,8 @@ const t = initTRPC.context<Context>().create({
 			...shape,
 			data: {
 				...shape.data,
-				zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+				zodError:
+					error.cause instanceof ZodError ? error.cause.flatten() : null,
 			},
 		};
 	},
@@ -97,12 +97,14 @@ function createRoleMiddleware(allowedRoles: UserRole[]) {
 
 		const { payload } = await jwtVerify(ctx.cookies.access_token!, secret);
 
-		const userRole = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] as UserRole;
+		const userRole = payload[
+			"http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+		] as UserRole;
 
 		if (!allowedRoles.includes(userRole!)) {
 			throw new TRPCError({ code: "FORBIDDEN" });
 		}
-		
+
 		return next({
 			ctx: {
 				access_token: ctx.cookies.access_token,

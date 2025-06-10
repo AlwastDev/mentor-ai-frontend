@@ -60,7 +60,7 @@ export class TestService implements ITestService {
 		accessToken: string,
 		page: number,
 		limit: number,
-	): Promise<GetAllTestsResponse[]> {
+	): Promise<{ items: GetAllTestsResponse[]; totalCount: number }> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/get`,
 			method: HttpMethod.GET,
@@ -72,7 +72,10 @@ export class TestService implements ITestService {
 		});
 	}
 
-	async getById(id: string, accessToken: string): Promise<GetByIdResponse | null> {
+	async getById(
+		id: string,
+		accessToken: string,
+	): Promise<GetByIdResponse | null> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/get/${id}`,
 			method: HttpMethod.GET,
@@ -88,7 +91,10 @@ export class TestService implements ITestService {
 		});
 	}
 
-	async getPublishedById(id: string, accessToken: string): Promise<GetByIdResponse | null> {
+	async getPublishedById(
+		id: string,
+		accessToken: string,
+	): Promise<GetByIdResponse | null> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/get/published/${id}`,
 			method: HttpMethod.GET,

@@ -27,10 +27,18 @@ container.bind<IApiService>(SYMBOLS.IApiService).to(ApiService);
 container.bind<IAuthService>(SYMBOLS.IAuthService).to(AuthService);
 container.bind<ITestService>(SYMBOLS.ITestService).to(TestService);
 container.bind<IQuestionService>(SYMBOLS.IQuestionService).to(QuestionService);
-container.bind<ILearningMaterialService>(SYMBOLS.ILearningMaterialService).to(LearningMaterialService);
-container.bind<ISubscriptionService>(SYMBOLS.ISubscriptionService).to(SubscriptionService);
-container.bind<IStudentSubscriptionService>(SYMBOLS.IStudentSubscriptionService).to(StudentSubscriptionService);
+container
+	.bind<ILearningMaterialService>(SYMBOLS.ILearningMaterialService)
+	.to(LearningMaterialService);
+container
+	.bind<ISubscriptionService>(SYMBOLS.ISubscriptionService)
+	.to(SubscriptionService);
+container
+	.bind<IStudentSubscriptionService>(SYMBOLS.IStudentSubscriptionService)
+	.to(StudentSubscriptionService);
 container.bind<IRoadmapService>(SYMBOLS.IRoadmapService).to(RoadmapService);
-container.bind<ITestAttemptService>(SYMBOLS.ITestAttemptService).to(TestAttemptService);
+container
+	.bind<ITestAttemptService>(SYMBOLS.ITestAttemptService)
+	.to(TestAttemptService);
 
 export { container };

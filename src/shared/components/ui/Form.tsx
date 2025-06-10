@@ -29,7 +29,9 @@ type FormProps<TFormValues extends FieldValues> = {
 	children: React.ReactNode | ChildrenFunc<TFormValues>;
 };
 
-export const Form = <TFormValues extends Record<string, any>>(props: FormProps<TFormValues>) => {
+export const Form = <TFormValues extends Record<string, any>>(
+	props: FormProps<TFormValues>,
+) => {
 	const { id, form: methods, className, onSubmit, children, onChange } = props;
 
 	React.useEffect(() => {
@@ -44,7 +46,11 @@ export const Form = <TFormValues extends Record<string, any>>(props: FormProps<T
 	}, [methods, onChange]);
 
 	return (
-		<form id={id} className={className} onSubmit={onSubmit && methods.handleSubmit(onSubmit)}>
+		<form
+			id={id}
+			className={className}
+			onSubmit={onSubmit && methods.handleSubmit(onSubmit)}
+		>
 			<FormProvider {...methods}>
 				{typeof children === "function" ? children(methods) : children}
 			</FormProvider>

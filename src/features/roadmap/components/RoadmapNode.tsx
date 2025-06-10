@@ -41,8 +41,8 @@ export const RoadmapNode = (props: RoadmapNodeProps) => {
 		>
 			<Icon className="h-10 w-10" />
 			{state === "done" && (
-        <CheckCircle2 className="absolute -right-1 -top-1 h-6 w-6 rounded-full bg-white p-0.5 text-emerald-500 shadow" />
-      )}
+				<CheckCircle2 className="absolute -right-1 -top-1 h-6 w-6 rounded-full bg-white p-0.5 text-emerald-500 shadow" />
+			)}
 		</motion.button>
 	);
 };

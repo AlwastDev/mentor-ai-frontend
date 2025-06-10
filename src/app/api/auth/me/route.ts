@@ -15,7 +15,8 @@ export async function GET() {
 
 	if (!accessToken && refreshToken) {
 		try {
-			const { accessToken: newAccessToken } = await authService.refreshToken(refreshToken);
+			const { accessToken: newAccessToken } =
+				await authService.refreshToken(refreshToken);
 
 			cookiesStore.set("access_token", newAccessToken, {
 				httpOnly: true,

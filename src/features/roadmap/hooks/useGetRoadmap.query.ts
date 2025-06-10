@@ -1,9 +1,9 @@
 import { trpc } from "@/shared/utils/trpc";
 
 export const useGetRoadmapQuery = () => {
-  const { data, isLoading } = trpc.roadmap.get.useQuery();
+	const { data, isLoading } = trpc.roadmap.get.useQuery();
 
-  const roadmapItems = data || [];
+	const roadmapItems = data || [];
 
-  return { roadmapItems, isLoading };
+	return { roadmapItems, isLoading };
 };

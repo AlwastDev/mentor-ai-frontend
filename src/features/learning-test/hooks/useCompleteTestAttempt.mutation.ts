@@ -5,18 +5,22 @@ import { trpc } from "@/shared/utils/trpc";
 import { useModalStore } from "@/shared/store";
 
 export const useCompleteTestAttemptMutation = (storageKey: string) => {
-  const n = useNotification();
+	const n = useNotification();
 	const { openModal } = useModalStore();
 	const queryClient = useQueryClient();
-	const utils = trpc.useUtils(); 
+	const utils = trpc.useUtils();
 
 	const { mutate, isPending } = trpc.testAttempt.complete.useMutation({
-    onSuccess(item) {
-      openModal("RewardModal", { coins: item.coins, experience: item.experience, score: item.score });
+		onSuccess(item) {
+			openModal("RewardModal", {
+				coins: item.coins,
+				experience: item.experience,
+				score: item.score,
+			});
 			localStorage.removeItem(storageKey);
 			utils.roadmap.get.invalidate();
 			queryClient.setQueryData(["auth.me"], null);
-    },
+		},
 		onError(error) {
 			const fieldErrors = error.shape?.data.zodError?.fieldErrors;
 			if (fieldErrors) {

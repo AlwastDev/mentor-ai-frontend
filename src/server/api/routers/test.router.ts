@@ -25,11 +25,15 @@ export const testRouter = createTRPCRouter({
 
 	publish: adminProcedure
 		.input(z.string().uuid())
-		.mutation(async ({ input, ctx }) => testService.publishTest(input, ctx.access_token)),
+		.mutation(async ({ input, ctx }) =>
+			testService.publishTest(input, ctx.access_token),
+		),
 
 	delete: adminProcedure
 		.input(z.string().uuid())
-		.mutation(async ({ input, ctx }) => testService.deleteTest(input, ctx.access_token)),
+		.mutation(async ({ input, ctx }) =>
+			testService.deleteTest(input, ctx.access_token),
+		),
 
 	getAllTests: adminProcedure
 		.input(paginationSchema)
@@ -39,7 +43,9 @@ export const testRouter = createTRPCRouter({
 
 	getById: adminProcedure
 		.input(z.string().uuid())
-		.query(async ({ input, ctx }) => testService.getById(input, ctx.access_token)),
+		.query(async ({ input, ctx }) =>
+			testService.getById(input, ctx.access_token),
+		),
 
 	getPublished: protectedProcedure.query(async ({ ctx }) =>
 		testService.getPublished(ctx.access_token),
@@ -47,5 +53,7 @@ export const testRouter = createTRPCRouter({
 
 	getPublishedById: protectedProcedure
 		.input(z.string())
-		.query(async ({ input, ctx }) => testService.getPublishedById(input, ctx.access_token)),
+		.query(async ({ input, ctx }) =>
+			testService.getPublishedById(input, ctx.access_token),
+		),
 });

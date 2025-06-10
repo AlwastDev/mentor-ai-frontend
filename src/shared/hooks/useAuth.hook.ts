@@ -42,7 +42,7 @@ export const useAuth = () => {
 		} catch (err) {
 			console.error("Logout failed", err);
 		}
-	}, [router]);
+	}, [queryClient, router]);
 
 	const userId = session?.id ?? "";
 	const role = session?.role ?? UserRole.STUDENT;
@@ -60,7 +60,11 @@ export const useAuth = () => {
 		isStudent,
 		isAdmin,
 		isAuthed,
-		status: isLoading ? "loading" : isAuthed ? "authenticated" : "unauthenticated",
+		status: isLoading
+			? "loading"
+			: isAuthed
+				? "authenticated"
+				: "unauthenticated",
 		logout,
 		refetch,
 	};

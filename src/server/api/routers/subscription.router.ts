@@ -8,20 +8,28 @@ import {
 	editSubscriptionSchema,
 } from "@/server/core/schemas/SubscriptionService/createSubscription.schema";
 
-const subscriptionService = container.get<ISubscriptionService>(SYMBOLS.ISubscriptionService);
+const subscriptionService = container.get<ISubscriptionService>(
+	SYMBOLS.ISubscriptionService,
+);
 
 export const subscriptionRouter = createTRPCRouter({
 	getAll: publicProcedure.query(async () => subscriptionService.getAll()),
 
 	create: adminProcedure
 		.input(createSubscriptionSchema)
-		.mutation(async ({ input, ctx }) => subscriptionService.create({ ...input }, ctx.access_token)),
+		.mutation(async ({ input, ctx }) =>
+			subscriptionService.create({ ...input }, ctx.access_token),
+		),
 
 	edit: adminProcedure
 		.input(editSubscriptionSchema)
-		.mutation(async ({ input, ctx }) => subscriptionService.edit({ ...input }, ctx.access_token)),
+		.mutation(async ({ input, ctx }) =>
+			subscriptionService.edit({ ...input }, ctx.access_token),
+		),
 
 	delete: adminProcedure
 		.input(deleteSubscriptionSchema)
-		.mutation(async ({ input, ctx }) => subscriptionService.delete({ ...input }, ctx.access_token)),
+		.mutation(async ({ input, ctx }) =>
+			subscriptionService.delete({ ...input }, ctx.access_token),
+		),
 });

@@ -21,7 +21,7 @@ export default function RewardModal() {
 
 	return (
 		<ModalLayout
-			className="w-[27.125rem] bg-white dark:bg-zinc-900 px-8 py-8 text-center"
+			className="w-[27.125rem] bg-white px-8 py-8 text-center dark:bg-zinc-900"
 			closeable={false}
 		>
 			<motion.div
@@ -31,7 +31,9 @@ export default function RewardModal() {
 				transition={{ type: "spring", stiffness: 300, damping: 20 }}
 			>
 				<AnimatedCheck />
-				<h2 className="mb-4 text-2xl font-bold">Вітаємо з проходженням тесту!</h2>
+				<h2 className="mb-4 text-2xl font-bold">
+					Вітаємо з проходженням тесту!
+				</h2>
 
 				<div className="space-y-4 text-lg">
 					<div className="flex items-center justify-center gap-2">

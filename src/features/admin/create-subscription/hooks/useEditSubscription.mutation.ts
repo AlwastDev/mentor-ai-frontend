@@ -2,9 +2,9 @@ import { useNotification } from "@/shared/hooks";
 import { trpc } from "@/shared/utils/trpc";
 
 export const useEditSubscriptionMutation = () => {
-  const n = useNotification();
-  
-  const { mutate, isPending } = trpc.subscription.edit.useMutation({
+	const n = useNotification();
+
+	const { mutate, isPending } = trpc.subscription.edit.useMutation({
 		onSuccess() {
 			n.success("План підписки був успішно оновлений");
 		},
@@ -25,5 +25,5 @@ export const useEditSubscriptionMutation = () => {
 		},
 	});
 
-  return { editSubscription: mutate, isPending };
+	return { editSubscription: mutate, isPending };
 };

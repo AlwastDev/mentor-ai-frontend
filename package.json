@@ -7,7 +7,9 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"generate-icons": "node ./scripts/generateIcons.js"
+		"generate-icons": "node ./scripts/generateIcons.js",
+		"format": "prettier --check --ignore-path .gitignore .",
+		"format:fix": "prettier --write --ignore-path .gitignore ."
 	},
 	"dependencies": {
 		"@headlessui/react": "^2.2.0",
@@ -18,12 +20,15 @@
 		"@trpc/next": "11.0.0-next-beta.234",
 		"@trpc/react-query": "11.0.0-next-beta.234",
 		"@trpc/server": "11.0.0-next-beta.234",
+		"@uiw/react-markdown-preview": "^5.1.4",
+		"@uiw/react-md-editor": "^4.0.7",
 		"clsx": "^2.1.1",
 		"cookie": "^1.0.2",
 		"framer-motion": "^12.5.0",
 		"inversify": "^7.1.0",
 		"jose": "^6.0.11",
 		"lucide-react": "^0.511.0",
+		"marked": "^15.0.12",
 		"next": "15.3.0",
 		"notistack": "^3.0.2",
 		"react": "^19.0.0",
@@ -36,26 +41,25 @@
 		"zustand": "^5.0.3"
 	},
 	"devDependencies": {
-		"@eslint/eslintrc": "^3",
-		"@eslint/js": "^9.25.1",
+		"@eslint/eslintrc": "^3.2.0",
+		"@next/eslint-plugin-next": "^15.3.3",
 		"@svgr/webpack": "^8.1.0",
 		"@tailwindcss/postcss": "^4",
-		"@types/eslint": "^9.6.1",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"@types/ua-parser-js": "^0.7.39",
 		"autoprefixer": "^10.4.21",
-		"eslint": "^9",
-		"eslint-config-next": "15.3.0",
-		"eslint-config-prettier": "^10.1.2",
-		"eslint-plugin-prettier": "^5.4.0",
+		"eslint": "^9.20.1",
+		"eslint-config-next": "^15.1.7",
+		"eslint-config-prettier": "^10.0.1",
+		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-unused-imports": "^4.1.4",
 		"postcss": "^8.5.3",
 		"prettier": "^3.5.3",
+		"prettier-plugin-tailwindcss": "^0.6.12",
 		"tailwindcss": "3.4.17",
 		"tsx": "^4.19.3",
-		"typescript": "^5",
-		"typescript-eslint": "^8.31.1"
+		"typescript": "^5"
 	}
 }

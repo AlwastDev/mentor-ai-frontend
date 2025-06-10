@@ -12,5 +12,7 @@ export async function GET() {
 		prompt: "consent",
 	});
 
-	return NextResponse.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+	return NextResponse.redirect(
+		`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`,
+	);
 }

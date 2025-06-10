@@ -7,15 +7,17 @@ import { useCallback } from "react";
 
 import { Button, Icon } from "@/shared/components/ui";
 import { FeatureCard, PlansSection } from "@/features/home/components";
-import { useAuth } from "@/shared/hooks";
+import { useAuth, useNotification } from "@/shared/hooks";
 import { ROUTES } from "@/shared/utils/routes";
 import { Loader } from "@/shared/components/ui/Loader";
 import { useStartEntryTestAttemptMutation } from "@/features/home/hooks";
 
 export default function HomePage() {
 	const router = useRouter();
-	const { isAuthed, isChecking } = useAuth();
-	const { startEntryTestAttempt, isPending } = useStartEntryTestAttemptMutation();
+	const n = useNotification();
+	const { isAuthed, isChecking, isAdmin } = useAuth();
+	const { startEntryTestAttempt, isPending } =
+		useStartEntryTestAttemptMutation();
 
 	const handleStartTest = useCallback(() => {
 		if (!isAuthed || isChecking) {
@@ -23,8 +25,13 @@ export default function HomePage() {
 			return;
 		}
 
+		if(isAdmin) {
+			n.error("Адміністратор не може проходити вступний тест");
+			return;
+		}
+
 		startEntryTestAttempt();
-	}, [startEntryTestAttempt, isAuthed, isChecking]);
+	}, [isAuthed, isChecking, isAdmin, startEntryTestAttempt, router, n]);
 
 	if (isChecking) {
 		return <Loader />;
@@ -47,8 +54,8 @@ export default function HomePage() {
 						програмування за допомогою&nbsp;AI
 					</h1>
 					<p className="mb-8 text-lg text-zinc-600 dark:text-zinc-300">
-						Персоналізований навчальний шлях, аналітика прогресу та рейтингова система – усе в
-						одному місці.
+						Персоналізований навчальний шлях, аналітика прогресу та рейтингова
+						система – усе в одному місці.
 					</p>
 					<div className="flex flex-col items-center gap-4 sm:flex-row">
 						<Button
@@ -67,7 +74,7 @@ export default function HomePage() {
 					transition={{ delay: 0.2, duration: 0.6 }}
 					className="mt-12 w-full max-w-xl lg:mt-0"
 				>
-					<Icon icon="education_illustration" className="w-full h-auto" />
+					<Icon icon="education_illustration" className="h-auto w-full" />
 				</motion.div>
 			</section>
 
@@ -111,7 +118,8 @@ export default function HomePage() {
 						Пройди 10-хвилинний Entry Test
 					</h3>
 					<p className="mb-8 text-lg opacity-90">
-						Визначимо твій поточний рівень і одразу сформуємо індивідуальний Roadmap.
+						Визначимо твій поточний рівень і одразу сформуємо індивідуальний
+						Roadmap.
 					</p>
 					<Button
 						disabled={isPending}
@@ -123,7 +131,7 @@ export default function HomePage() {
 				</motion.div>
 			</section>
 
-			<section className="bg-zinc-50 dark:bg-zinc-900 px-6 pb-28 pt-32">
+			<section className="bg-zinc-50 px-6 pb-28 pt-32 dark:bg-zinc-900">
 				<PlansSection />
 			</section>
 		</div>

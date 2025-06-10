@@ -15,11 +15,14 @@ export const learningMaterialRouter = createTRPCRouter({
 		.input(z.string().uuid())
 		.query(async ({ input, ctx }) =>
 			learningMaterialService.getPublishedByTestId(input, ctx.access_token!),
-	),
+		),
 
 	edit: adminProcedure
 		.input(editLearningMaterialsSchema)
 		.mutation(async ({ input, ctx }) =>
-			learningMaterialService.editLearningMaterials({ ...input }, ctx.access_token!),
+			learningMaterialService.editLearningMaterials(
+				{ ...input },
+				ctx.access_token!,
+			),
 		),
 });

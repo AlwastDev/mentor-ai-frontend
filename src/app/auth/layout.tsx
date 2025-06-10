@@ -4,7 +4,11 @@ import { redirect } from "next/navigation";
 import { useAuth } from "@/shared/hooks";
 import { ROUTES } from "@/shared/utils/routes";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	const { isAuthed } = useAuth();
 
 	if (isAuthed) {

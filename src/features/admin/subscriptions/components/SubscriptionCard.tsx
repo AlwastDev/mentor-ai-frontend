@@ -13,7 +13,7 @@ type SubscriptionCardProps = {
 
 export const SubscriptionCard = (props: SubscriptionCardProps) => {
 	const { plan } = props;
-	
+
 	const { isAdmin } = useAuth();
 
 	const feature = (label: string, enabled: boolean) => (
@@ -33,7 +33,9 @@ export const SubscriptionCard = (props: SubscriptionCardProps) => {
 			<header className="mb-4 flex flex-col gap-1">
 				<h2 className="text-2xl font-semibold">{plan.planName}</h2>
 				<p className="text-4xl font-bold">${plan.price.toFixed(2)}</p>
-				<p className="text-sm text-slate-500 dark:text-slate-400">{plan.durationDays} днів</p>
+				<p className="text-sm text-slate-500 dark:text-slate-400">
+					{plan.durationDays} днів
+				</p>
 			</header>
 
 			<ul className="mb-6 space-y-2 text-sm leading-relaxed">

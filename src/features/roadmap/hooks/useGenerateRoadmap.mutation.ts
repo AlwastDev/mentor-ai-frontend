@@ -2,14 +2,14 @@ import { useNotification } from "@/shared/hooks";
 import { trpc } from "@/shared/utils/trpc";
 
 export const useGenerateRoadmapMutation = () => {
-  const n = useNotification();
-  const utils = trpc.useUtils();
+	const n = useNotification();
+	const utils = trpc.useUtils();
 
 	const { mutate, isPending } = trpc.roadmap.generate.useMutation({
-    onSuccess() {
-      utils.roadmap.get.invalidate();
-			n.success("Дорожня карта успішно створена");
-    },
+		onSuccess(response) {
+			utils.roadmap.get.invalidate();
+			n.success((response as any).message ?? "Дорожня карта успішно створена");
+		},
 		onError(error) {
 			const fieldErrors = error.shape?.data.zodError?.fieldErrors;
 			if (fieldErrors) {

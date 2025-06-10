@@ -6,7 +6,9 @@ import type { IRoadmapService } from "@/server/core/services/interfaces/IRoadmap
 const roadmapService = container.get<IRoadmapService>(SYMBOLS.IRoadmapService);
 
 export const roadmapRouter = createTRPCRouter({
-	get: protectedProcedure.query(async ({ ctx }) => roadmapService.get(ctx.access_token!)),
+	get: protectedProcedure.query(async ({ ctx }) =>
+		roadmapService.get(ctx.access_token!),
+	),
 
 	generate: protectedProcedure.mutation(async ({ ctx }) =>
 		roadmapService.generate(ctx.access_token!),

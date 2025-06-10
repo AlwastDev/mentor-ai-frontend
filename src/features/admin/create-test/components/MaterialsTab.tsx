@@ -1,8 +1,9 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { Button, ControlledInput, Icon } from "@/shared/components/ui";
+import { Button, ControlledInput, ControlledTextarea, Icon } from "@/shared/components/ui";
 import { useEditLearningMaterialMutation } from "../hooks";
 import type { GetByIdResponse } from "@/server/core/responses/TestService/GetByIdResponse";
+import { useNotification } from "@/shared/hooks";
 
 type MaterialsTabProps = {
 	testId?: string;
@@ -11,7 +12,8 @@ type MaterialsTabProps = {
 export const MaterialsTab = (props: MaterialsTabProps) => {
 	const { testId } = props;
 
-	const { control, getValues, setValue } = useFormContext<GetByIdResponse>();
+	const n = useNotification();
+	const { control, getValues, setValue, trigger } = useFormContext<GetByIdResponse>();
 
 	const { editLearningMaterial } = useEditLearningMaterialMutation();
 
@@ -30,6 +32,12 @@ export const MaterialsTab = (props: MaterialsTabProps) => {
 
 	const onSaveMaterials = async () => {
 		if (!testId) {
+			return;
+		}
+
+		const isValid = await trigger("materials");
+		if (!isValid) {
+			n.error("Будь ласка, заповніть всі поля");
 			return;
 		}
 
@@ -57,9 +65,22 @@ export const MaterialsTab = (props: MaterialsTabProps) => {
 		<>
 			{materialFields.map((_, i) => (
 				<div key={`material-${i}`} className="flex items-center gap-2">
-					<div className="border rounded p-3 mb-2 w-full flex flex-col gap-2">
-						<ControlledInput name={`materials.${i}.title`} placeholder="Назва матеріалу" />
-						<ControlledInput name={`materials.${i}.content`} placeholder="Контент матеріалу" />
+					<div className="mb-2 flex w-full flex-col gap-2 rounded border p-3">
+						<ControlledInput
+							name={`materials.${i}.title`}
+							placeholder="Назва матеріалу"
+						/>
+						<ControlledTextarea
+							name={`materials.${i}.content`}
+							placeholder="Контент матеріалу"
+							features={{
+								image: true,
+								code: true,
+								preview: true,
+								live: true,
+								edit: true,
+							}}
+						/>
 					</div>
 					<Icon icon="cross" onClick={() => removeMaterial(i)} />
 				</div>
@@ -69,7 +90,7 @@ export const MaterialsTab = (props: MaterialsTabProps) => {
 				Додати матеріал
 			</Button>
 
-			<Button type="button" className="mt-4 ml-4" onClick={onSaveMaterials}>
+			<Button type="button" className="ml-4 mt-4" onClick={onSaveMaterials}>
 				Зберегти матеріали
 			</Button>
 		</>

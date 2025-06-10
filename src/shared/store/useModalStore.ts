@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 
 interface ModalState {
@@ -12,6 +11,8 @@ export const useModalStore = create<ModalState>((set) => ({
 	activeModal: null,
 	params: null,
 	openModal: (name, params = null) =>
-		set((state) => (state.activeModal !== name ? { activeModal: name, params } : state)),
+		set((state) =>
+			state.activeModal !== name ? { activeModal: name, params } : state,
+		),
 	closeModal: () => set({ activeModal: null, params: null }),
 }));

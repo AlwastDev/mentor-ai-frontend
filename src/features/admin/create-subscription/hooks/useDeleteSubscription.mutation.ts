@@ -4,7 +4,7 @@ import { trpc } from "@/shared/utils/trpc";
 export const useDeleteSubscriptionMutation = () => {
 	const n = useNotification();
 
-  const { mutate, isPending } = trpc.subscription.delete.useMutation({
+	const { mutate, isPending } = trpc.subscription.delete.useMutation({
 		onSuccess() {
 			n.success("План підписки був успішно видалений");
 		},
@@ -25,5 +25,5 @@ export const useDeleteSubscriptionMutation = () => {
 		},
 	});
 
-  return { deleteSubscription: mutate, isPending };
+	return { deleteSubscription: mutate, isPending };
 };

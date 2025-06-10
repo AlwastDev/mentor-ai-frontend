@@ -1,7 +1,12 @@
+import { useMemo } from "react";
+
 import { trpc } from "@/shared/utils/trpc";
 
 export const useGetPublishedByTestIdQuery = (id: string) => {
-	const { data, error, isLoading } = trpc.learningMaterial.getPublishedByTestId.useQuery(id);
+	const { data, error, isLoading } =
+		trpc.learningMaterial.getPublishedByTestId.useQuery(id);
 
-	return { materials: data?.materials ?? [], error, isLoading };
+	const materials = useMemo(() => data?.materials ?? [], [data]);
+
+	return { materials, error, isLoading };
 };

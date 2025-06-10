@@ -7,5 +7,8 @@ export const useGetAllTestsQuery = (page: number) => {
 		limit: DESKTOP_PAGE_SIZE,
 	});
 
-	return { tests: data, isLoading, refetch };
+	const tests = data?.items ?? [];
+	const total = data?.totalCount ?? 0;
+
+	return { tests, total, isLoading, refetch };
 };

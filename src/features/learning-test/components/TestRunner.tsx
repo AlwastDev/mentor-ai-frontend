@@ -16,7 +16,8 @@ export function TestRunner(props: TestRunnerProps) {
 
 	const storageKey = `test-${testAttempt.testId}-answers`;
 
-	const { completeTestAttempt, isPending } = useCompleteTestAttemptMutation(storageKey);
+	const { completeTestAttempt, isPending } =
+		useCompleteTestAttemptMutation(storageKey);
 
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [current, setCurrent] = useState(0);
@@ -68,13 +69,16 @@ export function TestRunner(props: TestRunnerProps) {
 		completeTestAttempt({
 			studentId: userId,
 			testAttemptId: testAttempt.id,
-			answers: Object.entries(answers).map(([questionId, answerId]) => ({ questionId, answerId })),
+			answers: Object.entries(answers).map(([questionId, answerId]) => ({
+				questionId,
+				answerId,
+			})),
 		});
 	}, [answers, completeTestAttempt, testAttempt.id, userId]);
 
 	return (
-		<div className="flex gap-8 flex-col">
-			<aside className="flex shrink-0 gap-2 max-w-[600px]">
+		<div className="flex flex-col gap-8">
+			<aside className="grid max-w-[600px] grid-cols-10 gap-2">
 				{testAttempt.questions.map((_, i) => {
 					const isDone = !!answers[testAttempt.questions[i].id];
 					const isActive = i === current;
@@ -82,10 +86,7 @@ export function TestRunner(props: TestRunnerProps) {
 						<button
 							key={i}
 							onClick={() => go(i)}
-							className={`h-10 w-10 rounded-full border text-sm font-medium transition
-                ${isActive ? "border-sky-600 bg-sky-100 dark:bg-sky-800" : ""}
-                ${isDone ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-800" : ""}
-              `}
+							className={`h-10 w-10 rounded-full border text-sm font-medium transition ${isActive ? "border-sky-600 bg-sky-100 dark:bg-sky-800" : ""} ${isDone ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-800" : ""} `}
 						>
 							{i + 1}
 						</button>
@@ -95,9 +96,12 @@ export function TestRunner(props: TestRunnerProps) {
 
 			<section className="flex-1 space-y-6">
 				<div>
-					<p className="mb-4 text-lg font-semibold">
-						{current + 1}/{testAttempt.questions.length}. {q.questionText}
-					</p>
+					<div
+						className="prose mb-4 text-lg font-semibold markdown"
+						dangerouslySetInnerHTML={{
+							__html: `${current + 1}/${testAttempt.questions.length}. ${q.questionText}`,
+						}}
+					/>
 
 					<ul className="space-y-3">
 						{q.answers.map((a) => (
@@ -108,9 +112,16 @@ export function TestRunner(props: TestRunnerProps) {
 										name={q.id}
 										className="mt-1 h-4 w-4 cursor-pointer accent-sky-600"
 										checked={answers[q.id] === a.id}
-										onChange={() => setAnswers((prev) => ({ ...prev, [q.id]: a.id }))}
+										onChange={() =>
+											setAnswers((prev) => ({ ...prev, [q.id]: a.id }))
+										}
 									/>
-									<span>{a.answerText}</span>
+									<div
+										className="prose markdown"
+										dangerouslySetInnerHTML={{
+											__html: a.answerText,
+										}}
+									/>
 								</label>
 							</li>
 						))}
@@ -129,7 +140,10 @@ export function TestRunner(props: TestRunnerProps) {
 					) : (
 						<Button
 							onClick={handleComplete}
-							disabled={Object.keys(answers).length < testAttempt.questions.length || isPending}
+							disabled={
+								Object.keys(answers).length < testAttempt.questions.length ||
+								isPending
+							}
 						>
 							Завершити
 						</Button>

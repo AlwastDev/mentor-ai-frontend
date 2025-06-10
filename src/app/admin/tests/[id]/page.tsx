@@ -4,12 +4,20 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { notFound, useParams } from "next/navigation";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn } from "@/shared/utils/helpers";
-import { GeneralTab, MaterialsTab, QuestionsTab } from "@/features/admin/create-test/components";
-import { useEditTestMutation, useGetByIdTestQuery } from "@/features/admin/create-test/hooks";
+import {
+	GeneralTab,
+	MaterialsTab,
+	QuestionsTab,
+} from "@/features/admin/create-test/components";
+import {
+	useEditTestMutation,
+	useGetByIdTestQuery,
+} from "@/features/admin/create-test/hooks";
 import { Form } from "@/shared/components/ui";
-import type { GetByIdResponse } from "@/server/core/responses/TestService/GetByIdResponse";
+import { GetByIdResponseSchema, type GetByIdResponse } from "@/server/core/responses/TestService/GetByIdResponse";
 import { useNotification } from "@/shared/hooks";
 import { Loader } from "@/shared/components/ui/Loader";
 
@@ -19,7 +27,10 @@ export default function EditTestPage() {
 	const { test, isLoading } = useGetByIdTestQuery(id as string);
 	const { editTest, isPending } = useEditTestMutation();
 
-	const form = useForm<GetByIdResponse>();
+	const form = useForm<GetByIdResponse>({
+		mode: "onSubmit",
+		resolver: zodResolver(GetByIdResponseSchema),
+	});
 
 	const { watch } = form;
 
@@ -32,14 +43,19 @@ export default function EditTestPage() {
 				questions:
 					test.questions.length > 0
 						? test.questions
-						: [{ questionText: "", answers: [{ answerText: "", isCorrect: false }] }],
+						: [
+								{
+									questionText: "",
+									answers: [{ answerText: "", isCorrect: false }],
+								},
+							],
 				materials: test.materials.length > 0 ? test.materials : [{ title: "" }],
 			});
 		}
 	}, [test, form]);
 
 	const onSaveGeneral = async () => {
-		if (!test) return;
+		if (!test?.id) return;
 
 		await editTest({
 			testId: test.id,
@@ -54,7 +70,7 @@ export default function EditTestPage() {
 	if (isLoading) return <Loader />;
 
 	return (
-		<Form form={form} className="max-w-4xl mx-auto p-6 space-y-6">
+		<Form form={form} className="mx-auto max-w-4xl space-y-6 p-6">
 			<h1 className="text-3xl font-bold">Редагування тесту</h1>
 
 			<TabGroup>
@@ -64,8 +80,10 @@ export default function EditTestPage() {
 							key={index}
 							className={({ selected }) =>
 								cn(
-									"px-4 py-2 font-medium border-b-2",
-									selected ? "border-blue-500 text-blue-600" : "border-transparent text-gray-500",
+									"border-b-2 px-4 py-2 font-medium",
+									selected
+										? "border-blue-500 text-blue-600"
+										: "border-transparent text-gray-500",
 								)
 							}
 						>
@@ -76,7 +94,10 @@ export default function EditTestPage() {
 
 				<TabPanels className="mt-4">
 					<TabPanel>
-						<GeneralTab isDisabledSaveButton={isPending} onSaveGeneral={onSaveGeneral} />
+						<GeneralTab
+							isDisabledSaveButton={isPending}
+							onSaveGeneral={onSaveGeneral}
+						/>
 					</TabPanel>
 
 					<TabPanel>

@@ -49,7 +49,7 @@ export const SignUpForm = () => {
 				n.error("Passwords do not match");
 				return;
 			}
-			
+
 			try {
 				const res = await fetch("/api/auth/register", {
 					method: "POST",
@@ -70,7 +70,7 @@ export const SignUpForm = () => {
 				n.error("Помилка з'єднання з сервером");
 			}
 		},
-		[form, n],
+		[n, refetch, router],
 	);
 
 	const isDisabled = !isValid;
@@ -79,7 +79,7 @@ export const SignUpForm = () => {
 		<Form
 			form={form}
 			onSubmit={handleSubmit}
-			className="flex flex-col mx-auto gap-y-2 min-w-[375px]"
+			className="mx-auto flex min-w-[375px] flex-col gap-y-2"
 		>
 			<ControlledInput name="name" placeholder="Імʼя" />
 			<ControlledInput name="surname" placeholder="Прізвище" />

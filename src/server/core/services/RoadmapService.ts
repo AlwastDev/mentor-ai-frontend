@@ -19,7 +19,7 @@ export class RoadmapService implements IRoadmapService {
 		});
 	}
 
-	async generate(accessToken: string): Promise<void> {
+	async generate(accessToken: string): Promise<string> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/generate`,
 			method: HttpMethod.POST,

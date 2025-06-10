@@ -1,14 +1,19 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Button, ControlledInput, Icon } from "@/shared/components/ui";
+
+import { Button, ControlledTextarea, Icon } from "@/shared/components/ui";
 import { useEditQuestionMutation } from "../hooks";
 import type { GetByIdResponse } from "@/server/core/responses/TestService/GetByIdResponse";
+import { useNotification } from "@/shared/hooks";
 
 type QuestionsTabProps = {
 	testId?: string;
 };
 
-export const QuestionsTab = ({ testId }: QuestionsTabProps) => {
-	const { control, getValues, setValue } = useFormContext<GetByIdResponse>();
+export const QuestionsTab = (props: QuestionsTabProps) => {
+	const { testId } = props;
+
+	const n = useNotification();
+	const { control, getValues, setValue, trigger } = useFormContext<GetByIdResponse>();
 	const { editQuestion } = useEditQuestionMutation();
 
 	const {
@@ -34,6 +39,12 @@ export const QuestionsTab = ({ testId }: QuestionsTabProps) => {
 
 	const onSaveQuestions = async () => {
 		if (!testId) return;
+
+		const isValid = await trigger("questions");
+		if (!isValid) {
+			n.error("Будь ласка, заповніть всі поля");
+			return;
+		}
 
 		const formValues = getValues();
 
@@ -61,7 +72,11 @@ export const QuestionsTab = ({ testId }: QuestionsTabProps) => {
 		<>
 			{questionFields.map((_, i) => {
 				return (
-					<QuestionItem key={`question-${i}`} index={i} onRemove={() => removeQuestion(i)} />
+					<QuestionItem
+						key={`question-${i}`}
+						index={i}
+						onRemove={() => removeQuestion(i)}
+					/>
 				);
 			})}
 
@@ -69,7 +84,7 @@ export const QuestionsTab = ({ testId }: QuestionsTabProps) => {
 				Додати питання
 			</Button>
 
-			<Button type="button" className="mt-4 ml-4" onClick={onSaveQuestions}>
+			<Button type="button" className="ml-4 mt-4" onClick={onSaveQuestions}>
 				Зберегти питання
 			</Button>
 		</>
@@ -102,15 +117,35 @@ const QuestionItem = ({ index, onRemove }: QuestionItemProps) => {
 
 	return (
 		<div className="flex items-start gap-2">
-			<div className="border rounded p-3 mb-4 w-full">
-				<ControlledInput name={`questions.${index}.questionText`} placeholder="Текст питання" />
+			<div className="mb-4 w-full rounded border p-3">
+				<ControlledTextarea
+					name={`questions.${index}.questionText`}
+					placeholder="Текст питання"
+					features={{
+						image: false,
+						code: true,
+						preview: true,
+						live: true,
+						edit: true,
+					}}
+				/>
 
 				{answerFields.map((a, j) => (
-					<div key={a.id} className="flex gap-2 items-center mt-2">
-						<input type="checkbox" {...register(`questions.${index}.answers.${j}.isCorrect`)} />
-						<ControlledInput
+					<div key={a.id} className="mt-2 flex items-center gap-2">
+						<input
+							type="checkbox"
+							{...register(`questions.${index}.answers.${j}.isCorrect`)}
+						/>
+						<ControlledTextarea
 							name={`questions.${index}.answers.${j}.answerText`}
 							placeholder={`Відповідь ${j + 1}`}
+							features={{
+								image: false,
+								code: true,
+								preview: true,
+								live: true,
+								edit: true,
+							}}
 						/>
 						<Icon
 							icon="cross"
@@ -127,7 +162,7 @@ const QuestionItem = ({ index, onRemove }: QuestionItemProps) => {
 
 			<Icon
 				icon="cross"
-				className="size-6 text-gray-500 hover:text-red-500 mt-3"
+				className="mt-3 size-6 text-gray-500 hover:text-red-500"
 				onClick={onRemove}
 			/>
 		</div>

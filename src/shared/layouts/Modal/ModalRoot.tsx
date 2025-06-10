@@ -8,7 +8,7 @@ const modalComponents = {
 	RewardModal: dynamic(() =>
 		import("@/features/learning-test/modals/RewardModal").then((mod) => ({
 			default: mod.default,
-		}))
+		})),
 	),
 };
 

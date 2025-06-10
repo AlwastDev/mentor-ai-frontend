@@ -7,7 +7,9 @@ import type { ITestAttemptService } from "@/server/core/services/interfaces/ITes
 import { startTestAttemptSchema } from "@/server/core/schemas/TestAttemptService/startTestAttempt.schema";
 import { completeTestAttemptSchema } from "@/server/core/schemas/TestAttemptService/completeTestAttempt.schema";
 
-const testAttemptService = container.get<ITestAttemptService>(SYMBOLS.ITestAttemptService);
+const testAttemptService = container.get<ITestAttemptService>(
+	SYMBOLS.ITestAttemptService,
+);
 
 export const testAttemptRouter = createTRPCRouter({
 	getById: protectedProcedure
@@ -18,7 +20,9 @@ export const testAttemptRouter = createTRPCRouter({
 
 	start: protectedProcedure
 		.input(startTestAttemptSchema)
-		.mutation(async ({ input, ctx }) => testAttemptService.start({ ...input }, ctx.access_token!)),
+		.mutation(async ({ input, ctx }) =>
+			testAttemptService.start({ ...input }, ctx.access_token!),
+		),
 
 	startEntry: protectedProcedure.mutation(async ({ ctx }) =>
 		testAttemptService.startEntry(ctx.access_token!),

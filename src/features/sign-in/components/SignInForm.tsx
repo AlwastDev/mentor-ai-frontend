@@ -43,13 +43,17 @@ export const SignInForm = () => {
 				n.error("Помилка з'єднання з сервером");
 			}
 		},
-		[form, n],
+		[n, refetch, router],
 	);
 
 	const isDisabled = !isValid;
 
 	return (
-		<Form form={form} onSubmit={handleSubmit} className="flex flex-col gap-y-5 min-w-[375px]">
+		<Form
+			form={form}
+			onSubmit={handleSubmit}
+			className="flex min-w-[375px] flex-col gap-y-5"
+		>
 			<div className="flex flex-col gap-y-2">
 				<ControlledInput name="email" placeholder="Пошта" />
 				<ControlledInput name="password" type="password" placeholder="Пароль" />

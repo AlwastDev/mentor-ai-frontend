@@ -22,7 +22,9 @@ export async function middleware(request: NextRequest) {
 	try {
 		const { payload } = await jwtVerify(token, secret);
 
-		const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] as UserRole;
+		const role = payload[
+			"http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+		] as UserRole;
 
 		if (request.nextUrl.pathname.startsWith("/admin")) {
 			if (role !== UserRole.ADMIN) {
@@ -36,4 +38,3 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL(ROUTES.SignIn, request.url));
 	}
 }
-

@@ -27,7 +27,10 @@ export async function POST(req: NextRequest) {
 
 	const body = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
 
-	if ((env.NODE_ENV === "development" && body.status === "sandbox") || body.status === "success") {
+	if (
+		(env.NODE_ENV === "development" && body.status === "sandbox") ||
+		body.status === "success"
+	) {
 		await studentSubscriptionService.add({
 			data,
 			signature,

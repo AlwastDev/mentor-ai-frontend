@@ -8,13 +8,13 @@ import { container } from "@/server/inversify.config";
 const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
 
 export async function POST() {
-  const cookiesStore = await cookies();
+	const cookiesStore = await cookies();
 	const accessToken = cookiesStore.get("access_token")?.value;
 
 	if (!accessToken) {
 		return new NextResponse("Unauthorized", { status: 401 });
 	}
-  
+
 	await authService.logout(accessToken);
 
 	const response = new NextResponse("Success", { status: 200 });

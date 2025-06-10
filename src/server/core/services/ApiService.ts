@@ -40,14 +40,16 @@ export class ApiService implements IApiService {
 		let text = await response.text();
 
 		if (!response.ok) {
-			const trpcCodeMessage = this.transformStatusTextToTrpcCode(response.status);
-
-			throw new TRPCError(
-				{
-					code: trpcCodeMessage,
-					message: text.includes("message") ? JSON.parse(text).message : `Request failed with status ${response.status}: ${JSON.parse(text)}`,
-				},
+			const trpcCodeMessage = this.transformStatusTextToTrpcCode(
+				response.status,
 			);
+
+			throw new TRPCError({
+				code: trpcCodeMessage,
+				message: text.includes("message")
+					? JSON.parse(text).message
+					: `Request failed with status ${response.status}: ${JSON.parse(text)}`,
+			});
 		}
 
 		if (!text) {
@@ -86,7 +88,9 @@ export class ApiService implements IApiService {
 		return `?${new URLSearchParams(params).toString()}`;
 	}
 
-	private transformStatusTextToTrpcCode(statusCode: number): TRPC_ERROR_CODE_KEY {
+	private transformStatusTextToTrpcCode(
+		statusCode: number,
+	): TRPC_ERROR_CODE_KEY {
 		switch (statusCode) {
 			case 400:
 				return "BAD_REQUEST";

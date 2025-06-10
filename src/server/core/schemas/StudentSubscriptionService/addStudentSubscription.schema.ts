@@ -5,4 +5,6 @@ export const addStudentSubscriptionSchema = z.object({
 	signature: z.string(),
 });
 
-export type AddStudentSubscriptionSchema = z.infer<typeof addStudentSubscriptionSchema>;
+export type AddStudentSubscriptionSchema = z.infer<
+	typeof addStudentSubscriptionSchema
+>;

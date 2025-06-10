@@ -21,7 +21,9 @@ export class AuthService implements IAuthService {
 		});
 	}
 
-	async login(input: LoginSchema): Promise<{ accessToken: string; refreshToken: string }> {
+	async login(
+		input: LoginSchema,
+	): Promise<{ accessToken: string; refreshToken: string }> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/login`,
 			method: HttpMethod.POST,
@@ -31,7 +33,9 @@ export class AuthService implements IAuthService {
 		});
 	}
 
-	async register(input: RegisterSchema): Promise<{ accessToken: string; refreshToken: string }> {
+	async register(
+		input: RegisterSchema,
+	): Promise<{ accessToken: string; refreshToken: string }> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/register`,
 			method: HttpMethod.POST,

@@ -12,10 +12,20 @@ type SwitchProps = {
 };
 
 export const Switch = (props: SwitchProps) => {
-	const { checked, onChange, className, label, labelClassName, wrapperClassName } = props;
+	const {
+		checked,
+		onChange,
+		className,
+		label,
+		labelClassName,
+		wrapperClassName,
+	} = props;
 
 	return (
-		<Field as="div" className={cn("flex items-center justify-between", wrapperClassName)}>
+		<Field
+			as="div"
+			className={cn("flex items-center justify-between", wrapperClassName)}
+		>
 			<Label className={labelClassName}>{label}</Label>
 			<HeadlessSwitch
 				checked={checked}

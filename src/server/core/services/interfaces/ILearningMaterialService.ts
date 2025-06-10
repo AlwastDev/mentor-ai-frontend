@@ -3,6 +3,12 @@ import type { GetMaterialByPublishedTestIdResponse } from "../../responses/Learn
 import type { EditLearningMaterialsSchema } from "../../schemas/LearningMaterialService/editLearningMaterials.schema";
 
 export interface ILearningMaterialService {
-	getPublishedByTestId(testId: string, accessToken: string): Promise<{ materials: GetMaterialByPublishedTestIdResponse[]}>;
-	editLearningMaterials(input: EditLearningMaterialsSchema, accessToken: string): Promise<EditLearningMaterialsResponse>;
+	getPublishedByTestId(
+		testId: string,
+		accessToken: string,
+	): Promise<{ materials: GetMaterialByPublishedTestIdResponse[] }>;
+	editLearningMaterials(
+		input: EditLearningMaterialsSchema,
+		accessToken: string,
+	): Promise<{ materials: EditLearningMaterialsResponse[] }>;
 }

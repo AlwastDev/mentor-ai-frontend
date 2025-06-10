@@ -42,7 +42,7 @@ export const Header = memo(() => {
 					"before:absolute before:inset-0 before:-z-10 before:rounded-2xl",
 					"before:bg-[linear-gradient(130deg,#6366F1_0%,#0EA5E9_50%,#6366F1_100%)]",
 					"before:bg-[length:200%_100%] before:transition-[background-position] before:duration-500",
-					"hover:before:bg-[position:100%_0]"
+					"hover:before:bg-[position:100%_0]",
 				)}
 				aria-label={isSignInPage ? "Перейти до реєстрації" : "Перейти до входу"}
 			>
@@ -72,7 +72,9 @@ export const Header = memo(() => {
 		<header className="fixed inset-x-0 top-0 z-50 h-[70px] border-b border-white/20 bg-white/80 backdrop-blur dark:bg-zinc-900/80">
 			<div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4">
 				<Brand />
-				<div className="flex items-center gap-4">{isAdmin ? AdminArea : AuthArea}</div>
+				<div className="flex items-center gap-4">
+					{isAdmin ? AdminArea : AuthArea}
+				</div>
 			</div>
 		</header>
 	);
@@ -99,9 +101,12 @@ const UserMenu = () => {
 					{({ focus }) => (
 						<Link href={ROUTES.Profile}>
 							<button
-								className={cn("flex w-full items-center gap-2 px-4 py-2 text-sm", {
-									"bg-sky-50 dark:bg-zinc-700": focus,
-								})}
+								className={cn(
+									"flex w-full items-center gap-2 px-4 py-2 text-sm",
+									{
+										"bg-sky-50 dark:bg-zinc-700": focus,
+									},
+								)}
 							>
 								<CircleUser className="h-4 w-4" /> Профіль
 							</button>
@@ -129,7 +134,7 @@ const Brand = () => {
 	return (
 		<Link
 			href={ROUTES.Home}
-			className="inline-flex items-center gap-2 font-display text-2xl font-extrabold tracking-tight"
+			className="font-display inline-flex items-center gap-2 text-2xl font-extrabold tracking-tight"
 		>
 			<span className="rounded bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
 				Mentor

@@ -25,17 +25,23 @@ export async function GET(req: NextRequest) {
 		const { access_token } = tokenData;
 
 		// 2. Get email from profile
-		const profileRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-			headers: {
-				Authorization: `Bearer ${access_token}`,
+		const profileRes = await fetch(
+			"https://www.googleapis.com/oauth2/v3/userinfo",
+			{
+				headers: {
+					Authorization: `Bearer ${access_token}`,
+				},
 			},
-		});
+		);
 		const profile = await profileRes.json();
 		const email = profile?.email;
 		if (!email) throw new Error("Email not found in profile");
 
 		// 3. Call backend: /auth/sign-in-by-service
-		const signature = computeHmac(`${email}:${SignUpMethod.GOOGLE}`, env.SERVICE_SIGNIN_SECRET);
+		const signature = computeHmac(
+			`${email}:${SignUpMethod.GOOGLE}`,
+			env.SERVICE_SIGNIN_SECRET,
+		);
 
 		const loginRes = await fetch(`${env.BACKEND_URL}/auth/sign-in-by-service`, {
 			method: "POST",

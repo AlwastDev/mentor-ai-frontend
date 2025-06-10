@@ -5,13 +5,13 @@ import { ROUTES } from "@/shared/utils/routes";
 import { trpc } from "@/shared/utils/trpc";
 
 export const useStartEntryTestAttemptMutation = () => {
-  const n = useNotification();
-  const router = useRouter();
+	const n = useNotification();
+	const router = useRouter();
 
 	const { mutate, isPending } = trpc.testAttempt.startEntry.useMutation({
-    onSuccess(id) {
+		onSuccess(id) {
 			router.push(ROUTES.Learning.TestAttempt(id));
-    },
+		},
 		onError(error) {
 			const fieldErrors = error.shape?.data.zodError?.fieldErrors;
 			if (fieldErrors) {

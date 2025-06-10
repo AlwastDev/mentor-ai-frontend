@@ -1,19 +1,24 @@
-/** @type {import("eslint").Linter.Config} */
-import tseslint from "typescript-eslint";
-import eslint from "@eslint/js";
-import prettier from "eslint-config-prettier";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 import unusedImports from "eslint-plugin-unused-imports";
 
-export default [
-	...tseslint.config(eslint.configs.recommended, tseslint.configs.recommended),
-	{
-		ignores: ["node_modules/**/*", "dist/**/*", "**/*.json", "**/*.cjs", "**/*.js", "**/*.mjs"],
-	},
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+	baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+	...compat.extends("next/core-web-vitals", "next/typescript"),
 	{
 		plugins: {
 			"unused-imports": unusedImports,
 		},
 		rules: {
+			"react/display-name": "off",
+			"@typescript-eslint/no-empty-object-type": "off",
 			"no-restricted-imports": [
 				"warn",
 				{
@@ -66,5 +71,6 @@ export default [
 			"@typescript-eslint/consistent-type-definitions": "off",
 		},
 	},
-	prettier,
 ];
+
+export default eslintConfig;

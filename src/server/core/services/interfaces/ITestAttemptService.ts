@@ -4,8 +4,14 @@ import type { CompleteTestAttemptSchema } from "../../schemas/TestAttemptService
 import type { StartTestAttemptSchema } from "../../schemas/TestAttemptService/startTestAttempt.schema";
 
 export interface ITestAttemptService {
-	getTestAttemptById(testAttemptId: string, accessToken: string): Promise<GetByIdTestAttemptResponse>;
+	getTestAttemptById(
+		testAttemptId: string,
+		accessToken: string,
+	): Promise<GetByIdTestAttemptResponse>;
 	start(input: StartTestAttemptSchema, accessToken: string): Promise<string>;
 	startEntry(accessToken: string): Promise<string>;
-	complete(input: CompleteTestAttemptSchema, accessToken: string): Promise<CompleteTestAttemptResponse>;
+	complete(
+		input: CompleteTestAttemptSchema,
+		accessToken: string,
+	): Promise<CompleteTestAttemptResponse>;
 }

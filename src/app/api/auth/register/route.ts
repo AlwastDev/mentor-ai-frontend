@@ -9,8 +9,13 @@ const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
 
 export async function POST(req: NextRequest) {
 	const { email, password, name, surname } = await req.json();
-  
-	const { accessToken, refreshToken } = await authService.register({ email, password, name, surname });
+
+	const { accessToken, refreshToken } = await authService.register({
+		email,
+		password,
+		name,
+		surname,
+	});
 
 	const response = NextResponse.json({ accessToken, refreshToken });
 

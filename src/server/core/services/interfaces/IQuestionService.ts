@@ -2,5 +2,8 @@ import type { EditQuestionsResponse } from "../../responses/LearningService/Edit
 import type { EditQuestionsSchema } from "../../schemas/QuestionService/editQuestion.schema";
 
 export interface IQuestionService {
-	editQuestion(input: EditQuestionsSchema, accessToken: string): Promise<EditQuestionsResponse>;
+	editQuestion(
+		input: EditQuestionsSchema,
+		accessToken: string,
+	): Promise<EditQuestionsResponse>;
 }

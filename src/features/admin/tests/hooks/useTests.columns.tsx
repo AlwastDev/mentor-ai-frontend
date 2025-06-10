@@ -1,35 +1,40 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button, type TableColumn } from "@/shared/components/ui";
 import { useDeleteTestMutation, usePublishTestMutation } from "../hooks";
 import { ROUTES } from "@/shared/utils/routes";
 import type { GetAllTestsResponse } from "@/server/core/responses/TestService/GetAllTestsResponse";
+import { trpc } from "@/shared/utils/trpc";
 
-type UseTestsColumnsProps = {
-	handleRefetch: () => void;
-};
-
-export const useTestsColumns = (props: UseTestsColumnsProps) => {
-	const { handleRefetch } = props;
-
+export const useTestsColumns = () => {
+	const utils = trpc.useUtils();
 	const router = useRouter();
 	const { deleteTest } = useDeleteTestMutation();
 	const { publishTest } = usePublishTestMutation();
 
-	const handleDeleteTest = (id: string) => async () => {
-		await deleteTest(id);
-		handleRefetch();
-	};
+	const handleDeleteTest = useCallback(
+		async (id: string) => {
+			await deleteTest(id);
+			utils.test.getAllTests.invalidate();
+		},
+		[deleteTest, utils],
+	);
 
-	const handleEditTest = (id: string) => () => {
-		router.push(`${ROUTES.Admin.Tests.Root}/${id}`);
-	};
+	const handleEditTest = useCallback(
+		(id: string) => {
+			router.push(`${ROUTES.Admin.Tests.Root}/${id}`);
+		},
+		[router],
+	);
 
-	const handlePublishTest = (id: string) => async () => {
-		await publishTest(id);
-		handleRefetch();
-	};
+	const handlePublishTest = useCallback(
+		async (id: string) => {
+			await publishTest(id);
+			utils.test.getAllTests.invalidate();
+		},
+		[publishTest, utils],
+	);
 
 	const testColumns: TableColumn<GetAllTestsResponse>[] = useMemo(
 		() => [
@@ -44,21 +49,18 @@ export const useTestsColumns = (props: UseTestsColumnsProps) => {
 				dataIndex: "description",
 				mobileOrder: 2,
 				isShowOnMobile: true,
-				render: (_, record) => <p className="truncate">{record.description ?? "-"}</p>,
-			},
-			{
-				title: "Вступний тест",
-				dataIndex: "isEntryTest",
-				mobileOrder: 3,
-				isShowOnMobile: true,
-				render: (_, record) => <p className="truncate">{record.isEntryTest ? "✅" : "❌"}</p>,
+				render: (_, record) => (
+					<p className="truncate">{record.description ?? "-"}</p>
+				),
 			},
 			{
 				title: "Опубліковано",
 				dataIndex: "isPublished",
 				mobileOrder: 4,
 				isShowOnMobile: true,
-				render: (_, record) => <p className="truncate">{record.isPublished ? "✅" : "❌"}</p>,
+				render: (_, record) => (
+					<p className="truncate">{record.isPublished ? "✅" : "❌"}</p>
+				),
 			},
 			{
 				title: "Дії",
@@ -69,16 +71,22 @@ export const useTestsColumns = (props: UseTestsColumnsProps) => {
 					<>
 						{!record.isPublished && (
 							<div className="flex gap-x-2">
-								<Button onClick={handleEditTest(record.id)}>Редагувати</Button>
-								<Button onClick={handleDeleteTest(record.id)}>Видалити</Button>
-								<Button onClick={handlePublishTest(record.id)}>Опублікувати</Button>
+								<Button onClick={() => handleEditTest(record.id)}>
+									Редагувати
+								</Button>
+								<Button onClick={() => handleDeleteTest(record.id)}>
+									Видалити
+								</Button>
+								<Button onClick={() => handlePublishTest(record.id)}>
+									Опублікувати
+								</Button>
 							</div>
 						)}
 					</>
 				),
 			},
 		],
-		[],
+		[handleDeleteTest, handleEditTest, handlePublishTest],
 	);
 
 	return { columns: testColumns };

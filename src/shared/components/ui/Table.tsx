@@ -26,14 +26,13 @@ type TableProps<T> = {
 	// rowHandleClick?: (record: T & { id: string | number }) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Table<T extends Record<string, any>>(props: TableProps<T>) {
 	const {
 		data,
 		columns: desktopColumns,
 		count,
 		currentPage,
-		onChangePage
+		onChangePage,
 	} = props;
 
 	const { isMobile } = useWindowSize();
@@ -52,7 +51,7 @@ export function Table<T extends Record<string, any>>(props: TableProps<T>) {
 				onChangePage(page);
 			}
 		},
-		[setPage, onChangePage]
+		[setPage, onChangePage],
 	);
 
 	useEffect(() => {
@@ -71,23 +70,23 @@ export function Table<T extends Record<string, any>>(props: TableProps<T>) {
 	return (
 		<div
 			className={cn(
-				"flex w-full grow flex-col gap-y-7 text-base text-dusty-gray",
+				"text-dusty-gray flex w-full grow flex-col gap-y-7 text-base",
 			)}
 		>
 			<div className="grow">
 				<table
 					className={cn(
 						"w-full table-fixed border-separate border-spacing-x-0 border-spacing-y-px",
-						"border border-white-7 rounded-xl",
+						"border-white-7 rounded-xl border",
 					)}
 				>
-					<thead className="table-header-group bg-cod-gray">
+					<thead className="bg-cod-gray table-header-group">
 						<tr className="text-left">
 							{columns.map((column, idx) => (
 								<th
 									key={idx}
 									className={cn(
-										"text-sm leading-4 font-normal border-b border-white-7 p-4",
+										"border-white-7 border-b p-4 text-sm font-normal leading-4",
 										{
 											"rounded-tl-xl pl-4": idx === 0,
 											"rounded-tr-xl pr-4": idx === columns.length - 1,
@@ -118,7 +117,7 @@ export function Table<T extends Record<string, any>>(props: TableProps<T>) {
 										className={cn(
 											"table-cell p-4",
 											{
-												"border-b border-white-7": idx !== data.length - 1,
+												"border-white-7 border-b": idx !== data.length - 1,
 											},
 											tdClassName,
 										)}
@@ -149,7 +148,6 @@ type PaginationProps = {
 	perPage: number;
 	onChangePage: (page: number) => void;
 };
-
 
 function Pagination(props: PaginationProps) {
 	const { page, total, perPage, onChangePage } = props;
