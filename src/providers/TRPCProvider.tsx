@@ -37,7 +37,10 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
 				httpBatchLink({
 					url: `${getBaseUrl()}/api/trpc`,
 					async fetch(input, init) {
-						const res = await fetch(input, init);
+						const res = await fetch(input, {
+							...init,
+							credentials: "include",
+						});
 
 						if (res.status === 401) {
 							const refreshResponse = await fetch("/api/auth/refresh", {
@@ -46,7 +49,10 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
 							});
 
 							if (refreshResponse.ok) {
-								return fetch(input, init);
+								return fetch(input, {
+									...init,
+									credentials: "include",
+								});
 							} else {
 								if (window.location.pathname !== "/auth/sign-in") {
 									window.location.href = "/auth/sign-in";

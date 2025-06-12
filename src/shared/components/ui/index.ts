@@ -4,3 +4,6 @@ export * from "./Input";
 export * from "./Table";
 export * from "./Form";
 export * from "./ControlledTextarea";
+export * from "./Switch";
+export * from "./Loader";
+export * from "./CookieBanner";

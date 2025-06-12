@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { TestRunner } from "@/features/learning-test/components";
 import { useGetTestAttemptByIdQuery } from "@/features/learning-test/hooks";
 import { useValidateUuid } from "@/shared/hooks";
-import { Loader } from "@/shared/components/ui/Loader";
+import { Loader } from "@/shared/components/ui";
 
 type Props = { params: Promise<{ testAttemptId: string }> };
 

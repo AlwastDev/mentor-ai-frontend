@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Star, Lock, CheckCircle2 } from "lucide-react";

@@ -1,12 +1,19 @@
+import { useRouter } from "next/navigation";
+
 import { useNotification } from "@/shared/hooks";
+import { ROUTES } from "@/shared/utils/routes";
 import { trpc } from "@/shared/utils/trpc";
 
 export const useEditSubscriptionMutation = () => {
 	const n = useNotification();
+	const utils = trpc.useUtils();
+	const router = useRouter();
 
 	const { mutate, isPending } = trpc.subscription.edit.useMutation({
 		onSuccess() {
 			n.success("План підписки був успішно оновлений");
+			utils.subscription.getAll.invalidate();
+			router.push(ROUTES.Admin.Subscriptions.Root);
 		},
 		onError(error) {
 			const fieldErrors = error.shape?.data.zodError?.fieldErrors;

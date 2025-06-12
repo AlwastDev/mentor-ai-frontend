@@ -69,7 +69,7 @@ export const Header = memo(() => {
 	}
 
 	return (
-		<header className="fixed inset-x-0 top-0 z-50 h-[70px] border-b border-white/20 bg-white/80 backdrop-blur dark:bg-zinc-900/80">
+		<header className="fixed inset-x-0 top-0 z-50 h-[70px] border-b border-white/20 bg-white/80 backdrop-blur">
 			<div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4">
 				<Brand />
 				<div className="flex items-center gap-4">
@@ -87,7 +87,7 @@ const UserMenu = () => {
 		<Menu as="div" className="relative">
 			<MenuButton
 				as="button"
-				className="inline-flex items-center gap-2 rounded-full px-3 py-2 transition hover:bg-black/5 dark:hover:bg-white/5"
+				className="inline-flex items-center gap-2 rounded-full px-3 py-2 transition hover:bg-black/5"
 			>
 				<CoinsIcon className="h-5 w-5 text-amber-500" />
 				<span className="text-sm font-medium">{session?.coins ?? 0}</span>
@@ -96,7 +96,7 @@ const UserMenu = () => {
 				<User />
 			</MenuButton>
 
-			<MenuItems className="absolute right-0 mt-2 w-40 overflow-hidden rounded-xl border border-white/10 bg-white shadow-lg dark:bg-zinc-800">
+			<MenuItems className="absolute right-0 mt-2 w-40 overflow-hidden rounded-xl border border-white/10 bg-white shadow-lg">
 				<MenuItem>
 					{({ focus }) => (
 						<Link href={ROUTES.Profile}>
@@ -104,7 +104,7 @@ const UserMenu = () => {
 								className={cn(
 									"flex w-full items-center gap-2 px-4 py-2 text-sm",
 									{
-										"bg-sky-50 dark:bg-zinc-700": focus,
+										"bg-sky-50": focus,
 									},
 								)}
 							>
@@ -117,7 +117,7 @@ const UserMenu = () => {
 					{({ focus }) => (
 						<button
 							className={cn("w-full px-4 py-2 text-left text-sm", {
-								"bg-sky-50 dark:bg-zinc-700": focus,
+								"bg-sky-50": focus,
 							})}
 							onClick={logout}
 						>
@@ -139,7 +139,7 @@ const Brand = () => {
 			<span className="rounded bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
 				Mentor
 			</span>
-			<span className="text-sky-600 dark:text-indigo-400">AI</span>
+			<span className="text-sky-600">AI</span>
 		</Link>
 	);
 };
@@ -154,7 +154,7 @@ const RoadmapBtn = () => {
 	return (
 		<button
 			onClick={handleClick}
-			className="relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-2 font-medium text-sky-600 dark:text-indigo-300"
+			className="relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-2 font-medium text-sky-600"
 		>
 			<motion.span
 				initial={{ x: "-100%" }}
@@ -163,7 +163,7 @@ const RoadmapBtn = () => {
 				className="pointer-events-none absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-sky-500/10 to-transparent blur-sm"
 			/>
 			<MapPinned className="relative z-10 h-5 w-5" />
-			<span className="relative z-10">Roadmap</span>
+			<span className="relative z-10">Мапа</span>
 		</button>
 	);
 };

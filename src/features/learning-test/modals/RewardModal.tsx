@@ -21,7 +21,7 @@ export default function RewardModal() {
 
 	return (
 		<ModalLayout
-			className="w-[27.125rem] bg-white px-8 py-8 text-center dark:bg-zinc-900"
+			className="w-[27.125rem] bg-white px-8 py-8 text-center"
 			closeable={false}
 		>
 			<motion.div
@@ -44,7 +44,7 @@ export default function RewardModal() {
 						<Sparkles className="h-6 w-6 text-indigo-500" />
 						<span className="font-medium">{reward.experience}</span> EXP
 					</div>
-					<div className="text-sm text-zinc-600 dark:text-zinc-400">
+					<div className="text-sm text-zinc-600">
 						Результат&nbsp;
 						<span className="font-semibold">{reward.score * 100}%</span>
 					</div>

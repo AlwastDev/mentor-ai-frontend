@@ -7,7 +7,6 @@ import type { AddTestSchema } from "../schemas/TestService/addTest.schema";
 import type { EditTestSchema } from "../schemas/TestService/editTest.schema";
 import type { GetAllTestsResponse } from "../responses/TestService/GetAllTestsResponse";
 import type { GetByIdResponse } from "../responses/TestService/GetByIdResponse";
-import type { GetPublishedResponse } from "../responses/TestService/GetPublishedResponse";
 
 const ROUTE_NAME = "test";
 
@@ -78,25 +77,6 @@ export class TestService implements ITestService {
 	): Promise<GetByIdResponse | null> {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/get/${id}`,
-			method: HttpMethod.GET,
-			accessToken,
-		});
-	}
-
-	async getPublished(accessToken: string): Promise<GetPublishedResponse[]> {
-		return await this.apiService.sendRequest({
-			url: `${ROUTE_NAME}/get/published`,
-			method: HttpMethod.GET,
-			accessToken,
-		});
-	}
-
-	async getPublishedById(
-		id: string,
-		accessToken: string,
-	): Promise<GetByIdResponse | null> {
-		return await this.apiService.sendRequest({
-			url: `${ROUTE_NAME}/get/published/${id}`,
 			method: HttpMethod.GET,
 			accessToken,
 		});

@@ -21,7 +21,7 @@ export async function POST() {
 
 		cookiesStore.set("access_token", accessToken, {
 			httpOnly: true,
-			secure: true,
+			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
 			maxAge: env.ACCESS_TOKEN_EXPIRES_MIN * 60,
 			path: "/",
@@ -41,7 +41,7 @@ function unauthorizedResponse() {
 	// clear both tokens
 	response.cookies.set("access_token", "", {
 		httpOnly: true,
-		secure: true,
+		secure: process.env.NODE_ENV === "production",
 		sameSite: "lax",
 		maxAge: 0,
 		path: "/",
@@ -49,7 +49,7 @@ function unauthorizedResponse() {
 
 	response.cookies.set("refresh_token", "", {
 		httpOnly: true,
-		secure: true,
+		secure: process.env.NODE_ENV === "production",
 		sameSite: "lax",
 		maxAge: 0,
 		path: "/",

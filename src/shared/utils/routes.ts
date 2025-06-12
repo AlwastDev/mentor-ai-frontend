@@ -5,6 +5,7 @@ export const ROUTES = {
 	Profile: "/profile",
 	Learning: {
 		Roadmap: "/learning/roadmap",
+		Leaderboard: "/learning/leaderboard",
 		Learning: (testId: string) => `/learning/${testId}`,
 		TestAttempt: (testAttemptId: string) => `/learning/test/${testAttemptId}`,
 	},
@@ -16,7 +17,7 @@ export const ROUTES = {
 		Subscriptions: {
 			Root: "/admin/subscriptions",
 			Create: "/admin/subscriptions/create",
-			Edit: (id: string) => `/admin/subscriptions/edit/${id}`,
+			Edit: (id: string) => `/admin/subscriptions/${id}`,
 		},
 	},
 };

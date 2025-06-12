@@ -29,6 +29,7 @@ export const env = createEnv({
 	 */
 	client: {
 		NEXT_PUBLIC_LIQPAY_PUBLIC_KEY_TEST: z.string().min(1),
+		NEXT_PUBLIC_CHAT_WSS_URL: z.string().min(1),
 	},
 
 	/**
@@ -37,6 +38,7 @@ export const env = createEnv({
 	 */
 	runtimeEnv: {
 		NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+		NEXT_PUBLIC_CHAT_WSS_URL: process.env.NEXT_PUBLIC_CHAT_WSS_URL,
 		BACKEND_URL: process.env.BACKEND_URL,
 		NODE_ENV: process.env.NODE_ENV,
 		AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,

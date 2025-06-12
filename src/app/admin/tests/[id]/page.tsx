@@ -16,10 +16,9 @@ import {
 	useEditTestMutation,
 	useGetByIdTestQuery,
 } from "@/features/admin/create-test/hooks";
-import { Form } from "@/shared/components/ui";
+import { Form, Loader } from "@/shared/components/ui";
 import { GetByIdResponseSchema, type GetByIdResponse } from "@/server/core/responses/TestService/GetByIdResponse";
 import { useNotification } from "@/shared/hooks";
-import { Loader } from "@/shared/components/ui/Loader";
 
 export default function EditTestPage() {
 	const n = useNotification();

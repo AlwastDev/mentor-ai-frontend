@@ -1,7 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import { CheckCircle2, BarChart3, Sparkles, Coins } from "lucide-react";
-import { Loader } from "@/shared/components/ui/Loader";
+
+import { Loader } from "@/shared/components/ui";
 import { useGetSubscriptionsQuery } from "@/features/admin/subscriptions/hooks";
 import { PayButton } from "@/features/admin/subscriptions/components";
 
@@ -16,7 +17,7 @@ export const PlansSection = () => {
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
-				className="mb-16 text-center text-3xl font-bold dark:text-white sm:text-4xl"
+				className="mb-16 text-center text-3xl font-bold sm:text-4xl"
 			>
 				Тарифні плани
 			</motion.h2>
@@ -29,9 +30,9 @@ export const PlansSection = () => {
 						viewport={{ once: true }}
 						transition={{ delay: idx * 0.05 }}
 						key={plan.id}
-						className="flex flex-col rounded-2xl bg-white p-8 shadow-lg dark:bg-zinc-800"
+						className="flex flex-col rounded-2xl bg-white p-8 shadow-lg"
 					>
-						<h3 className="mb-4 text-xl font-semibold dark:text-white">
+						<h3 className="mb-4 text-xl font-semibold">
 							{plan.planName}
 						</h3>
 
@@ -40,12 +41,12 @@ export const PlansSection = () => {
 								style: "currency",
 								currency: "UAH",
 							})}
-							<span className="ml-1 text-base font-medium text-zinc-500 dark:text-zinc-400">
+							<span className="ml-1 text-base font-medium text-zinc-500">
 								/ {plan.durationDays} дн.
 							</span>
 						</p>
 
-						<ul className="flex-1 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
+						<ul className="flex-1 space-y-2 text-sm text-zinc-700">
 							<Feature
 								active={plan.accessToCharts}
 								icon={<BarChart3 className="h-4 w-4" />}

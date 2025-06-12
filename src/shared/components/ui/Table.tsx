@@ -179,7 +179,10 @@ function Pagination(props: PaginationProps) {
 	return (
 		<div className="flex h-10 items-center justify-between gap-4 sm:mx-4">
 			<button
-				className={`${buttonClasses} ${isDisabledPreviousButton ? disabledButton : activeButton}`}
+				className={cn(buttonClasses, {
+					[disabledButton]: isDisabledPreviousButton,
+					[activeButton]: !isDisabledPreviousButton,
+				})}
 				disabled={isDisabledPreviousButton}
 				onClick={onPrevPage}
 			>
@@ -189,7 +192,10 @@ function Pagination(props: PaginationProps) {
 				Сторінка {page} з {totalPages}
 			</p>
 			<button
-				className={`${buttonClasses} ${isDisabledNextButton ? disabledButton : activeButton}`}
+				className={cn(buttonClasses, {
+					[disabledButton]: isDisabledNextButton,
+					[activeButton]: !isDisabledNextButton,
+				})}
 				disabled={isDisabledNextButton}
 				onClick={onNextPage}
 			>

@@ -8,7 +8,7 @@ export const useGenerateRoadmapMutation = () => {
 	const { mutate, isPending } = trpc.roadmap.generate.useMutation({
 		onSuccess(response) {
 			utils.roadmap.get.invalidate();
-			n.success((response as any).message ?? "Дорожня карта успішно створена");
+			n.success((response as any).message ?? "Дорожня мапа успішно створена");
 		},
 		onError(error) {
 			const fieldErrors = error.shape?.data.zodError?.fieldErrors;

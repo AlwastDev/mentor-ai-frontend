@@ -64,14 +64,14 @@ export async function GET(req: NextRequest) {
 		const response = NextResponse.redirect(new URL("/", req.url));
 		response.cookies.set("access_token", accessToken, {
 			httpOnly: true,
-			secure: true,
+			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
 			maxAge: env.ACCESS_TOKEN_EXPIRES_MIN * 60,
 			path: "/",
 		});
 		response.cookies.set("refresh_token", refreshToken, {
 			httpOnly: true,
-			secure: true,
+			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
 			maxAge: env.REFRESH_TOKEN_EXPIRES_MIN * 60,
 			path: "/",

@@ -20,7 +20,7 @@ export async function GET() {
 
 			cookiesStore.set("access_token", newAccessToken, {
 				httpOnly: true,
-				secure: true,
+				secure: process.env.NODE_ENV === "production",
 				sameSite: "lax",
 				maxAge: env.ACCESS_TOKEN_EXPIRES_MIN * 60,
 				path: "/",

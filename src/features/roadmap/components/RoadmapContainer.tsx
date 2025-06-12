@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { useGenerateRoadmapMutation, useGetRoadmapQuery } from "../hooks";
 import { RoadmapNode } from "./RoadmapNode";
-import { Loader } from "@/shared/components/ui/Loader";
+import { Loader } from "@/shared/components/ui";
 import { cn } from "@/shared/utils/helpers";
 
 export const RoadmapContainer = () => {
@@ -18,7 +18,7 @@ export const RoadmapContainer = () => {
 	if (roadmapItems.length === 0) {
 		return (
 			<div className="flex flex-col items-center gap-6 py-20 text-center">
-				<p className="max-w-md text-lg text-zinc-600 dark:text-zinc-300">
+				<p className="max-w-md text-lg text-zinc-600">
 					Дорожню карту ще не створено. Натисніть кнопку нижче, і ми згенеруємо
 					персональний план навчання.
 				</p>
@@ -65,7 +65,7 @@ export const RoadmapContainer = () => {
 									initial={{ scaleY: 0 }}
 									animate={{ scaleY: 1 }}
 									transition={{ duration: 0.4, delay: idx * 0.05 }}
-									className="absolute left-1/2 top-full h-14 w-px origin-top -translate-x-1/2 bg-slate-300 dark:bg-slate-600"
+									className="absolute left-1/2 top-full h-14 w-px origin-top -translate-x-1/2 bg-slate-300"
 								/>
 							)}
 						</li>

@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
 
-import { Button, Icon } from "@/shared/components/ui";
+import { Button, Icon, Loader } from "@/shared/components/ui";
 import { FeatureCard, PlansSection } from "@/features/home/components";
 import { useAuth, useNotification } from "@/shared/hooks";
 import { ROUTES } from "@/shared/utils/routes";
-import { Loader } from "@/shared/components/ui/Loader";
 import { useStartEntryTestAttemptMutation } from "@/features/home/hooks";
 
 export default function HomePage() {
@@ -46,14 +45,14 @@ export default function HomePage() {
 					transition={{ duration: 0.6 }}
 					className="max-w-2xl"
 				>
-					<h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 dark:text-white sm:text-5xl xl:text-6xl">
+					<h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl xl:text-6xl">
 						Прокачай&nbsp;
 						<span className="bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
 							свої навички
 						</span>{" "}
 						програмування за допомогою&nbsp;AI
 					</h1>
-					<p className="mb-8 text-lg text-zinc-600 dark:text-zinc-300">
+					<p className="mb-8 text-lg text-zinc-600">
 						Персоналізований навчальний шлях, аналітика прогресу та рейтингова
 						система – усе в одному місці.
 					</p>
@@ -83,7 +82,7 @@ export default function HomePage() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.2, duration: 0.6 }}
-					className="mb-16 text-center text-3xl font-bold dark:text-white sm:text-4xl"
+					className="mb-16 text-center text-3xl font-bold sm:text-4xl"
 				>
 					Чому обирають нас?
 				</motion.h2>
@@ -107,7 +106,7 @@ export default function HomePage() {
 				</div>
 			</section>
 
-			<section className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-sky-500 py-20 text-center text-white dark:from-indigo-600 dark:to-sky-600">
+			<section className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-sky-500 py-20 text-center text-white">
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -115,11 +114,11 @@ export default function HomePage() {
 					className="mx-auto max-w-3xl px-6"
 				>
 					<h3 className="mb-4 text-3xl font-semibold sm:text-4xl">
-						Пройди 10-хвилинний Entry Test
+						Пройди 10-хвилинний вступний тест
 					</h3>
 					<p className="mb-8 text-lg opacity-90">
-						Визначимо твій поточний рівень і одразу сформуємо індивідуальний
-						Roadmap.
+						Визначимо твій поточний рівень і одразу сформуємо індивідуальну
+						дорожню мапу.
 					</p>
 					<Button
 						disabled={isPending}
@@ -131,7 +130,7 @@ export default function HomePage() {
 				</motion.div>
 			</section>
 
-			<section className="bg-zinc-50 px-6 pb-28 pt-32 dark:bg-zinc-900">
+			<section className="bg-zinc-50 px-6 pb-28 pt-32">
 				<PlansSection />
 			</section>
 		</div>

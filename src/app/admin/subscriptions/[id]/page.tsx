@@ -1,20 +1,26 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useCreateSubscriptionMutation } from "@/features/admin/create-subscription/hooks";
-import {
-	createSubscriptionSchema,
-	type CreateSubscriptionSchema,
-} from "@/server/core/schemas/SubscriptionService/createSubscription.schema";
+import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { notFound, useParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+
+import { useEditSubscriptionMutation } from "@/features/admin/create-subscription/hooks";
+import { useGetSubscriptionsQuery } from "@/features/admin/subscriptions/hooks";
+import { editSubscriptionSchema, type EditSubscriptionSchema } from "@/server/core/schemas/SubscriptionService/createSubscription.schema";
 import { Button, ControlledInput, Form, Switch } from "@/shared/components/ui";
 
-export default function CreateSubscriptionPage() {
-	const { createSubscription, isPending } = useCreateSubscriptionMutation();
+export default function EditSubscriptionPage() {
+	const { id } = useParams();
+	const { subscriptions } = useGetSubscriptionsQuery();
+	const { editSubscription, isPending } = useEditSubscriptionMutation();
 
-	const form = useForm<CreateSubscriptionSchema>({
-		resolver: zodResolver(createSubscriptionSchema),
+  const subscription = subscriptions.find((s) => s.id === id);
+
+	const form = useForm<EditSubscriptionSchema>({
+		resolver: zodResolver(editSubscriptionSchema),
 		defaultValues: {
+      planId: "",
 			planName: "",
 			price: 0,
 			durationDays: 30,
@@ -26,13 +32,33 @@ export default function CreateSubscriptionPage() {
 
 	const { watch, setValue, register } = form;
 
-	const onSubmit = (data: CreateSubscriptionSchema) => {
-		createSubscription(data);
+  useEffect(() => {
+    if(subscription) {
+      form.reset({
+        planId: subscription.id,
+        planName: subscription.planName,
+        price: subscription.price,
+        durationDays: subscription.durationDays,
+        accessToCharts: subscription.accessToCharts,
+        accessToAISupportChat: subscription.accessToAISupportChat,
+        bonusCoins: subscription.bonusCoins,
+      });
+    }
+  }, [form, subscription]);
+
+  const onSubmit = (data: EditSubscriptionSchema) => {
+    if(!subscription) return;
+
+		editSubscription({ ...data, planId: subscription.id });
 	};
+
+	if (!subscription) {
+		return notFound();
+	}
 
 	return (
 		<div className="container mx-auto max-w-lg px-4 py-10">
-			<h1 className="mb-8 text-3xl font-bold">Нова підписка</h1>
+			<h1 className="mb-8 text-3xl font-bold">Редагування підписки</h1>
 
 			<Form
 				onSubmit={onSubmit}
@@ -89,7 +115,7 @@ export default function CreateSubscriptionPage() {
 				</div>
 
 				<Button className="w-full" type="submit" disabled={isPending}>
-					{isPending ? "Збереження…" : "Створити"}
+					{isPending ? "Збереження…" : "Зберегти"}
 				</Button>
 			</Form>
 		</div>

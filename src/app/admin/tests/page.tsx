@@ -5,10 +5,9 @@ import {
 	useGetAllTestsQuery,
 	useTestsColumns,
 } from "@/features/admin/tests/hooks";
-import { Button, Table } from "@/shared/components/ui";
+import { Button, Loader, Table } from "@/shared/components/ui";
 import { ROUTES } from "@/shared/utils/routes";
 import { usePaginationQueryParams } from "@/shared/hooks";
-import { Loader } from "@/shared/components/ui/Loader";
 
 export default function TestsPage() {
 	const router = useRouter();

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
+import { adminProcedure, createTRPCRouter } from "../trpc";
 import { SYMBOLS } from "@/server/constants/symbols";
 import { container } from "@/server/inversify.config";
 import type { ITestService } from "@/server/core/services/interfaces/ITestService";
@@ -45,15 +45,5 @@ export const testRouter = createTRPCRouter({
 		.input(z.string().uuid())
 		.query(async ({ input, ctx }) =>
 			testService.getById(input, ctx.access_token),
-		),
-
-	getPublished: protectedProcedure.query(async ({ ctx }) =>
-		testService.getPublished(ctx.access_token),
-	),
-
-	getPublishedById: protectedProcedure
-		.input(z.string())
-		.query(async ({ input, ctx }) =>
-			testService.getPublishedById(input, ctx.access_token),
 		),
 });

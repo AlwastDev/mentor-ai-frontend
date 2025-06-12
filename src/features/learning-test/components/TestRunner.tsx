@@ -6,6 +6,7 @@ import type { GetByIdTestAttemptResponse } from "@/server/core/responses/TestAtt
 import { Button } from "@/shared/components/ui";
 import { useCompleteTestAttemptMutation } from "../hooks";
 import { useAuth } from "@/shared/hooks";
+import { cn } from "@/shared/utils/helpers";
 
 type TestRunnerProps = { testAttempt: GetByIdTestAttemptResponse };
 
@@ -86,7 +87,13 @@ export function TestRunner(props: TestRunnerProps) {
 						<button
 							key={i}
 							onClick={() => go(i)}
-							className={`h-10 w-10 rounded-full border text-sm font-medium transition ${isActive ? "border-sky-600 bg-sky-100 dark:bg-sky-800" : ""} ${isDone ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-800" : ""} `}
+							className={cn(
+								"h-10 w-10 rounded-full border text-sm font-medium transition",
+								{
+									"border-sky-600 bg-sky-100": isActive,
+									"border-emerald-500 bg-emerald-100": isDone,
+								}
+							)}
 						>
 							{i + 1}
 						</button>

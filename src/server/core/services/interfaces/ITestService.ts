@@ -1,6 +1,5 @@
 import type { GetAllTestsResponse } from "../../responses/TestService/GetAllTestsResponse";
 import type { GetByIdResponse } from "../../responses/TestService/GetByIdResponse";
-import type { GetPublishedResponse } from "../../responses/TestService/GetPublishedResponse";
 import type { AddTestSchema } from "../../schemas/TestService/addTest.schema";
 import type { EditTestSchema } from "../../schemas/TestService/editTest.schema";
 
@@ -15,9 +14,4 @@ export interface ITestService {
 		limit: number,
 	): Promise<{ items: GetAllTestsResponse[]; totalCount: number }>;
 	getById(id: string, accessToken: string): Promise<GetByIdResponse | null>;
-	getPublished(accessToken: string): Promise<GetPublishedResponse[]>;
-	getPublishedById(
-		id: string,
-		accessToken: string,
-	): Promise<GetByIdResponse | null>;
 }
