@@ -6,6 +6,7 @@ import type { IAuthService } from "./interfaces/IAuthService";
 import type { LoginSchema } from "../schemas/AuthService/login.schema";
 import type { RegisterSchema } from "../schemas/AuthService/register.schema";
 import type { SessionUser } from "@/shared/utils/types";
+import type { ChangePasswordInput } from "../schemas/AuthService/change-password.schema";
 
 const ROUTE_NAME = "auth";
 
@@ -59,6 +60,15 @@ export class AuthService implements IAuthService {
 		return await this.apiService.sendRequest({
 			url: `${ROUTE_NAME}/logout`,
 			method: HttpMethod.POST,
+			accessToken,
+		});
+	}
+
+	async changePassword(input: ChangePasswordInput, accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: `${ROUTE_NAME}/change-password`,
+			method: HttpMethod.POST,
+			body: input,
 			accessToken,
 		});
 	}

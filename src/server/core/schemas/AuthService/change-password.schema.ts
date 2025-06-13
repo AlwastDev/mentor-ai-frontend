@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-export const signUpInputSchema = z.object({
-	name: z.string().min(1),
-	surname: z.string().min(1),
-	email: z.string().email(),
-	password: z
+export const changePasswordInputSchema = z.object({
+	currentPassword: z.string().min(8),
+	newPassword: z
 		.string()
 		.min(8, "Пароль має містити щонайменше 8 символів")
 		.regex(/[A-Z]/, "Пароль повинен містити хоча б одну велику літеру")
@@ -13,4 +11,4 @@ export const signUpInputSchema = z.object({
 		.regex(/[^A-Za-z0-9]/, "Пароль повинен містити хоча б один спецсимвол"),
 });
 
-export type SignUpInput = z.infer<typeof signUpInputSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordInputSchema>;

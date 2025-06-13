@@ -18,4 +18,12 @@ export class StudentSubscriptionService implements IStudentSubscriptionService {
 			body: input,
 		});
 	}
+
+	async delete(accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: `${ROUTE_NAME}/delete`,
+			method: HttpMethod.DELETE,
+			accessToken
+		});
+	}
 }

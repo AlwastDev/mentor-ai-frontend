@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { type UserRole } from "@/shared/utils/enums";
 import { ROUTES } from "../utils/routes";
@@ -20,12 +20,13 @@ type ProtectedPageOptions = {
 export const useProtectedPage = (options?: ProtectedPageOptions) => {
 	const { requiredRole } = options || {};
 
-	const { isAuthed, isChecking } = useAuth();
+	const { isChecking } = useAuth();
+	const router = useRouter();
 
 	const [isAllowed, setIsAllowed] = useState(false);
 
 	useEffect(() => {
-		if (isChecking || !isAuthed) {
+		if (isChecking) {
 			return;
 		}
 
@@ -34,20 +35,20 @@ export const useProtectedPage = (options?: ProtectedPageOptions) => {
 				const user = (await fetchMe()) as SessionUser;
 
 				if (!user) {
-					redirect(ROUTES.SignIn);
+					router.push(ROUTES.SignIn);
 				}
 
 				if (requiredRole && user.role !== requiredRole) {
-					redirect(ROUTES.Home);
+					router.push(ROUTES.Home);
 				}
 
 				setIsAllowed(true);
 			} catch (err) {
 				console.error("JWT verification failed", err);
-				redirect(ROUTES.SignIn);
+				router.push(ROUTES.SignIn);
 			}
 		})();
-	}, [isAuthed, isChecking, requiredRole]);
+	}, [router, isChecking, requiredRole]);
 
 	return isAllowed;
 };

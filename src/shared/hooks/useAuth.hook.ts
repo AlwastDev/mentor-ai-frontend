@@ -60,11 +60,11 @@ export const useAuth = () => {
 		isStudent,
 		isAdmin,
 		isAuthed,
-		status: isLoading
-			? "loading"
-			: isAuthed
-				? "authenticated"
-				: "unauthenticated",
+		status: (() => {
+			if (isLoading) return "loading"
+			if (isAuthed) return "authenticated"
+			return "unauthenticated"
+		})(),
 		logout,
 		refetch,
 	};

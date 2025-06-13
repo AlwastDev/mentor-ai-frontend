@@ -14,7 +14,11 @@ export default function LearningLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	useProtectedPage({ requiredRole: UserRole.STUDENT });
+	const isAllowed = useProtectedPage({ requiredRole: UserRole.STUDENT });
+
+	if (!isAllowed) {
+		return null;
+	}
 
 	return (
 		<div className="container relative mx-auto flex gap-12 pt-12">

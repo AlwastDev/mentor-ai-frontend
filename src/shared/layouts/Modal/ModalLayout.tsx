@@ -10,6 +10,7 @@ type ModalLayoutProps = {
 	className?: string;
 	titleClassName?: string;
 	closeable?: boolean;
+	showCloseButton?: boolean;
 	title?: string;
 	scrollable?: boolean;
 } & React.PropsWithChildren;
@@ -19,6 +20,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
 		className,
 		titleClassName,
 		closeable = true,
+		showCloseButton = true,
 		title,
 		children,
 		scrollable = false,
@@ -80,14 +82,10 @@ const ModalLayout = (props: ModalLayoutProps) => {
 			>
 				<div className="fixed bottom-0 left-0 right-0 w-full">
 					<div
-						style={{
-							boxShadow:
-								"12px 16px 24px 0px rgba(0, 0, 0, 0.24), 12px 8px 12px 0px rgba(0, 0, 0, 0.24), 4px 4px 8px 0px rgba(0, 0, 0, 0.32)",
-						}}
 						className={cn(
 							className,
-							"bg-cod-gray-2 relative w-full transform rounded-t-xl",
-							"border-white-7 max-h-[70vh] border-t",
+							"bg-white relative w-full transform rounded-t-xl",
+							"border-white-7 max-h-[70vh] border-t shadow-lg",
 							"transition-all duration-300 ease-in-out",
 							{ "overflow-y-auto": scrollable },
 							{
@@ -98,16 +96,18 @@ const ModalLayout = (props: ModalLayoutProps) => {
 						onClick={handleModalClick}
 					>
 						<div className={cn("flex justify-between px-5 pt-5")}>
-							<h2
-								className={cn(
-									"text-base font-semibold leading-normal text-white",
-									titleClassName,
-								)}
-							>
-								{title}
-							</h2>
+							{title && (
+								<h2
+									className={cn(
+										"text-base font-semibold leading-normal text-zinc-700",
+										titleClassName,
+									)}
+								>
+									{title}
+								</h2>
+							)}
 
-							{closeable && (
+							{closeable && showCloseButton && (
 								<Icon
 									icon="cross"
 									className={cn("size-6")}
@@ -126,19 +126,15 @@ const ModalLayout = (props: ModalLayoutProps) => {
 		<div
 			style={{ backdropFilter: "blur(1px)" }}
 			className={cn(
-				"fixed inset-0 z-50 flex items-center justify-center",
-				"transition-opacity duration-300 ease-in-out",
+				"fixed inset-0 z-[70] flex items-center justify-center",
+				"transition-opacity duration-300 ease-in-out shadow-lg",
 				{ "opacity-100": isVisible, "opacity-0": !isVisible },
 			)}
 			onClick={handleCloseModal}
 		>
 			<div
-				style={{
-					boxShadow:
-						"12px 16px 24px 0px rgba(0, 0, 0, 0.24), 12px 8px 12px 0px rgba(0, 0, 0, 0.24), 4px 4px 8px 0px rgba(0, 0, 0, 0.32)",
-				}}
 				className={cn(
-					"bg-cod-gray relative transform rounded-[20px]",
+					"bg-white relative transform rounded-[20px]",
 					"border-white-7 border",
 					"transition-all duration-300 ease-in-out",
 					className,
@@ -149,20 +145,28 @@ const ModalLayout = (props: ModalLayoutProps) => {
 				)}
 				onClick={handleModalClick}
 			>
-				<div className={cn("flex justify-between px-5 pt-5")}>
-					<h2
-						className={cn(
-							"text-base font-semibold leading-normal text-white",
-							titleClassName,
+				{(title || closeable) && (
+					<div className={cn("flex items-center justify-center pb-5")}>
+						{title && (
+							<h2
+								className={cn(
+									"text-xl font-semibold leading-normal text-zinc-700",
+									titleClassName,
+								)}
+							>
+								{title}
+							</h2>
 						)}
-					>
-						{title}
-					</h2>
 
-					{closeable && (
-						<Icon icon="cross" className={cn("size-6")} onClick={closeModal} />
-					)}
-				</div>
+						{closeable && showCloseButton && (
+							<Icon
+								icon="cross"
+								className={cn("size-6")}
+								onClick={closeModal}
+							/>
+						)}
+					</div>
+				)}
 
 				{children}
 			</div>

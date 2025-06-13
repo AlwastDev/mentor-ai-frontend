@@ -10,6 +10,11 @@ const modalComponents = {
 			default: mod.default,
 		})),
 	),
+	ConfirmationModal: dynamic(() =>
+		import("@/shared/modals/ConfirmationModal").then((mod) => ({
+			default: mod.default,
+		})),
+	),
 };
 
 export const ModalRoot = memo(() => {

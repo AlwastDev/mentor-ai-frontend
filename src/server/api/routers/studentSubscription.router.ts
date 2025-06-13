@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { SYMBOLS } from "@/server/constants/symbols";
 import { container } from "@/server/inversify.config";
 import type { IStudentSubscriptionService } from "@/server/core/services/interfaces/IStudentSubscriptionService";
@@ -14,4 +14,8 @@ export const studentSubscriptionRouter = createTRPCRouter({
 		.mutation(async ({ input }) =>
 			studentSubscriptionService.add({ ...input }),
 		),
+
+	delete: protectedProcedure.mutation(async ({ ctx }) =>
+		studentSubscriptionService.delete(ctx.access_token),
+	),
 });

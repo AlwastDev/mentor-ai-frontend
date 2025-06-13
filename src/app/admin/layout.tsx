@@ -10,7 +10,7 @@ export default function AdminLayout({
 	const isAllowed = useProtectedPage({ requiredRole: UserRole.ADMIN });
 
 	if (!isAllowed) {
-		return;
+		return null;
 	}
 
 	return <>{children}</>;

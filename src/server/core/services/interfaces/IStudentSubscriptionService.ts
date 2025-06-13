@@ -2,4 +2,5 @@ import type { AddStudentSubscriptionSchema } from "../../schemas/StudentSubscrip
 
 export interface IStudentSubscriptionService {
 	add(input: AddStudentSubscriptionSchema): Promise<void>;
+	delete(accessToken: string): Promise<void>;
 }

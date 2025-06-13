@@ -3,6 +3,7 @@ export const ROUTES = {
 	SignIn: "/auth/sign-in",
 	SignUp: "/auth/sign-up",
 	Profile: "/profile",
+	ChangePassword: "/profile/change-password",
 	Learning: {
 		Roadmap: "/learning/roadmap",
 		Leaderboard: "/learning/leaderboard",
