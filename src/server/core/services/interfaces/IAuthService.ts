@@ -14,4 +14,5 @@ export interface IAuthService {
 	refreshToken(token: string): Promise<{ accessToken: string }>;
 	logout(accessToken: string): Promise<void>;
 	changePassword(input: ChangePasswordInput, accessToken: string): Promise<void>
+	deleteAccount(accessToken: string): Promise<void>;
 }

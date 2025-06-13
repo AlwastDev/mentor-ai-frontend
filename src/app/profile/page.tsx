@@ -10,7 +10,7 @@ import { useModalStore } from "@/shared/store";
 
 export default function ProfilePage() {
 	const { openModal } = useModalStore();
-	const { session, isChecking } = useAuth();
+	const { session, isChecking, deleteAccount } = useAuth();
 	const { deleteStudentSubscription, isPending } =
 		useDeleteStudentSubscriptionMutation();
 
@@ -34,6 +34,19 @@ export default function ProfilePage() {
 			cancelText: "Скасувати",
 			onConfirm: () => {
 				deleteStudentSubscription();
+			},
+		});
+	};
+
+	const handleDeleteAccount = () => {
+		openModal("ConfirmationModal", {
+			title: "Видалити акаунт",
+			text:
+				"Ви впевнені, що хочете видалити свій акаунт? Цю дію неможливо буде скасувати.",
+			confirmText: "Видалити",
+			cancelText: "Скасувати",
+			onConfirm: async () => {
+				await deleteAccount();
 			},
 		});
 	};
@@ -73,6 +86,17 @@ export default function ProfilePage() {
 							</motion.div>
 						)}
 					</div>
+				</InfoRow>
+				<InfoRow label="Керування акаунтом">
+					<motion.div whileTap={{ scale: 0.95 }}>
+						<Button
+							onClick={handleDeleteAccount}
+							color="white"
+							className="border-red-500 text-red-500 hover:text-red-600 hover:border-red-600"
+						>
+							Видалити акаунт
+						</Button>
+					</motion.div>
 				</InfoRow>
 			</div>
 		</section>

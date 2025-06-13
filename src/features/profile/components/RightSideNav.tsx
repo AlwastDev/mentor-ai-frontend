@@ -13,7 +13,7 @@ export function RightSideNav() {
 	const pathname = usePathname()
 
 	return (
-		<nav className="w-56 flex-shrink-0">
+		<nav className="w-56 flex-shrink-0 border border-gray-200 rounded-xl h-fit p-2">
 			<ul className="space-y-2">
 				{navItems.map((item) => {
 					const isActive = pathname === item.href

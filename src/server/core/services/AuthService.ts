@@ -72,4 +72,12 @@ export class AuthService implements IAuthService {
 			accessToken,
 		});
 	}
+
+	async deleteAccount(accessToken: string): Promise<void> {
+		return await this.apiService.sendRequest({
+			url: `${ROUTE_NAME}/delete-account`,
+			method: HttpMethod.DELETE,
+			accessToken,
+		});
+	}
 }

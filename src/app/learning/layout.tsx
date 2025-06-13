@@ -1,4 +1,5 @@
 "use client";
+import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Route, Trophy } from "lucide-react";
@@ -14,7 +15,12 @@ export default function LearningLayout({
 }: {
 	children: React.ReactNode;
 }) {
+	const pathname = usePathname();
 	const isAllowed = useProtectedPage({ requiredRole: UserRole.STUDENT });
+
+	const isTestPage = useMemo(() => {
+		return pathname.includes(ROUTES.Learning.TestAttempt(""));
+	}, [pathname]);
 
 	if (!isAllowed) {
 		return null;
@@ -22,9 +28,9 @@ export default function LearningLayout({
 
 	return (
 		<div className="container relative mx-auto flex gap-12 pt-12">
-			<LeftSidebar />
+			{!isTestPage && <LeftSidebar />}
 			{children}
-			<RightSidebar />
+			{!isTestPage && <RightSidebar />}
 		</div>
 	);
 }

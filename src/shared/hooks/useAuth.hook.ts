@@ -1,7 +1,7 @@
 "use client";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { UserRole } from "../utils/enums";
 import { ROUTES } from "../utils/routes";
@@ -16,8 +16,6 @@ const fetchMe = async () => {
 
 export const useAuth = () => {
 	const router = useRouter();
-
-	const queryClient = useQueryClient();
 
 	const {
 		data: session,
@@ -37,12 +35,25 @@ export const useAuth = () => {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 			});
-			queryClient.setQueryData(["auth.me"], null);
+			refetch();
 			router.push(ROUTES.SignIn);
 		} catch (err) {
 			console.error("Logout failed", err);
 		}
-	}, [queryClient, router]);
+	}, [refetch, router]);
+
+	const deleteAccount = useCallback(async () => {
+		try {
+			await fetch("/api/auth/delete-account", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+			});
+			refetch();
+			router.push(ROUTES.SignIn);
+		} catch (err) {
+			console.error("Delete account failed", err);
+		}
+	}, [refetch, router]);
 
 	const userId = session?.id ?? "";
 	const role = session?.role ?? UserRole.STUDENT;
@@ -66,6 +77,7 @@ export const useAuth = () => {
 			return "unauthenticated"
 		})(),
 		logout,
+		deleteAccount,
 		refetch,
 	};
 };

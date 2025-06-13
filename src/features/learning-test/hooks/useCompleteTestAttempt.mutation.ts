@@ -1,13 +1,11 @@
-import { useQueryClient } from "@tanstack/react-query";
-
-import { useNotification } from "@/shared/hooks";
+import { useAuth, useNotification } from "@/shared/hooks";
 import { trpc } from "@/shared/utils/trpc";
 import { useModalStore } from "@/shared/store";
 
 export const useCompleteTestAttemptMutation = (storageKey: string) => {
 	const n = useNotification();
 	const { openModal } = useModalStore();
-	const queryClient = useQueryClient();
+	const { refetch } = useAuth();
 	const utils = trpc.useUtils();
 
 	const { mutate, isPending } = trpc.testAttempt.complete.useMutation({
@@ -19,7 +17,7 @@ export const useCompleteTestAttemptMutation = (storageKey: string) => {
 			});
 			localStorage.removeItem(storageKey);
 			utils.roadmap.get.invalidate();
-			queryClient.setQueryData(["auth.me"], null);
+			refetch();
 		},
 		onError(error) {
 			const fieldErrors = error.shape?.data.zodError?.fieldErrors;
