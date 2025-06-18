@@ -7,6 +7,7 @@ import {
 	subscriptionRouter,
 	testRouter,
 	testAttemptRouter,
+	leaderboardRouter,
 } from "./routers";
 
 export const appRouter = createTRPCRouter({
@@ -17,6 +18,7 @@ export const appRouter = createTRPCRouter({
 	studentSubscription: studentSubscriptionRouter,
 	roadmap: roadmapRouter,
 	testAttempt: testAttemptRouter,
+	leaderboard: leaderboardRouter,
 });
 
 export type AppRouter = typeof appRouter;

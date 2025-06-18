@@ -20,6 +20,8 @@ import type { IRoadmapService } from "./core/services/interfaces/IRoadmapService
 import { RoadmapService } from "./core/services/RoadmapService";
 import type { ITestAttemptService } from "./core/services/interfaces/ITestAttemptService";
 import { TestAttemptService } from "./core/services/TestAttemptService";
+import type { ILeaderboardService } from "./core/services/interfaces/ILeaderboardService";
+import { LeaderboardService } from "./core/services/LeaderboardService";
 
 const container = new Container();
 
@@ -40,5 +42,6 @@ container.bind<IRoadmapService>(SYMBOLS.IRoadmapService).to(RoadmapService);
 container
 	.bind<ITestAttemptService>(SYMBOLS.ITestAttemptService)
 	.to(TestAttemptService);
+container.bind<ILeaderboardService>(SYMBOLS.ILeaderboardService).to(LeaderboardService);
 
 export { container };

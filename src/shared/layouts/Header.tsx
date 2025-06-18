@@ -54,6 +54,9 @@ export const Header = memo(() => {
 
 	const AdminArea = (
 		<div className="flex items-center gap-3">
+			<Link href={ROUTES.Learning.Leaderboard}>
+				<Button color="white">Лідерборд</Button>
+			</Link>
 			<Link href={ROUTES.Admin.Subscriptions.Root}>
 				<Button color="white">Підписки</Button>
 			</Link>

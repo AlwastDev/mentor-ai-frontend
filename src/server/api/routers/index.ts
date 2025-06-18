@@ -4,4 +4,5 @@ export { learningMaterialRouter } from "./learningMaterial.router";
 export { subscriptionRouter } from "./subscription.router";
 export { studentSubscriptionRouter } from "./studentSubscription.router";
 export { roadmapRouter } from "./roadmap.router";
+export { leaderboardRouter } from "./leaderboard.router";
 export { testAttemptRouter } from "./testAttempt.router";
