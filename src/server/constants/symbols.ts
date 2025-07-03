@@ -9,4 +9,5 @@ export const SYMBOLS = {
 	IRoadmapService: Symbol.for("IRoadmapService"),
 	ITestAttemptService: Symbol.for("ITestAttemptService"),
 	ILeaderboardService: Symbol.for("ILeaderboardService"),
+	IStudentRewardService: Symbol.for("IStudentRewardService"),
 };

@@ -6,3 +6,4 @@ export { studentSubscriptionRouter } from "./studentSubscription.router";
 export { roadmapRouter } from "./roadmap.router";
 export { leaderboardRouter } from "./leaderboard.router";
 export { testAttemptRouter } from "./testAttempt.router";
+export { studentRewardRouter } from "./studentReward.router";

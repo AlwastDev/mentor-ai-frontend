@@ -97,19 +97,7 @@ export default function LearningLayout({
 							</nav>
 
 							<div className="mt-8">
-								<XPProgressCard
-									currentXP={100}
-									maxTests={10}
-									weekly={[
-										{ day: "Monday", xp: 1 },
-										{ day: "Tuesday", xp: 10 },
-										{ day: "Wednesday", xp: 50 },
-										{ day: "Thursday", xp: 30 },
-										{ day: "Friday", xp: 20 },
-										{ day: "Saturday", xp: 70 },
-										{ day: "Sunday", xp: 90 },
-									]}
-								/>
+								<XPProgressCard />
 							</div>
 						</motion.aside>
 					</>
@@ -174,19 +162,7 @@ function RightSidebar() {
 	return (
 		<div className="hidden lg:block w-[380px] shrink-0">
 			<aside className="fixed right-16 top-12 h-screen w-[380px] border-l border-gray-200 bg-white p-6">
-				<XPProgressCard
-					currentXP={100}
-					maxTests={10}
-					weekly={[
-						{ day: "Monday", xp: 1 },
-						{ day: "Tuesday", xp: 10 },
-						{ day: "Wednesday", xp: 50 },
-						{ day: "Thursday", xp: 30 },
-						{ day: "Friday", xp: 20 },
-						{ day: "Saturday", xp: 70 },
-						{ day: "Sunday", xp: 90 },
-					]}
-				/>
+				<XPProgressCard />
 			</aside>
 		</div>
 	);

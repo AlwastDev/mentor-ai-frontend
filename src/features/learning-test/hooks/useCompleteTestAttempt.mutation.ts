@@ -17,6 +17,7 @@ export const useCompleteTestAttemptMutation = (storageKey: string) => {
 			});
 			localStorage.removeItem(storageKey);
 			utils.roadmap.get.invalidate();
+			utils.studentReward.getHistory.invalidate();
 			refetch();
 		},
 		onError(error) {

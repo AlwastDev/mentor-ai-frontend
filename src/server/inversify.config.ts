@@ -22,6 +22,8 @@ import type { ITestAttemptService } from "./core/services/interfaces/ITestAttemp
 import { TestAttemptService } from "./core/services/TestAttemptService";
 import type { ILeaderboardService } from "./core/services/interfaces/ILeaderboardService";
 import { LeaderboardService } from "./core/services/LeaderboardService";
+import type { IStudentRewardService } from "./core/services/interfaces/IStudentRewardService";
+import { StudentRewardService } from "./core/services/StudentRewardService";
 
 const container = new Container();
 
@@ -43,5 +45,8 @@ container
 	.bind<ITestAttemptService>(SYMBOLS.ITestAttemptService)
 	.to(TestAttemptService);
 container.bind<ILeaderboardService>(SYMBOLS.ILeaderboardService).to(LeaderboardService);
+container
+	.bind<IStudentRewardService>(SYMBOLS.IStudentRewardService)
+	.to(StudentRewardService);
 
 export { container };
