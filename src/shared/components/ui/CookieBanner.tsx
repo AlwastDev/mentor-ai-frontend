@@ -29,19 +29,18 @@ export function CookieBanner() {
 		<div
 			className={cn(
 				"fixed bottom-4 left-1/2 z-50 -translate-x-1/2",
-				"w-[40rem] rounded-lg",
-				"bg-slate-800 px-6 py-4 shadow-lg",
+				"w-full max-w-[40rem] md:mx-auto rounded-lg",
+				"bg-slate-800 px-4 py-3 md:px-6 md:py-4 shadow-lg",
 			)}
 			role="dialog"
 			aria-live="polite"
 		>
 			<div
 				className={cn(
-					"flex flex-col gap-4 text-sm text-slate-100",
-					"md:flex-row",
+					"flex flex-col gap-4 text-sm text-slate-100 md:flex-row md:items-center",
 				)}
 			>
-				<p className="leading-relaxed">
+				<p className="leading-relaxed text-center md:text-left">
 					Ми використовуємо лише необхідні cookie, які потрібні для належного
 					функціонування вебсайту. Ми не збираємо жодних персональних даних.
 					Натискаючи &apos;Прийняти&apos;, ви погоджуєтеся з нашою{" "}

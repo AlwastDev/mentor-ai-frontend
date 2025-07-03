@@ -73,10 +73,10 @@ export function Table<T extends Record<string, any>>(props: TableProps<T>) {
 				"text-dusty-gray flex w-full grow flex-col gap-y-7 text-base",
 			)}
 		>
-			<div className="grow">
+			<div className="grow overflow-x-auto">
 				<table
 					className={cn(
-						"w-full table-fixed border-separate border-spacing-x-0 border-spacing-y-px",
+						"min-w-full table-auto border-separate border-spacing-x-0 border-spacing-y-px",
 						"border-white-7 rounded-xl border",
 					)}
 				>

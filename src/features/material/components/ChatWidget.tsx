@@ -49,7 +49,7 @@ export function ChatWidget(props: ChatWidgetProps) {
 						animate={{ opacity: 1, scale: 1, y: 0 }}
 						exit={{ opacity: 0, scale: 0.8, y: 50 }}
 						transition={{ type: "spring", stiffness: 300, damping: 30 }}
-						className="fixed bottom-24 right-6 z-40 flex h-[400px] w-[30%] flex-col rounded-xl border bg-white shadow-2xl"
+						className="fixed inset-x-0 bottom-0 z-40 flex h-[70vh] w-full flex-col rounded-t-xl border-t bg-white shadow-2xl sm:bottom-24 sm:left-auto sm:right-6 sm:h-[400px] sm:w-[30%] sm:rounded-xl sm:border sm:border-t sm:shadow-2xl"
 					>
 						<div className="flex items-center justify-between border-b px-4 py-2">
 							<h4 className="font-semibold">AI Асистент</h4>

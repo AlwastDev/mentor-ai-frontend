@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { memo } from "react";
+import { memo, useState } from "react";
 import {
 	Coins as CoinsIcon,
 	Sparkles,
@@ -10,8 +10,10 @@ import {
 	CircleUser,
 	User,
 	ArrowRight,
+	Menu as MenuIcon,
+	X,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 import { Button } from "@/shared/components/ui";
@@ -22,6 +24,7 @@ import { cn } from "../utils/helpers";
 export const Header = memo(() => {
 	const pathname = usePathname();
 	const { session, isAdmin, isChecking, logout } = useAuth();
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const isSignInPage = pathname === ROUTES.SignIn;
 	const authLink = isSignInPage ? ROUTES.SignUp : ROUTES.SignIn;
@@ -72,14 +75,142 @@ export const Header = memo(() => {
 	}
 
 	return (
-		<header className="fixed inset-x-0 top-0 z-50 h-[70px] border-b border-white/20 bg-white/80 backdrop-blur">
-			<div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4">
-				<Brand />
-				<div className="flex items-center gap-4">
-					{isAdmin ? AdminArea : AuthArea}
+		<>
+			<header className="fixed inset-x-0 top-0 z-50 h-[70px] border-b border-white/20 bg-white/80 backdrop-blur">
+				<div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4">
+					<Brand />
+					<div className="flex items-center gap-4">
+						{/* Desktop actions */}
+						<div className="hidden items-center gap-4 lg:flex">
+							{isAdmin ? AdminArea : AuthArea}
+						</div>
+
+						{/* Mobile menu button */}
+						<button
+							onClick={() => setIsMenuOpen(true)}
+							className="rounded-md p-2 transition hover:bg-black/10 lg:hidden"
+							aria-label="Відкрити меню"
+						>
+							<MenuIcon className="h-6 w-6" />
+						</button>
+					</div>
 				</div>
-			</div>
-		</header>
+			</header>
+
+			{/* Mobile drawer */}
+			<AnimatePresence>
+				{isMenuOpen && (
+					<>
+						{/* overlay */}
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 0.5 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.2 }}
+							className="fixed inset-0 z-40 bg-black"
+							onClick={() => setIsMenuOpen(false)}
+						/>
+
+						{/* drawer */}
+						<motion.aside
+							initial={{ x: "-100%" }}
+							animate={{ x: 0 }}
+							exit={{ x: "-100%" }}
+							transition={{ type: "tween", duration: 0.3 }}
+							className="fixed left-0 top-0 z-50 h-screen w-72 overflow-y-auto bg-white p-6 lg:hidden"
+						>
+							<button
+								onClick={() => setIsMenuOpen(false)}
+								className="absolute right-4 top-4 text-gray-500"
+								aria-label="Закрити меню"
+							>
+								<X className="h-6 w-6" />
+							</button>
+
+							{session && (
+								<div className="mb-6 flex items-center gap-3">
+									<CoinsIcon className="h-5 w-5 text-amber-500" />
+									<span className="text-sm font-medium">
+										{session.coins ?? 0}
+									</span>
+									<Sparkles className="h-5 w-5 text-indigo-500" />
+									<span className="text-sm font-medium">
+										{session.experience ?? 0}
+									</span>
+								</div>
+							)}
+							<nav className="mt-8 space-y-1">
+								{isAdmin && (
+									<>
+										<Link
+											href={ROUTES.Learning.Leaderboard}
+											onClick={() => setIsMenuOpen(false)}
+											className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+										>
+											Лідерборд
+										</Link>
+										<Link
+											href={ROUTES.Admin.Subscriptions.Root}
+											onClick={() => setIsMenuOpen(false)}
+											className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+										>
+											Підписки
+										</Link>
+										<Link
+											href={ROUTES.Admin.Tests.Root}
+											onClick={() => setIsMenuOpen(false)}
+											className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+										>
+											Тести
+										</Link>
+									</>
+								)}
+
+								{/* Student */}
+								{!isAdmin && session && (
+									<>
+										<Link
+											href={ROUTES.Learning.Roadmap}
+											onClick={() => setIsMenuOpen(false)}
+											className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+										>
+											Мапа
+										</Link>
+										<Link
+											href={ROUTES.Profile}
+											onClick={() => setIsMenuOpen(false)}
+											className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+										>
+											Профіль
+										</Link>
+									</>
+								)}
+
+								{session ? (
+									<button
+										onClick={() => {
+											logout();
+											setIsMenuOpen(false);
+										}}
+										className="mt-4 block w-full rounded-lg bg-red-500 px-3 py-2 text-center text-sm font-medium text-white transition hover:bg-red-600"
+									>
+										Вийти
+									</button>
+								) : (
+									<Link
+										href={authLink}
+										onClick={() => setIsMenuOpen(false)}
+										className="mt-4 block w-full rounded-lg bg-blue-600 px-3 py-2 text-center text-sm font-medium text-white transition hover:bg-blue-700"
+									>
+										{isSignInPage ? "Реєстрація" : "Вхід"}
+									</Link>
+								)}
+							</nav>
+						</motion.aside>
+					</>
+				)}
+			</AnimatePresence>
+		</>
 	);
 });
 
