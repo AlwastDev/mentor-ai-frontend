@@ -56,8 +56,8 @@ export default function ProfilePage() {
 			<h1 className="text-3xl font-bold">Профіль</h1>
 
 			<div className="space-y-4">
-				<InfoRow label="Імʼя" value={session.name ?? "–"} />
-				<InfoRow label="Прізвище" value={session.surname ?? "–"} />
+				<InfoRow label="Імʼя" value={session.name || "–"} />
+				<InfoRow label="Прізвище" value={session.surname || "–"} />
 				<InfoRow label="Email" value={session.email} />
 				<InfoRow label="Статус підписки">
 					<div className="flex items-center gap-4">

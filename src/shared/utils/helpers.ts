@@ -12,7 +12,10 @@ export function computeHmac(email: string, secret: string) {
 }
 
 export async function markdownToHtml(markdown: string): Promise<string> {
-	return await marked.parse(markdown, {
+	const rawHtml = await marked.parse(markdown, {
 		breaks: true,
+		gfm: true,
 	});
+
+	return rawHtml;
 }

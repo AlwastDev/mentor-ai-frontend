@@ -8,7 +8,8 @@ import { env } from "@/env.mjs";
 const authService = container.get<IAuthService>(SYMBOLS.IAuthService);
 
 export async function POST(req: NextRequest) {
-	const { email, password, name, surname } = await req.json();
+	try {
+		const { email, password, name, surname } = await req.json();
 
 	const { accessToken, refreshToken } = await authService.register({
 		email,
@@ -34,5 +35,9 @@ export async function POST(req: NextRequest) {
 		path: "/",
 	});
 
-	return response;
+		return response;
+	} catch (error) {
+		const message = error instanceof Error ? error.message : "Unknown error";
+		return NextResponse.json({ message }, { status: 400 });
+	}
 }

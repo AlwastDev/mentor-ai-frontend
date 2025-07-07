@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
 	if (!code) return NextResponse.redirect(new URL("/auth/error", req.url));
 
 	try {
+		console.log(`${env.NEXT_PUBLIC_SITE_URL}/api/auth/google/callback`);
 		// 1. Get access_token from Google
 		const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
 			method: "POST",
@@ -35,6 +36,8 @@ export async function GET(req: NextRequest) {
 		);
 		const profile = await profileRes.json();
 		const email = profile?.email;
+		const name = profile?.given_name;
+		const surname = profile?.family_name;
 		if (!email) throw new Error("Email not found in profile");
 
 		// 3. Call backend: /auth/sign-in-by-service
@@ -50,6 +53,8 @@ export async function GET(req: NextRequest) {
 				email,
 				signUpMethod: SignUpMethod.GOOGLE,
 				signature,
+				name,
+				surname,
 			}),
 		});
 
@@ -61,7 +66,7 @@ export async function GET(req: NextRequest) {
 		const { accessToken, refreshToken } = await loginRes.json();
 
 		// 4. Save tokens to HttpOnly cookie
-		const response = NextResponse.redirect(new URL("/", req.url));
+		const response = NextResponse.redirect(`${env.NEXT_PUBLIC_SITE_URL}/`);
 		response.cookies.set("access_token", accessToken, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
